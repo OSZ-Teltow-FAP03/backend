@@ -35,9 +35,9 @@ or $ npm start
 ## 🚀 Libraries used
 
 ### Back-end
-* express
-* mysql
-* nodemon
-* cors
-* Formik
-* bycrypt
+* [express](https://www.npmjs.com/package/express)
+* [mysql](https://www.npmjs.com/package/mysql)
+* [nodemon](https://www.npmjs.com/package/nodemon)
+* [cors](https://www.npmjs.com/package/cors)
+* [Formik](https://www.npmjs.com/package/formik)
+* [bcrypt](https://www.npmjs.com/package/bcrypt)
