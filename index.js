@@ -3,15 +3,16 @@ const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+require('dotenv').config();
 const saltRounds = 10;
 
 
 var db = mysql.createConnection({
-  host: '127.0.0.1',
-  user: "root",
-  password: "password",
-  port: "3306",
-  database: "tf",
+  host: process.env.host,
+  user: process.env.user,
+  password: process.env.password,
+  port: process.env.port,
+  database: process.env.database,
 });
 
 db.connect(function(err) {
@@ -25,25 +26,31 @@ db.connect(function(err) {
 app.use(express.json());
 app.use(cors());
 
-app.post("/register", (req, res) => {
+app.post("/Register", (req, res) => {
+  const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
 
+  console.log(username, email, password);
   db.query("SELECT * FROM users WHERE email = ?", [email], (err, result) => {
     if (err) {
       res.send(err);
     }
     if (result.length == 0) {
       bcrypt.hash(password, saltRounds, (err, hash) => {
-        //console.log(password, hash);
         db.query(
-          "INSERT INTO users (email, password) VALUE (?,?)",
-          [email, hash],
+          "INSERT INTO users (username, email, password) VALUE (?,?,?)",
+          [username, email, hash],
           (error, response) => {
-            if (err) {
+            if (error) {
+              console.log("error :" + error);
+              res.send(error);
+            }else if(err) {
+              console.log("err :" + err);
               res.send(err);
+            } else {
+              res.send({ msg: "User successfully registered" });
             }
-            res.send({ msg: "User successfully registered" });
           }
         );
       });
@@ -57,20 +64,27 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-
-  db.query("SELECT * FROM users WHERE email = ?", [email], (err, result) => {
+  var userOrEmail = "username";
+  if (isEmail(email)) {
+    userOrEmail = "email";
+  } 
+  
+  console.log(email);
+  db.query("SELECT * FROM users WHERE " + userOrEmail + " = ?", [email], (err, result) => {
     if (err) {
       res.send(err);
     }
     if (result.length > 0) {
       bcrypt.compare(password, result[0].password, (error, response) => {
         if (error) {
+          console.log("error :" + error);
           res.send(error);
+        }else if(err) {
+          console.log("err :" + err);
+          res.send(err);
         }
         if (response == true) {
           res.send(response)
-        
-          
         } else {
           res.send({ msg: "Email or password incorrect" });
         }
@@ -80,6 +94,24 @@ app.post("/login", (req, res) => {
     }
   });
 });
+
+let isEmail = ( email ) => {
+
+  // don't remember from where i copied this code, but this works.
+  let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  if ( re.test(email) ) {
+      // this is a valid email address
+      // call setState({email: email}) to update the email
+      // or update the data in redux store.
+      return true; 
+  }
+  else {
+      // invalid email, maybe show an error to the user.
+      return false;
+  }
+
+}
 
 app.listen(3001, () => {
   console.log("running in the 3001");
