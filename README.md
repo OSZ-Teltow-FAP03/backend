@@ -8,7 +8,7 @@
 
 ## 💻 Projekt
 
- MySQL e API'S
+Back-end MySQL e API'S
 
 
 
@@ -32,7 +32,7 @@ Before start, you need to have the following tools installed on computer: [Git](
 or $ npm start
 ```
 
-## 🚀 Verwendete Bibliotheken
+## 🚀 Libraries used
 
 ### Back-end
 * express
