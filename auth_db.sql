@@ -21,12 +21,6 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Indexes for table `users`
---
-
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
---
 -- AUTO_INCREMENT for table `users`
 --
 
