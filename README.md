@@ -6,7 +6,7 @@
 </h3>
 
 
-## 💻 Projeto
+## 💻 Projekt
 
  MySQL e API'S
 
