@@ -121,20 +121,18 @@ let isEmail = ( email ) => {
 }
 
 let checkUsername = ( username ) => {
-  
-    // don't remember from where i copied this code, but this works.
-    let re = /^[a-zA-Z0-9]+$/;
-  
-    if ( re.test(username) ) {
-        // this is a valid username
-        // call setState({username: username}) to update the username
-        // or update the data in redux store.
-        return true; 
-    }
-    else {
-        // invalid username, maybe show an error to the user.
-        return false;
-    }
+  // don't remember from where i copied this code, but this works.
+  let re = /^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$/;
+  if ( re.test(username) ) {
+      // this is a valid username
+      // call setState({username: username}) to update the username
+      // or update the data in redux store.
+      return true; 
+  }
+  else {
+      // invalid username, maybe show an error to the user.
+      return false;
+  }
 }
 
 app.listen(3001, () => {
