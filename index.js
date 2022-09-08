@@ -44,7 +44,7 @@ app.post('/Register', (req, res) => {
 		return;
 	}
 
-	if (!isFikeEmail(email)) return res.send({ msg: 'Email is not a FIKE email.' });
+	//if (!isFikeEmail(email)) return res.send({ msg: 'Email is not a FIKE email.' });
 	if (password.length < 8) return res.send({ msg: 'Password must be at least 8 characters long.' });
 
 	db.query('SELECT * FROM users WHERE username = ?', [ username ], function(err, result) {
