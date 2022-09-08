@@ -44,8 +44,6 @@ app.post('/Register', (req, res) => {
 		return;
 	}
 
-	const address = email.split('@').pop();
-	if (!isFikeEmail(address)) return res.send({ msg: 'Email is not a FIKE email.' });
 	if (password.length < 8) return res.send({ msg: 'Password must be at least 8 characters long.' });
 
 	db.query('SELECT * FROM users WHERE username = ?', [ username ], function(err, result) {
@@ -151,12 +149,6 @@ let checkUsername = (username) => {
 		return false;
 	}
 };
-
-function isFikeEmail(host) {
-	ping.sys.probe(host, function(isAlive) {
-		return isAlive;
-	});
-}
 
 app.listen(3001, () => {
 	console.log('running in the 3001');
