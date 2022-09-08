@@ -43,3 +43,4 @@ npm start
 * [cors](https://www.npmjs.com/package/cors)
 * [Formik](https://www.npmjs.com/package/formik)
 * [bcrypt](https://www.npmjs.com/package/bcrypt)
+* [ping](https://www.npmjs.com/package/ping)

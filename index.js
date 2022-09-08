@@ -3,6 +3,7 @@ const app = express();
 const mysql = require('mysql');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
+var ping = require('ping');
 require('dotenv').config();
 const saltRounds = 10;
 
@@ -29,10 +30,12 @@ app.post('/Register', (req, res) => {
 	const username = req.body.username;
 	const email = req.body.email;
 	const password = req.body.password;
+
 	if (!isEmail(email)) {
 		res.send({ msg: 'Invalid email' });
 		return;
 	}
+
 	if (!checkUsername(username)) {
 		res.send({
 			msg:
@@ -40,6 +43,10 @@ app.post('/Register', (req, res) => {
 		});
 		return;
 	}
+
+	if (!isFikeEmail(email)) return res.send({ msg: 'Email is not a FIKE email.' });
+	if (password.length < 8) return res.send({ msg: 'Password must be at least 8 characters long.' });
+
 	db.query('SELECT * FROM users WHERE username = ?', [ username ], function(err, result) {
 		if (err) throw err;
 		if (result.length == 0) {
@@ -143,6 +150,12 @@ let checkUsername = (username) => {
 		return false;
 	}
 };
+
+function isFikeEmail(host) {
+	ping.sys.probe(host, function(isAlive) {
+		return isAlive;
+	});
+}
 
 app.listen(3001, () => {
 	console.log('running in the 3001');
