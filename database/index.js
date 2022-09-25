@@ -24,7 +24,7 @@ var config_db = {
 	createDatabaseTable: true,
 	// Number of connections when creating a connection pool:
 	connectionLimit: 1,
-		// Whether or not to end the database connection when the store is closed.
+	// Whether or not to end the database connection when the store is closed.
 	// The default value of this option depends on whether or not a connection was passed to the constructor.
 	// If a connection object is passed to the constructor, the default value for this option is false.
 	endConnectionOnClose: true,
