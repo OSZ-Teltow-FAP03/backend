@@ -1,5 +1,10 @@
-  host        =   ""
-  user        =   ""
-  password    =   ""
-  port        =   ""
-  database    =   ""
+host            =   ""  // Host name for database connection.
+user            =   ""  // Database user.
+password        =   ""  // Password for the above database user.
+port            =   ""  // Port number for database connection.
+database        =   ""  // Database name.
+SERVERPORT      =   ""  // Server port
+SESSION_SECRET  =   ""  // Session secret
+algorithm       =   ""  // Algorithm used to generate the encryption
+secretKey       =   ""  // Secret key for the above encryption 
+viByte          =   ""  // Encryption key for the above encryption

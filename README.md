@@ -36,6 +36,86 @@ or
 ```bash
 npm start
 ```
+----
+
+# API
+Server will listen on port `3001`, and it expose the following APIs:
+
+
+- **POST** - `/auth/register` - Register a new user
+  - **name** - *string*
+  - **lastname** - *string*
+  - **username** - *string*
+  - **email** - *string*
+  - **password** - *string*
+
+- **POST** - `/auth/login` - Login user
+  - **email** - *string* or **username** - *string*
+  - **password** - *string*
+
+---------
+# How to encrypt and decrypt in nodejs
+
+In my projects I essentially find useful two ways to encrypt strings: hash functions one-way and one-way and encryption-decryption two-way :
+
+## 1. Hash functions with Bcrypt (one-way)
+
+Hash functions are essentials for store encrypted password, and the best library for nodejs is Bcrypt. You can find more information in this article: why use Bcrypt?.
+
+Install: 
+```bash 
+npm install bcrypt
+```
+To hash a password:
+```javascript
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const myPlaintextPassword = 'myPassword';
+
+bcrypt.hash(myPlaintextPassword, saltRounds).then(function(hash) {
+	// Store hash in your password DB.
+});
+```
+At user login to compare password with the one stored in the db you can use:
+```javascript
+bcrypt.compare(plaintextPassToCheck, hashStoredInDB).then(function(res) {
+  // res == true/false
+});
+```
+More info: github.com/kelektiv/node.bcrypt.js
+
+# 2. Simple Encryption and Decryption (two-way)
+
+In other scenarios I needed to crypt strings in order to hide texts to users but in a way that allows me to decrypt and retrieve the original content. In this case a fast tool is Crypto.
+
+Install:
+
+```bash 
+npm install crypto
+```
+To encrypt and decrypt a string:
+
+```javascript
+var crypto = require('crypto');
+
+var cypherKey = "mySecretKey";
+
+function encrypt(text){
+  var cipher = crypto.createCipher('aes-256-cbc', cypherKey)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted; //94grt976c099df25794bf9ccb85bea72
+}
+
+function decrypt(text){
+  var decipher = crypto.createDecipher('aes-256-cbc',cypherKey)
+  var dec = decipher.update(text,'hex','utf8')
+  dec += decipher.final('utf8');
+  return dec; //myPlainText
+}
+```
+
+
 
 ## 🦠  errorcodes messages 
 
@@ -51,11 +131,15 @@ A table that shows the error codes and their respective messages.
 | 106 | User successfully registered|
 
 
-## 🚀 Libraries used
+  Backend: 
 * [express](https://www.npmjs.com/package/express)
+* [express-session](https://www.npmjs.com/package/express-session)
+* [cors](https://www.npmjs.com/package/cors)
+* [cookie-parser](https://www.npmjs.com/package/cookie-parser)
+* [body-parser](https://www.npmjs.com/package/body-parser)
 * [mysql](https://www.npmjs.com/package/mysql)
 * [nodemon](https://www.npmjs.com/package/nodemon)
 * [cors](https://www.npmjs.com/package/cors)
 * [Formik](https://www.npmjs.com/package/formik)
 * [bcrypt](https://www.npmjs.com/package/bcrypt)
-* [ping](https://www.npmjs.com/package/ping)
+* [crypto](https://www.npmjs.com/package/crypto)

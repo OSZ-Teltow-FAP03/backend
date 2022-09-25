@@ -1,176 +1,191 @@
 /* This is importing the modules that we need to use in our application. */
 const express = require('express');
+// Sessions can be stored server-side (ex: user auth) or client-side
+// (ex: shopping cart). express-session saves sessions in a store, and
+// NOT in a cookie. To store sessions in a cookie, use cookie-session.
+const session = require('express-session')
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const cors = require('cors'); //  A middleware that is used to parse the body of the request.
 const app = express();
-const mysql = require('mysql');
-const cors = require('cors');
-const bcrypt = require('bcrypt');
-var ping = require('ping');
 require('dotenv').config();
-const saltRounds = 10;
+const SERVERPORT = process.env.SERVERPORT;
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
-/* This is creating a connection to the database. */
-var db = mysql.createConnection({
-	host: process.env.host,
-	user: process.env.user,
-	password: process.env.password,
-	port: process.env.port,
-	database: process.env.database
-});
 
-/* This is creating a connection to the database. */
-db.connect(function(err) {
-	if (err) return console.error('error: ' + err.message);
-	console.log('Connected to the MySQL server.');
-});
 
-/* This is a middleware that is used to parse the body of the request. */
+const requestTime = function (req, res, next) {
+	req.requestTime = Date.now()
+	next()
+}
+
+app.use(requestTime)
+//session middleware
+app.use(
+	session({
+		/* This is a secret key that is used to encrypt the session. */
+
+    // Name for the session ID cookie. Defaults to 'connect.sid'.
+		name: "session_id",
+
+    // Whether to force-save unitialized (new, but not modified) sessions
+    // to the store. Defaults to true (deprecated). For login sessions, it
+    // makes no sense to save empty sessions for unauthenticated requests,
+    // because they are not associated with any valuable data yet, and would
+    // waste storage. We'll only save the new session once the user logs in.
+    saveUninitialized: true,
+
+    // Whether to force-save the session back to the store, even if it wasn't
+    // modified during the request. Default is true (deprecated). We don't
+    // need to write to the store if the session didn't change.
+    resave: false,
+
+    // Whether to force-set a session ID cookie on every response. Default is
+    // false. Enable this if you want to extend session lifetime while the user
+    // is still browsing the site. Beware that the module doesn't have an absolute
+    // timeout option (see https://github.com/expressjs/session/issues/557), so
+    // you'd need to handle indefinite sessions manually.
+    // rolling: false,
+
+    // Secret key to sign the session ID. The signature is used
+    // to validate the cookie against any tampering client-side.
+		secret: SESSION_SECRET, // Secret key,
+		    // Settings object for the session ID cookie. The cookie holds a
+    // session ID ref in the form of 's:{SESSION_ID}.{SIGNATURE}' for example:
+    // s%3A9vKnWqiZvuvVsIV1zmzJQeYUgINqXYeS.nK3p01vyu3Zw52x857ljClBrSBpQcc7OoDrpateKp%2Bc
+
+    // It is signed and URL encoded, but NOT encrypted, because session ID is
+    // merely a random string that serves as a reference to the session. Even
+    // if encrypted, it still maintains a 1:1 relationship with the session.
+    // OWASP: cookies only need to be encrypted if they contain valuable data.
+    // See https://github.com/expressjs/session/issues/468
+		cookie: {
+			 // Path attribute in Set-Cookie header. Defaults to the root path '/'.
+      // path: '/',
+
+      // Domain attribute in Set-Cookie header. There's no default, and
+      // most browsers will only apply the cookie to the current domain.
+      // domain: null,
+
+      // HttpOnly flag in Set-Cookie header. Specifies whether the cookie can
+      // only be read server-side, and not by JavaScript. Defaults to true.
+      // httpOnly: true,
+
+      // Expires attribute in Set-Cookie header. Set with a Date object, though
+      // usually maxAge is used instead. There's no default, and the browsers will
+      // treat it as a session cookie (and delete it when the window is closed).
+      // expires: new Date(...)
+
+      // Preferred way to set Expires attribute. Time in milliseconds until
+      // the expiry. There's no default, so the cookie is non-persistent.
+			maxAge: 1000 * 60 * 60 * 24, // Setting the cookie to expire in 24 hours.
+
+      // SameSite attribute in Set-Cookie header. Controls how cookies are sent
+      // with cross-site requests. Used to mitigate CSRF. Possible values are
+      // 'strict' (or true), 'lax', and false (to NOT set SameSite attribute).
+      // It only works in newer browsers, so CSRF prevention is still a concern.
+      sameSite: true,
+
+      // Secure attribute in Set-Cookie header. Whether the cookie can ONLY be
+      // sent over HTTPS. Can be set to true, false, or 'auto'. Default is false.
+			secure: false,
+			HostOnly:true,
+			HttpOnly:true // This is a security feature that prevents the cookie from being accessed by JavaScript.
+		}
+	})
+);
+
+
+
+// app middleware
 app.use(express.json());
-app.use(cors());
+/* This is a middleware that is used to parse the body of the request. */
+app.use(
+	cors(
+		//   {
+		//   origin: ['http://localhost:3001'],
+		//   methods: ['GET', 'POST'],
+		//   credentials: true
+		// }
+	)
+);
 
-/* This is a post request that is used to register a user. */
-app.post('/Register', (req, res) => {
-/* This is getting the data from the request body. */
-	const username = req.body.username;
-	const email = req.body.email;
-	const password = req.body.password;
+/*
+ Use cookieParser and session middlewares together.
+ By default Express/Connect app creates a cookie by name 'connect.sid'.But to scale Socket.io app,
+ make sure to use cookie name 'jsessionid' (instead of connect.sid) use Cloud Foundry's 'Sticky Session' feature.
+ W/o this, Socket.io won't work if you have more than 1 instance.
+ If you are NOT running on Cloud Foundry, having cookie name 'jsessionid' doesn't hurt - it's just a cookie name.
+ */
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+app.use(bodyParser.json())
+app.use(cookieParser());
 
-/* This is checking if the email is valid. */
-	if (!isEmail(email)) {
-		res.send({ msg: 'Invalid email', code: 101 });
-		return;
-	}
+// Routers
+const authRouter = require('./routes/auth');
+app.use('/auth', authRouter);
 
-/* This is checking if the username is valid. */
-	if (!checkUsername(username)) {
-		res.send({
-			msg:
-				'Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.',
-			code: 102
-		});
-		return;
-	}
+app.get('/', (req, res) => {
+  // A new uninitialized session is created for each request (but not
+  // persisted to the store if saveUninitialized is false). It's
+  // automatically serialized to JSON and can look something like
+  /*
+    Session {
+      cookie: {
+        path: '/',
+        _expires: 2018-11-18T01:33:01.043Z,
+        originalMaxAge: 7200000,
+        httpOnly: true,
+        sameSite: true,
+        secure: false
+      }
+    }
+  */
+  console.log(req.session)
 
-/* This is checking if the password is at least 8 characters long. */
-	if (password.length < 8) return res.send({ msg: 'Password must be at least 8 characters long.' });
+  // You can also access the cookie object above directly with
+  console.log(req.session.cookie)
 
-/* This is checking if the username is already registered. */
-db.query('SELECT * FROM users WHERE username = ?', [ username ], function(err, result) {
-  if (err) throw err;
-  if (result.length == 0) {
-      /* This is checking if the Email is already registered. */
-			db.query('SELECT * FROM users WHERE email = ?', [ email ], function(err, result) {
-				if (err) throw err;
-				if (result.length == 0) {
-					bcrypt.hash(password, saltRounds, (err, hash) => {
-						/* This is inserting the data into the database. */
-            db.query(
-							'INSERT INTO users (username, email, password) VALUE (?,?,?)',
-							[ username, email, hash ],
-							(error, response) => {
-								if (error) {
-									res.send({ msg: error });
-								} else if (err) {
-									res.send({ msg: err });
-								} else {
-									res.send({ msg: 'User successfully registered', code: 201 });
-								}
-							}
-						);
-					});
-				} else {
-					res.send({ msg: 'Email already registered', code: 100 });
-				}
-			});
-		} else {
-			res.send({ msg: 'username already registered', code: 100 });
-		}
-	});
+  // Beware that express-session only updates req.session on req.end(),
+  // so the values below are stale and will change after you read them
+  // (assuming that you roll sessions with resave and rolling).
+  console.log(req.session.cookie.expires) // date of expiry
+  console.log(req.session.cookie.maxAge) // milliseconds left until expiry
+
+  // Unless a valid session ID cookie is sent with the request,
+  // the session ID below will be different for each request.
+  console.log(req.session.id) // ex: VdXZfzlLRNOU4AegYhNdJhSEquIdnvE-
+
+  // Same as above. Alphanumeric ID that gets written to the cookie.
+  // It's also the SESSION_ID portion in 's:{SESSION_ID}.{SIGNATURE}'.
+  console.log(req.sessionID)
+
+  res.send(`<a href='/login'>Login</a>`)
+})
+
+app.get('/set', function (req, res) {
+	req.session.user = {
+		name: 'Aland'
+	};
+	res.send('Session set');
 });
 
-/* This is a post request that is used to login a user. */
-app.post('/login', (req, res) => {
-	const email = req.body.email;
-	const password = req.body.password;
-  var userOrEmail = 'username';
-  
-/* This is checking if the email or username. */
-	if (isEmail(email)) {
-		userOrEmail = 'email';
-	} else {
-		if (!checkUsername(email)) {
-			res.send({
-				msg:
-					'Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.',
-				code: 102
-			});
-			return;
-		}
-	}
-
-/* This is checking if the user is registered. */
-	db.query('SELECT * FROM users WHERE ' + userOrEmail + ' = ?', [ email ], (err, result) => {
-		if (err) res.send(err);
-		if (result.length > 0) {
-			bcrypt.compare(password, result[0].password, (error, response) => {
-				if (error) {
-					console.log('error :' + error);
-					res.send(error);
-				} else if (err) {
-					console.log('err :' + err);
-					res.send(err);
-				}
-				if (response == true) {
-					res.send(response);
-				} else {
-					res.send({ msg: 'Email or password incorrect', code: 105 });
-				}
-			});
-		} else {
-			res.send({ msg: 'Not registered user!', code: 104 });
-		}
-	});
+app.get('/get', function (req, res) {
+	res.send(req.session.user);
 });
 
-/**
- * It checks if the email is valid or not
- * @param email - The email address to validate.
- * @returns A function that takes an email as an argument and returns true or false.
- */
-let isEmail = (email) => {
-	// don't remember from where i copied this code, but this works.
-	let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-	if (re.test(email)) {
-		// this is a valid email address
-		// call setState({email: email}) to update the email
-		// or update the data in redux store.
-		return true;
-	} else {
-		// invalid email, maybe show an error to the user.
-		return false;
-	}
-};
-
-/**
- * It checks if the username is valid or not
- * @param username - The username to check.
- * @returns A function that takes in a username and returns a boolean.
- */
-let checkUsername = (username) => {
-	// don't remember from where i copied this code, but this works.
-	let re = /^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$/;
-	if (re.test(username)) {
-		// this is a valid username
-		// call setState({username: username}) to update the username
-		// or update the data in redux store.
-		return true;
-	} else {
-		// invalid username, maybe show an error to the user.
-		return false;
-	}
-};
+// error handler
+app.use((err, req, res, next) => {
+	res.status(400).send(err.message)
+})
 
 /* This is telling the server to listen to port 3001. */
-app.listen(3001, () => {
-	console.log('running in the 3001');
+app.listen(SERVERPORT, (err) => {
+	if (err) {
+		throw err;
+	} else {
+		console.log('🚀 Server running in the', SERVERPORT);
+	}
 });
