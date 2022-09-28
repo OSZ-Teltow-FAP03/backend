@@ -10,16 +10,33 @@ const {
 	isEmail,
 	checkUsername
 } = require('../module/check_userOrEmail');
+const {
+	getSessionOnDB,
+	setSessionOnDB,
+	compareSessionOnDB,
+	destroySessionOnDB
+} = require('../module/session');
 
 const saltRounds = 10; // The number of rounds to use when generating a salt
 
-// test func
-router.get('/', (req, res) => {
-	res.send({
-		msg: 'Invalid email',
-		code: 101
-	});
+
+router.get('/set', (req, res) => {
+	req.session.user = {
+		name: 'Aland',
+		lastname: "Mariwan"
+	};
+	res.send(req.sessionID);
 	console.log(req);
+});
+
+router.get('/get', (req, res) => {
+	res.send(req.sessionID);
+	// console.log(req.sessionStore.sessions);
+	// console.log(req);
+});
+router.get('/det', (req, res) => {
+	req.session.destroy();
+	res.send(req.session.user);
 });
 
 /* This is a post request that is used to register a user. */
@@ -115,11 +132,10 @@ router.get('/login', (req, res) => {
 
 /* This is a post request that is used to login a user. */
 router.post('/login', (req, res) => {
-	  // Unless we explicitly write to the session (and resave is false), the
-  // store is never updated, even though a new session is generated on each
-  // request. After we modify that session and during req.end(), it gets
-  // persisted. On subsequent writes, it's updated and synced with the store.
-  req.session.userId = 1
+	// Unless we explicitly write to the session (and resave is false), the
+	// store is never updated, even though a new session is generated on each
+	// request. After we modify that session and during req.end(), it gets
+	// persisted. On subsequent writes, it's updated and synced with the store.
 	const email = decrypt(req.body.email).toLowerCase();
 	const password = decrypt(req.body.password);
 	var userOrEmail = 'username';
@@ -136,13 +152,11 @@ router.post('/login', (req, res) => {
 			return;
 		}
 	}
-
 	/* This is checking if the user is registered. */
 	db.query('SELECT * FROM users WHERE ' + userOrEmail + ' = ?', [email], (err, result) => {
 		if (err) res.send(err);
 		if (result.length > 0) {
 			bcrypt.compare(password, result[0].password, (error, response) => {
-				console.log(response);
 				if (error) {
 					console.log('error :' + error);
 					res.send(error);
@@ -151,15 +165,25 @@ router.post('/login', (req, res) => {
 					res.send(err);
 				}
 				if (response == true) {
-					// db.query(
-					// 	'INSERT INTO users (username, email, password, ) VALUE (?,?,?)',
-					// 	[username, email, password],
-					// 	(error, response) => {}
-					// );
-					sid.name = result[0].name;
-					sid.lastname = result[0].lastname;
-					res.send(sid);
-					//res.send(response);
+					console.log(req.session);
+					if (req.session.user) {
+						res.send({
+							loggedIn: true,
+							user: req.session.user
+						});
+					} else {
+						req.session.user = {
+							name: result[0].name,
+							lastname: result[0].lastname,
+							userID: result[0].userID,
+							username: email,
+							role: result[0].role
+						};
+						// setSessionOnDB(req);
+						res.send(
+							req.session
+						);
+					}
 				} else {
 					res.send({
 						msg: 'Email or password incorrect',
@@ -176,39 +200,49 @@ router.post('/login', (req, res) => {
 	});
 });
 
-app.post('/logout', (req, res) => {
-  // Assuming the request was authenticated in /login above,
-  /*
-    Session {
-      cookie: {
-        path: '/',
-        _expires: 2018-11-18T02:03:01.926Z,
-        originalMaxAge: 7200000,
-        httpOnly: true,
-        secure: false,
-        sameSite: true
-      },
-      userId: 1 <-- userId from /login
-    }
-  */
-  console.log(req.session)
+router.get('/logout', (req, res) => {
+	var x = destroySessionOnDB(3);
+	console.log("logout completed", x);
+	res.send(x);
+})
 
-  console.log(req.session.id) // ex: 0kVkUn7KUX1UZGnjagDKd_NPerjXKJsA
+router.post('/logout', (req, res) => {
 
-  // Note that the portion between 's%3A' and '.' is the session ID above.
-  // 's%3A' is URL encoded and decodes to 's:'. The last part is the signature.
-  // sid=s%3A0kVkUn7KUX1UZGnjagDKd_NPerjXKJsA.senfzYOeNHCtGUNP4bv1%2BSdgSdZWFtoAaM73odYtLDo
-  console.log(req.get('cookie'))
+	// Assuming the request was authenticated in /login above,
+	/*
+	  Session {
+	    cookie: {
+	      path: '/',
+	      _expires: 2018-11-18T02:03:01.926Z,
+	      originalMaxAge: 7200000,
+	      httpOnly: true,
+	      secure: false,
+	      sameSite: true
+	    },
+	    userId: 1 <-- userId from /login
+	  }
+	*/
+	// console.log(req.session)
 
-  // Upon logout, we can destroy the session and unset req.session.
-  req.session.destroy(err => {
-    // We can also clear out the cookie here. But even if we don't, the
-    // session is already destroyed at this point, so either way, the
-    // user won't be able to authenticate with that same cookie again.
-    res.clearCookie('sid')
+	// console.log(req.session.id) // ex: 0kVkUn7KUX1UZGnjagDKd_NPerjXKJsA
 
-    res.redirect('/')
-  })
+	// Note that the portion between 's%3A' and '.' is the session ID above.
+	// 's%3A' is URL encoded and decodes to 's:'. The last part is the signature.
+	// sid=s%3A0kVkUn7KUX1UZGnjagDKd_NPerjXKJsA.senfzYOeNHCtGUNP4bv1%2BSdgSdZWFtoAaM73odYtLDo
+	// console.log(req.get('cookie'))
+
+	// Upon logout, we can destroy the session and unset req.session.
+	// req.session.destroy(err => {
+	// We can also clear out the cookie here. But even if we don't, the
+	// session is already destroyed at this point, so either way, the
+	// user won't be able to authenticate with that same cookie again.
+	// res.clearCookie('session_id')
+
+	// })
+	console.log(req.session.user.userID)
+	var x = destroySessionOnDB(req.session.user.userID);
+	console.log("logout completed", x);
+	res.send(x);
 })
 
 /* This is exporting the router object. */
