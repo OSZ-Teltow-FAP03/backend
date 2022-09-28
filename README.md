@@ -8,6 +8,20 @@
 
 Before start, you need to have the following tools installed on computer: [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/) and/or [Yarn](https://yarnpkg.com/). [MySQl::Workbench](https://www.mysql.com/products/workbench/).
 
+
+### 📗 Quick Start
+
+Install backend by running either of the following:
+> Install NodeJS LTS from NodeJs Official Page (NOTE: Product only works with LTS version)
+
+Clone the repository with the following command:
+```bash
+https://github.com/OSZ-Teltow-FAP03/backend.git
+```
+Run in terminal this command:
+```bash
+cd backend && npm i 
+```
 ## Creating an SSL Certificate
 
 1. First, generate a key file used for self-signed certificate generation with the command below. The command will create a private key as a file called key.pem.
@@ -21,7 +35,7 @@ openssl genrsa -out key.pem
 ```bash
 openssl req -new -key key.pem -out csr.pem
 ```
-<img src="img/openssl_1.png" alt="openssl_1">
+<img src="https://github.com/amariwan/reactJs-Mysql-Auth/blob/master/img/openssl_1.png" alt="openssl_1">
 
 3. Finally, generate your certificate by providing the private key created to sign it with the public key created in step two with an expiry date of 9,999 days. This command below will create a certificate called cert.pem.
 ```bash
