@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors'); //  A middleware that is used to parse the body of the request.
 const app = express();
+const db = require('./database/index')
 require('dotenv').config();
 const SERVERPORT = process.env.SERVERPORT;
 const SESSION_SECRET = process.env.SESSION_SECRET;
@@ -134,6 +135,8 @@ app.use(cookieParser(SESSION_SECRET)); // any string ex: 'keyboard cat'
 // Routers
 const authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
+const userListRouter = require('./routes/userList');
+app.use('/userList', userListRouter);
 
 app.get('/', (req, res) => {
 	// A new uninitialized session is created for each request (but not
@@ -151,6 +154,10 @@ app.get('/', (req, res) => {
 	    }
 	  }
 	*/
+	db.query('SELECT * FROM Film' , null, function(err, result) {
+		if (err) throw err.sqlMessage;
+		console.log(result);
+	});
 	console.log(req.session)
 
 	// You can also access the cookie object above directly with
