@@ -6,6 +6,6 @@ const checkDBTable = (table) => {
 		if (err) throw err.sqlMessage;
 		return result;
 	});
-};
+}; 
 
 module.exports = checkDBTable;
