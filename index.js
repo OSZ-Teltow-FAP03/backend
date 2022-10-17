@@ -64,7 +64,7 @@ app.use(
 		name: 'session_id',
 		saveUninitialized: true,
 		resave: false,
-		// rolling: false,
+		rolling: false,
 		secret: SESSION_SECRET,
 		cookie: {
 			path: '/',
