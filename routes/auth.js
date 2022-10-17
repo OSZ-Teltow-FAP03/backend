@@ -102,7 +102,6 @@ router.post('/login', (req, res) => {
 	const email = decrypt(req.body.email).toLowerCase();
 	const password = decrypt(req.body.password);
 	var userOrEmail = 'username';
-	console.log(password);
 
 	/* This is checking if the email or username. */
 	if (isEmail(email)) {
@@ -119,7 +118,7 @@ router.post('/login', (req, res) => {
 	/* This is checking if the user is registered. */
 	db.query('SELECT * FROM users WHERE ' + userOrEmail + ' = ?', [ email ], (err, result) => {
 		if (err) res.status(500).send(err);
-		if (result.length < 1) {
+		if (result.length > 0) {
 			bcrypt.compare(password, result[0].password, (error, response) => {
 				if (error) {
 					// console.log('error :' + error);
@@ -145,7 +144,7 @@ router.post('/login', (req, res) => {
 							loggedIn: true,
 						};
 						getSessionIDCookie(req, res);
-						creatSessionOnDB(req);
+						console.log(creatSessionOnDB(req));
 						res.status(200).send({
 							msg: 'successfully',
 							user: req.session.user,
@@ -169,8 +168,6 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/logout', (req, res, next) => {
-
-
 	// Upon logout, we can destroy the session and unset req.session.
 	console.log(req.session);
 	var destroySession = destroySessionOnDB(req.session.user.userID);

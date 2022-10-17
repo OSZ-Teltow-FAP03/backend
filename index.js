@@ -1,7 +1,7 @@
 /* This is importing the modules that we need to use in our application. */
 const express = require('express');
 require('./module/checkVersion');
-
+var useragent = require('express-useragent');
 const helmet = require('helmet');
 const cors = require('cors'); //  A middleware that is used to parse the body of the request.
 const https = require('https');
@@ -16,6 +16,7 @@ const nonce = crypto.randomBytes(16).toString('hex'); //#endregion
 
 // create our Express app
 const app = express();
+app.use(useragent.express());
 
 //setting CSP
 const csp = {
@@ -115,11 +116,13 @@ app.use(cookieParser(SESSION_SECRET)); // any string ex: 'keyboard cat'
 const authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
 
-
-
-
 app.get('/', (req, res, next) => {
-	console.log(req.session)
+	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	if (ip.substr(0, 7) == '::ffff:') {
+		ip = ip.substr(7);
+		req.useragent.ip = ip;
+	}
+	req.useragent.ip = ip;
 	if (req.session.user) {
 		res.status(200).send({
 			loggedIn: true,
@@ -131,6 +134,7 @@ app.get('/', (req, res, next) => {
 		});
 	}
 });
+
 // pass variables to our templates + all requests
 
 // If that above routes didnt work, we 404 them and forward to error handler
