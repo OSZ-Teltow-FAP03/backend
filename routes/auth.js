@@ -169,10 +169,7 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/logout', (req, res, next) => {
-	// Note that the portion between 's%3A' and '.' is the session ID above.
-	// 's%3A' is URL encoded and decodes to 's:'. The last part is the signature.
-	// sid=s%3A0kVkUn7KUX1UZGnjagDKd_NPerjXKJsA.senfzYOeNHCtGUNP4bv1%2BSdgSdZWFtoAaM73odYtLDo
-	// console.log(req.get('cookie'))
+
 
 	// Upon logout, we can destroy the session and unset req.session.
 	console.log(req.session);
