@@ -4,34 +4,35 @@
   "description": "Backend",
   "main": "index.js",
   "scripts": {
-      "start": "nodemon index.js",
-      "dev": "nodemon index.js",
-      "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-      "node.js",
-      "express",
-      "login",
-      "registration",
-      "authentication",
-      "authorization"
+    "node.js",
+    "express",
+    "login",
+    "registration",
+    "authentication",
+    "authorization"
   ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-      "bcrypt": "^5.0.1",
-      "body-parser": "^1.20.0",
-      "cookie-parser": "^1.4.6",
-      "cors": "^2.8.5",
-      "crypto": "^1.0.1",
-      "dotenv": "^16.0.2",
-      "express": "^4.18.1",
-      "express-session": "^1.17.3",
-      "fs": "^0.0.1-security",
-      "mysql": "github:felixge/node-mysql",
-      "nodemon": "^2.0.16"
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "fs": "^0.0.1-security",
+    "helmet": "^6.0.0",
+    "mysql": "github:felixge/node-mysql",
+    "nodemon": "^2.0.16"
   },
   "devDependencies": {
-      "uuid": "^2.0.3"
+    "uuid": "^2.0.3"
   }
 }
