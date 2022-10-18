@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router(); // Creating a router object.
 const db = require("../database/index");
 
-router.get("/get", (req, res) => {
+router.get("/get", (req, res) => { //https://localhost:40324/films/get?filmQuery={query}
     if (req.session.user) {
         let queryString = `SELECT * FROM Film`;
 
