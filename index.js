@@ -5,14 +5,13 @@ var useragent = require('express-useragent');
 const helmet = require('helmet');
 const cors = require('cors'); //  A middleware that is used to parse the body of the request.
 const https = require('https');
+const http = require('http');
 const fs = require('fs');
 const errorHandlers = require('./handlers/errorHandlers');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 require('dotenv').config();
-const crypto = require('crypto');
-const nonce = crypto.randomBytes(16).toString('hex'); //#endregion
 
 // create our Express app
 const app = express();
@@ -120,9 +119,10 @@ app.get('/', (req, res, next) => {
 	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 	if (ip.substr(0, 7) == '::ffff:') {
 		ip = ip.substr(7);
-		req.useragent.ip = ip;
+		req.useragent.ip_address = ip;
 	}
-	req.useragent.ip = ip;
+	req.useragent.ip_address = ip;
+	console.log(req.useragent.ip_address);
 	if (req.session.user) {
 		res.status(200).send({
 			loggedIn: true,
@@ -150,6 +150,13 @@ if (app.get('env') === 'development') {
 app.use(errorHandlers.productionErrors);
 
 /* This is telling the server to listen to port 3001. */
+// http.createServer(app).listen(8080, '0.0.0.0', (err) => {
+// 	if (err) {
+// 		throw err;
+// 	} else {
+// 		console.log('🚀 Server running');
+// 	}
+// });
 https
 	.createServer(
 		// Provide the private and public key to the server by reading each
@@ -167,3 +174,4 @@ https
 			console.log('🚀 Server running in the', SERVERPORT);
 		}
 	});
+

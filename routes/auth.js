@@ -8,7 +8,7 @@ const { creatSessionOnDB, getSessionOnDB, setSessionOnDB, compareSessionOnDB, de
 const { clearAllcookie, getSessionIDCookie } = require('../module/cookie');
 
 const saltRounds = 10; // The number of rounds to use when generating a salt
-// bcrypt.hash(password, saltRounds, (err, hash) => {});
+
 
 /* This is a post request that is used to register a user. */
 router.post('/register', (req, res) => {
@@ -19,9 +19,6 @@ router.post('/register', (req, res) => {
 	const email = decrypt(req.body.email).toLowerCase();
 	const password = req.body.password;
 	/* This is checking if the email is valid. */
-
-	console.log('a', decrypt(req.body.password));
-	console.log('b', req.body.password);
 	if (!isEmail(email)) {
 		res.status(203).send({
 			msg: 'Invalid email',
@@ -59,23 +56,21 @@ router.post('/register', (req, res) => {
 						msg: err,
 					});
 				if (result.length == 0) {
+					bcrypt.hash(password, saltRounds, (err, hash) => {
 					/* This is inserting the data into the database. */
-					db.query('INSERT INTO users (name, lastname, username, email, password ) VALUE (?,?,?,?,?)', [ name, lastname, username, email, password ], (error, response) => {
-						if (error) {
+					db.query('INSERT INTO users (name, lastname, username, email, password ) VALUE (?,?,?,?,?)', [ name, lastname, username, email, hash ], (error, response) => {
+						if (error && err) {
 							res.status(500).send({
-								msg: error,
+								msg: error|| err,
 							});
-						} else if (err) {
-							res.status(500).send({
-								msg: err,
-							});
-						} else {
+						}  else {
 							res.status(200).send({
 								msg: 'User successfully registered',
 								code: 201,
 							});
 						}
 					});
+				});
 				} else {
 					res.status(203).send({
 						msg: 'Email already registered',
@@ -94,6 +89,7 @@ router.post('/register', (req, res) => {
 
 /* This is a post request that is used to login a user. */
 router.post('/login', (req, res) => {
+	console.log(req.body);
 	// Unless we explicitly write to the session (and resave is false), the
 	// store is never updated, even though a new session is generated on each
 	// request. After we modify that session and during req.end(), it gets
