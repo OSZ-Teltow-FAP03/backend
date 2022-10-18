@@ -8,7 +8,7 @@ router.get("", (req, res) => {
     console.log(req.query);
     queryString = `SELECT * FROM Film`;
     if (req.query) {
-        queryString = `SELECT * FROM Film WHERE LIKE %${req.query.stringsuche}%`;
+        queryString = `SELECT * FROM Film WHERE Filmtitel Like '%${req.query.stringsuche}%%' or Autor LIKE '%${req.query.stringsuche}%%' or Mitwirkende LIKE '%${req.query.stringsuche}%%' or Klasse like '%${req.query.stringsuche}%%' or Stichworte like '%${req.query.stringsuche}%%'`;
     }
     if (true) {
         db.query(queryString, function (err, result) {
