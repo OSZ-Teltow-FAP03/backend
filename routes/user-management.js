@@ -2,10 +2,6 @@ const {
 	encrypt,
 	decrypt
 } = require('../module/crpyto');
-const {
-	isEmail,
-	checkUsername
-} = require('../module/check_userOrEmail');
 const express = require('express');
 const router = express.Router(); // Creating a router object.
 const db = require('../database/index');
@@ -34,10 +30,6 @@ router.post('/user-update', (req, res) => {
 				res.send({
 					msg: error
 				});
-			} else if (err) {
-				res.send({
-					msg: err
-				});
 			} else {
 				res.send({
 					msg: 'User successfully updated',
@@ -61,13 +53,9 @@ router.post('/user-delete', (req, res) => {
 				res.send({
 					msg: error
 				});
-			} else if (err) {
-				res.send({
-					msg: err
-				});
 			} else {
 				res.send({
-					msg: 'User successfully updated',
+					msg: 'User successfully deleted',
 					code: 201
 				});
 			}
