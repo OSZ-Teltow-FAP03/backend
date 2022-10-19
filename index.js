@@ -178,9 +178,6 @@ app.use('/auth', authRouter);
 const usermanagementRouter = require('./routes/user-management');
 app.use('/user-management', usermanagementRouter);
 
-const filmsRouter = require('./routes/films');
-app.use('/films', filmsRouter);
-
 
 app.get('/', (req, res, next) => {
 	console.log(req.session)
