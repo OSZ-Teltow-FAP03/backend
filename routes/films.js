@@ -15,6 +15,11 @@ router.get("/get", (req, res) => { //https://localhost:40324/films/get?filmQuery
             res.send(result);
         });
     }
+    else
+    {
+        res.status(400).send("not logged in")
+        return
+    }
 });
 
 /* This is exporting the router object. */
