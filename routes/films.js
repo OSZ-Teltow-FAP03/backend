@@ -4,13 +4,16 @@ const db = require("../database/index");
 
 router.get("/get", (req, res) => { //https://localhost:40324/films/get?filmQuery={query}
     if (req.session.user) {
-        let queryString = `SELECT * FROM Film`;
 
+        //when queryParam filmQuery is given (simple search)
         if (req.query.filmQuery !== undefined) {
-            queryString = `SELECT * FROM Film WHERE Filmtitel Like '%${req.query.filmQuery}%' or Autor LIKE '%${req.query.filmQuery}%' or Mitwirkende LIKE '%${req.query.filmQuery}%' or Klasse like '%${req.query.filmQuery}%' or Stichworte like '%${req.query.filmQuery}%'`;
+            db.query(`SELECT * FROM Film WHERE Filmtitel Like '%$?%' or Autor LIKE '%$?%' or Mitwirkende LIKE '%$?%' or Klasse like '%$?%' or Stichworte like '%?%'`, [filmQuery], function (err, result) {
+                if (err) throw err;
+                res.send(result);
+            });
         }
 
-        db.query(queryString, function (err, result) {
+        db.query('SELECT * FROM Film', function (err, result) {
             if (err) throw err;
             res.send(result);
         });
