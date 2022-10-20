@@ -24,7 +24,6 @@ router.get('/stream', (req, res) => {
 		res.status(400).send("Requires Range header");
 		return;
 	}
-	console.log(req.query)
 	const FileID=req.query.FileID;
 	if(!FileID){
 		res.status(400).send("FileID not set");
@@ -43,8 +42,6 @@ router.get('/stream', (req, res) => {
 
 		const fileExtension=path.extname(filePath);
 		var contentType;
-		console.log(fileExtension)
-		console.log(filePath)
 		switch (fileExtension) {
 			case ".mp4":
 				contentType="video/mp4";
