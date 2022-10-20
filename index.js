@@ -175,11 +175,8 @@ app.use(cookieParser(SESSION_SECRET)); // any string ex: 'keyboard cat'
 const authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
 
-const usermanagementRouter = require('./routes/user-management');
-app.use('/user-management', usermanagementRouter);
-
-const filmcreateRouter = require('./routes/film-create');
-app.use('/film-create', filmcreateRouter);
+const filmsRouter = require('./routes/films');
+app.use('/films', filmsRouter);
 
 const usermanagementRouter = require('./routes/user-management');
 app.use('/user-management', usermanagementRouter);
