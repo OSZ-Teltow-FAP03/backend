@@ -11,7 +11,7 @@ router.delete('/delete', (req, res) => {
 	/* This is getting the data from the request body. */
 	let filmID = decrypt(req.body.filmID);
 
-	/* Trying to delete the film */		//test: https://localhost:40324/filmDelete/delete?id=1
+	/* Trying to delete the film */		//test: https://localhost:40324/filmDelete/delete (body: filmID=x)
 	db.query('DELETE FROM Film WHERE ID = ?',[ filmID ],(error, response) => {
 			if (error) {
 				res.send({
