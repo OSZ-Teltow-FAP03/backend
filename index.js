@@ -134,6 +134,9 @@ app.use(cookieParser(SESSION_SECRET)); // any string ex: 'keyboard cat'
 const authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
 
+const filmDeleteRouter = require('./routes/filmDelete');
+app.use('/filmDelete', filmDeleteRouter);
+
 
 
 app.use((req, res, next) => {
