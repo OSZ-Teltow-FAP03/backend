@@ -52,7 +52,8 @@ CREATE TABLE `session_users` (
   `userId` varchar(255) DEFAULT NULL,
   `session_id` varchar(255) COLLATE utf8mb4_bin NOT NULL primary key,
   `ip_address` varchar(255) DEFAULT NULL,
-  `browser_id` varchar(255) DEFAULT NULL,
+  `browser_name` varchar(255) DEFAULT NULL,
+  `browser_version` varchar(255) DEFAULT NULL,
   `platform` varchar(255) DEFAULT NULL,
   `createdOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `LastUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

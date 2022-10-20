@@ -11,6 +11,8 @@ const errorHandlers = require('./handlers/errorHandlers');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const { clearAllcookie, getSessionIDCookie } = require('./module/cookie');
+
 require('dotenv').config();
 
 // create our Express app
@@ -116,17 +118,19 @@ const authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
 
 app.get('/', (req, res, next) => {
+	// console.log(req)
+	console.log(getSessionIDCookie(req, res)); 
 	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 	if (ip.substr(0, 7) == '::ffff:') {
 		ip = ip.substr(7);
 		req.useragent.ip_address = ip;
 	}
 	req.useragent.ip_address = ip;
-	console.log(req.useragent.ip_address);
 	if (req.session.user) {
 		res.status(200).send({
 			loggedIn: true,
 			user: req.session.user,
+			
 		});
 	} else {
 		res.status(200).send({
