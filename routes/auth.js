@@ -15,7 +15,7 @@ router.post('/register', (req, res) => {
 	const lastname = decrypt(req.body.lastname).toLowerCase();
 	const username = decrypt(req.body.username).toLowerCase();
 	const email = decrypt(req.body.email).toLowerCase();
-	const password = req.body.password; //! I expect to receive an encrypted password
+	const password = decrypt(req.body.password); //! I expect to receive an encrypted password
 	/* This is checking if the email is valid. */
 	if (!isEmail(email)) {
 		res.status(203).send({
