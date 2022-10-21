@@ -5,7 +5,6 @@ var useragent = require('express-useragent');
 const helmet = require('helmet');
 const cors = require('cors'); //  A middleware that is used to parse the body of the request.
 const https = require('https');
-const http = require('http');
 const fs = require('fs');
 const errorHandlers = require('./handlers/errorHandlers');
 const session = require('express-session');
@@ -155,14 +154,8 @@ if (app.get('env') === 'development') {
 // production error handler
 app.use(errorHandlers.productionErrors);
 
-/* This is telling the server to listen to port 3001. */
-// http.createServer(app).listen(8080, '0.0.0.0', (err) => {
-// 	if (err) {
-// 		throw err;
-// 	} else {
-// 		console.log('🚀 Server running');
-// 	}
-// });
+/* This is telling the server to listen to port 4000. */
+
 https
 	.createServer(
 		// Provide the private and public key to the server by reading each
