@@ -6,6 +6,7 @@ const { encrypt, decrypt } = require('../modules/crpyto');
 const { isEmail, checkUsername } = require('../modules/check_userOrEmail');
 const { clearAllcookie, getSessionIDCookie } = require('../modules/cookie');
 
+
 const saltRounds = 10; // The number of rounds to use when generating a salt
 
 /* This is a post request that is used to register a user. */
