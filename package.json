@@ -31,6 +31,7 @@
         "helmet": "^6.0.0",
         "http": "^0.0.1-security",
         "mysql": "github:felixge/node-mysql",
+        "node-schedule": "^2.1.0",
         "nodemon": "^2.0.16"
     },
     "devDependencies": {

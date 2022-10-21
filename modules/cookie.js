@@ -9,11 +9,9 @@ const getSessionIDCookie = (req, res) => {
 			};
 		}, {});
 
-		const keys = Object.keys(item);
 		const values = Object.values(item);
-		console.log(keys, values);
 		res.locals.cookie = item;
-		req.session.user[keys] = values;
+		req.session.cookie = values;
 		return values;
 	} else return false;
 };

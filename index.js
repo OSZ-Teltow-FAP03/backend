@@ -1,6 +1,6 @@
 /* This is importing the modules that we need to use in our application. */
 const express = require('express');
-require('./module/checkVersion');
+require('./modules/checkSystem');
 var useragent = require('express-useragent');
 const helmet = require('helmet');
 const cors = require('cors'); //  A middleware that is used to parse the body of the request.
@@ -11,7 +11,7 @@ const errorHandlers = require('./handlers/errorHandlers');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const { clearAllcookie, getSessionIDCookie } = require('./module/cookie');
+const { clearAllcookie, getSessionIDCookie } = require('./modules/cookie');
 
 require('dotenv').config();
 
@@ -118,8 +118,7 @@ const authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
 
 app.get('/', (req, res, next) => {
-	// console.log(req)
-	console.log(getSessionIDCookie(req, res)); 
+	getSessionIDCookie(req, res) 
 	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 	if (ip.substr(0, 7) == '::ffff:') {
 		ip = ip.substr(7);
@@ -149,6 +148,9 @@ if (app.get('env') === 'development') {
 	/* Development Error Handler - Prints stack trace */
 	app.use(errorHandlers.developmentErrors);
 }
+
+
+
 
 // production error handler
 app.use(errorHandlers.productionErrors);

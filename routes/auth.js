@@ -2,17 +2,9 @@ const express = require('express');
 const router = express.Router(); // Creating a router object.
 const db = require('../database/index');
 const bcrypt = require('bcrypt'); // A library that is used to hash passwords.
-const { encrypt, decrypt } = require('../module/crpyto');
-const { isEmail, checkUsername } = require('../module/check_userOrEmail');
-const {
-	creatSessionOnDB,
-	setSessionOnDB,
-	getSessionOnDBByUserId,
-	compareSessionOnDB,
-	destroySessionOnDB_BySessionID,
-	destroyAllSessionOnDBByUserId
-} = require('../module/session');
-const { clearAllcookie, getSessionIDCookie } = require('../module/cookie');
+const { encrypt, decrypt } = require('../modules/crpyto');
+const { isEmail, checkUsername } = require('../modules/check_userOrEmail');
+const { clearAllcookie, getSessionIDCookie } = require('../modules/cookie');
 
 const saltRounds = 10; // The number of rounds to use when generating a salt
 
@@ -100,7 +92,6 @@ router.post('/register', (req, res) => {
 
 /* This is a post request that is used to login a user. */
 router.post('/login', (req, res) => {
-	console.log(req.body);
 	// Unless we explicitly write to the session (and resave is false), the
 	// store is never updated, even though a new session is generated on each
 	// request. After we modify that session and during req.end(), it gets
@@ -129,10 +120,8 @@ router.post('/login', (req, res) => {
 		if (result.length > 0) {
 			bcrypt.compare(password, result[0].password, (error, response) => {
 				if (error) {
-					// console.log('error :' + error);
 					res.status(500).send(error);
 				} else if (err) {
-					// console.log('err :' + err);
 					res.status(500).send(err);
 				}
 				if (response == true) {
@@ -142,7 +131,7 @@ router.post('/login', (req, res) => {
 							code: 105
 						});
 					} else {
-						console.log('User not logged in');
+						getSessionIDCookie(req, res);
 						req.session.user = {
 							name: result[0].name,
 							lastname: result[0].lastname,
@@ -151,8 +140,6 @@ router.post('/login', (req, res) => {
 							role: result[0].role,
 							loggedIn: true
 						};
-						getSessionIDCookie(req, res);
-						creatSessionOnDB(req);
 						res.status(200).send({
 							msg: 'successfully',
 							user: req.session.user,
@@ -177,14 +164,13 @@ router.post('/login', (req, res) => {
 
 router.get('/logout', (req, res, next) => {
 	// Upon logout, we can destroy the session and unset req.session.
-	const session_id = req.session.user.session_id;
-	console.log('session_id: 169' + session_id);
-	destroySessionOnDB_BySessionID(session_id);
 	req.session.destroy();
 	clearAllcookie(req, res);
 	res.status(200);
 	next(); // this will give you the above exception
 });
+
+
 
 /* This is exporting the router object. */
 module.exports = router;
