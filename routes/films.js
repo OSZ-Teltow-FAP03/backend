@@ -1,4 +1,5 @@
 const express = require("express");
+const { crossOriginResourcePolicy } = require("helmet");
 const router = express.Router(); // Creating a router object.
 const db = require("../database/index");
 const {
@@ -29,10 +30,37 @@ router.get("/get", (req, res) => { //https://localhost:40324/films/get?filmQuery
     }
 });
 
-router.patch("/patch", (req, res) => { //https://localhost:40324/films/patch
-    // if (req.session.user == "admin" || req.session.user == "prüfungskommission")
-    if (true) {
-        console.log('1')
+router.patch("/patch", (req, res) => {//https://localhost:40324/films/patch
+    /*{
+    "FilmId": "9",
+    "Filmtitel": "Filmtitel",
+    "Tonformat": "Tonformat",
+    "Bildformat": "Bild",
+    "Bildfrequenz": "60hz",
+    "Farbtiefe": "Farbtiefe",
+    "Videocontainer": "Videocontainer",
+    "Tonspurbelegung": "A8",
+    "TimecodeAnfang": "00:00:00",
+    "TimecodeEnde": "00:00:00",
+    "Dauer": "00:00:00",
+    "Videocodec": "Videocodec",
+    "Auflösung": "Auflösung",
+    "Vorschaubild": "Vorschaubild",
+    "Erscheinungdsdatum": "1999-02-15",
+    "Autor": "Autor",
+    "Programmtyp": "Programmtyp",
+    "Erzählsatz": "Erzählsatz",
+    "Bemerkung": "Bemerkung",
+    "Erstellungsdatum": "1999-02-15",
+    "Mitwirkende": "Mitwirkende",
+    "Bewertungen": "Bewertungen",
+    "Upload": "1999-02-15",
+    "Klasse": "Klasse",
+    "Status": "Status",
+    "Lehrjahr": "1999999",
+    "Stichworte": "Stichworte"
+    }*/
+    if (req.session.user == "admin" || req.session.user == "prüfungskommission") {
         const Filmtitel = decrypt(req.body.Filmtitel);
         const Tonformat = decrypt(req.body.Tonformat);
         const Bildformat = decrypt(req.body.Bildformat);
@@ -46,7 +74,7 @@ router.patch("/patch", (req, res) => { //https://localhost:40324/films/patch
         const Videocodec = decrypt(req.body.Videocodec);
         const Auflösung = decrypt(req.body.Auflösung);
         const Vorschaubild = decrypt(req.body.Vorschaubild);
-        const Erscheinungdsdatum = decrypt(req.body.Erscheinungdsdatum);
+        const Erscheinungsdatum = decrypt(req.body.Erscheinungdsdatum);
         const Autor = decrypt(req.body.Autor);
         const Programmtyp = decrypt(req.body.Programmtyp);
         const Erzählsatz = decrypt(req.body.Erzählsatz);
@@ -64,7 +92,7 @@ router.patch("/patch", (req, res) => { //https://localhost:40324/films/patch
         let arrayOfValues = []
         let isUpdate = false;
 
-        let updateQuery = 'UPDATE Film SET';
+        let updateQuery = 'UPDATE Film SET ';
         if (Filmtitel != null) {
             arrayOfValues.push(Filmtitel);
             updateQuery += 'Filmtitel = ?,';
@@ -196,39 +224,37 @@ router.patch("/patch", (req, res) => { //https://localhost:40324/films/patch
             isUpdate = true;
         }
 
+        //When no param is recognised in body then nothing is changed
         if (!isUpdate) {
             res.status(400).send('Nothing to update.');
             return;
         }
 
         //Removes last character from string => removes the comma
-        updateQuery.slice(0, -1);
+        updateQuery = updateQuery.slice(0, -1);
 
-        if (FilmId = null) {
-            res.status(400).send('FilmId is null');
+        if (FilmId == null) {
+            res.status(400).send('FilmId is null.');
             return;
         }
 
-        //ID hinzufügen zur Query für das Update
+        //adds the Id to the query
         arrayOfValues.push(FilmId);
         updateQuery += ' WHERE Film.ID = ?'
 
         db.query(updateQuery, arrayOfValues, function (err, result) {
-            if (err) throw err;
+            if (err) {
+                res.status(500).send(err);
+                return;
+            }
+
             res.send(result);
         });
-
-        console.log(updateQuery);
-        console.log(arrayOfValues);
     }
     else {
         res.status(400).send("not logged in")
         return;
     }
 });
-
-
-
-
 /* This is exporting the router object. */
 module.exports = router;
