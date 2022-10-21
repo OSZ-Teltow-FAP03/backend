@@ -20,3 +20,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.vscode
+test.html
+test.mp3
+test.mp4
+test.wav
+.gitignore

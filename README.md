@@ -43,7 +43,7 @@ openssl req -new -key key.pem -out csr.pem
 openssl x509 -req -days 9999 -in csr.pem -signkey key.pem -out cert.pem
 ```
 
-Change your mySQL database data .env
+The following environment variables can be used to modify how the software works.
 ```bash
 cp -r env .env
 ```
