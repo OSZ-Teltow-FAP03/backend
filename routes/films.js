@@ -256,5 +256,21 @@ router.patch("/patch", (req, res) => {//https://localhost:40324/films/patch
         return;
     }
 });
+
+router.get("/listFiles", (req, res) => {
+	if(!req.session.user){
+		res.status(400).send("Not logged in");
+		return;
+	}
+	const FilmID=req.query.FilmID;
+	if(!FilmID){
+		res.status(400).send("FilmID not set");
+		return;
+	}
+    db.query("SELECT ID, Dateipfad FROM FilmDateien WHERE FilmID = ?", [FilmID], function (err, result) {
+        if (err) throw err;
+        res.send(result);
+    });
+});
 /* This is exporting the router object. */
 module.exports = router;
