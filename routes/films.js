@@ -61,23 +61,17 @@ router.patch("/patch", (req, res) => { //https://localhost:40324/films/patch
         const Stichworte = decrypt(req.body.Stichworte);
         const FilmId = decrypt(req.body.FilmId);
 
-        console.log('2');
-
         let arrayOfValues = []
         let isUpdate = false;
 
-        console.log('3');
-
         let updateQuery = 'UPDATE Film SET';
-        console.log('4');
         if (Filmtitel != null) {
             arrayOfValues.push(Filmtitel);
             updateQuery += 'Filmtitel = ?,';
             isUpdate = true;
-            console.log('5');
         }
         if (Tonformat != null) {
-            arrayOfValues.push();
+            arrayOfValues.push(Tonformat);
             updateQuery += 'Tonformat = ?,';
             isUpdate = true;
         }
@@ -108,12 +102,12 @@ router.patch("/patch", (req, res) => { //https://localhost:40324/films/patch
         }
         if (TimecodeAnfang != null) {
             arrayOfValues.push(TimecodeAnfang);
-            updateQuery += 'TimecodeAnfang = ?,';
+            updateQuery += 'Timecode_Anfang = ?,';
             isUpdate = true;
         }
         if (TimecodeEnde != null) {
             arrayOfValues.push(TimecodeEnde);
-            updateQuery += 'TimecodeEnde = ?,';
+            updateQuery += 'Timecode_Ende = ?,';
             isUpdate = true;
         }
         if (Dauer != null) {
@@ -150,7 +144,6 @@ router.patch("/patch", (req, res) => { //https://localhost:40324/films/patch
             arrayOfValues.push(Programmtyp);
             updateQuery += 'Programmtyp = ?,';
             isUpdate = true;
-            console.log("9")
         }
         if (Erzählsatz != null) {
             arrayOfValues.push(Erzählsatz);
@@ -171,7 +164,6 @@ router.patch("/patch", (req, res) => { //https://localhost:40324/films/patch
             arrayOfValues.push(Mitwirkende);
             updateQuery += 'Mitwirkende = ?,';
             isUpdate = true;
-            
         }
         if (Bewertungen != null) {
             arrayOfValues.push(Bewertungen);
@@ -202,22 +194,15 @@ router.patch("/patch", (req, res) => { //https://localhost:40324/films/patch
             arrayOfValues.push(Stichworte);
             updateQuery += 'Stichworte = ?,';
             isUpdate = true;
-            console.log('5,1');
         }
-
-        console.log('5.2');
 
         if (!isUpdate) {
             res.status(400).send('Nothing to update.');
             return;
         }
 
-        console.log('3');
-
         //Removes last character from string => removes the comma
         updateQuery.slice(0, -1);
-
-        console.log('3');
 
         if (FilmId = null) {
             res.status(400).send('FilmId is null');
