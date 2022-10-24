@@ -6,11 +6,62 @@
 ## 💻 Projekt
 
 
+
+
+<div align="center">
+
 Before start, you need to have the following tools installed on computer: [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/) and/or [Yarn](https://yarnpkg.com/). [MySQl::Workbench](https://www.mysql.com/products/workbench/).
 
 [How To Install MySQL on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04)
 
-### 📗 Quick Start
+</div>
+
+## Table of Contents
+- [Quick Start](#quick-start)
+  - [Creating an SSL Certificate](#creating-an-ssl-certificate)
+- [errorcodes messages](#errorcodes-messages)
+- [API](#api)
+- [Sessions](#sessions)
+    - [Flow](#flow)
+    - [Features](#features)
+  - [Cookies](#cookies)
+    - [Security](#security)
+    - [Attributes](#attributes)
+    - [Flags](#flags)
+    - [CSRF](#csrf)
+  - [Tokens](#tokens)
+    - [Flow](#flow-1)
+    - [Features](#features-1)
+  - [JWT (JSON Web Tokens)](#jwt-json-web-tokens)
+    - [Security](#security-1)
+    - [XSS](#xss)
+  - [Client Storage](#client-storage)
+    - [`localStorage`](#localstorage)
+      - [Pros](#pros)
+      - [Cons](#cons)
+      - [Best for](#best-for)
+      - [Worst for](#worst-for)
+  - [Sessions vs. JWT](#sessions-vs-jwt)
+    - [Sessions + Cookies](#sessions--cookies)
+      - [Pros](#pros-1)
+      - [Cons](#cons-1)
+    - [JWT Auth](#jwt-auth)
+      - [Pros](#pros-2)
+      - [Cons](#cons-2)
+  - [Options for Auth in SPAs / APIs](#options-for-auth-in-spas--apis)
+    - [Stateless JWT](#stateless-jwt)
+    - [Stateful JWT](#stateful-jwt)
+    - [Sessions](#sessions-1)
+  - [Verdict](#verdict)
+  - [Why not JWT?](#why-not-jwt)
+    - [Important](#important)
+    - [Auxiliary measures](#auxiliary-measures)
+- [How to encrypt and decrypt in nodejs](#how-to-encrypt-and-decrypt-in-nodejs)
+  - [1. Hash functions with Bcrypt (one-way)](#1-hash-functions-with-bcrypt-one-way)
+- [2. Simple Encryption and Decryption (two-way)](#2-simple-encryption-and-decryption-two-way)
+- [Libraries used](#libraries-used)
+
+# Quick Start
 
 Install backend by running either of the following:
 > Install NodeJS LTS from NodeJs Official Page (NOTE: Product only works with LTS version)
@@ -72,7 +123,35 @@ or
 npm start
 ```
 ----
-## Sessions
+
+# errorcodes messages 
+
+A table that shows the error codes and their respective messages.
+| code  | Msg  |
+| :------------ |:---------------|
+| 100 | username or Email already registered|
+| 101 | Invalid email|
+| 102 | Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.|
+| 103 | Invalid email|
+| 104 | Not registered user!|
+| 105 | Email or password incorrect|
+| 106 | User successfully registered|
+# API
+Server will listen on port `3001`, and it expose the following APIs:
+
+
+- **POST** - `/auth/register` - Register a new user
+  - **name** - *string*
+  - **lastname** - *string*
+  - **username** - *string*
+  - **email** - *string*
+  - **password** - *string*
+
+- **POST** - `/auth/login` - Login user
+  - **email** - *string* or **username** - *string*
+  - **password** - *string*
+
+# Sessions
 
 ### Flow
 
@@ -355,20 +434,7 @@ Regardless of auth mechanism
 - two-factor auth
 - API throttling
 
-# API
-Server will listen on port `3001`, and it expose the following APIs:
 
-
-- **POST** - `/auth/register` - Register a new user
-  - **name** - *string*
-  - **lastname** - *string*
-  - **username** - *string*
-  - **email** - *string*
-  - **password** - *string*
-
-- **POST** - `/auth/login` - Login user
-  - **email** - *string* or **username** - *string*
-  - **password** - *string*
 
 ---------
 # How to encrypt and decrypt in nodejs
@@ -435,20 +501,9 @@ function decrypt(text){
 
 
 ---
-## 🦠  errorcodes messages 
 
-A table that shows the error codes and their respective messages.
-| code  | Msg  |
-| :------------ |:---------------|
-| 100 | username or Email already registered|
-| 101 | Invalid email|
-| 102 | Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.|
-| 103 | Invalid email|
-| 104 | Not registered user!|
-| 105 | Email or password incorrect|
-| 106 | User successfully registered|
 
-## 🚀 Libraries used
+# Libraries used
 
   Backend: 
 * [express](https://www.npmjs.com/package/express)

@@ -17,16 +17,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-<<<<<<< HEAD
 .env
 .env4
 .gitignore
 .prettierrc
-=======
 .vscode
 test.html
 test.mp3
 test.mp4
 test.wav
 .gitignore
->>>>>>> main

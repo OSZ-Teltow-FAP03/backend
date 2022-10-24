@@ -28,7 +28,7 @@ const csp = {
 	frameSrc: [ `'self'` ],
 	fontSrc: [ `'self'`, 'data:' ],
 	objectSrc: [ `'self'` ],
-	mediaSrc: [ `'self'` ],
+	mediaSrc: [ `'self'` ]
 };
 
 //  app.use(helmet.noCache()); // noCache disabled by default
@@ -38,21 +38,21 @@ const sixtyDaysInSeconds = 5184000; // 60 * 24 * 60 * 60
 
 // ======== *** SECURITY MIDDLEWARE ***
 
-//setup helmet js
+// adding Helmet to enhance your API's security
 app.use(helmet());
 app.use(helmet.contentSecurityPolicy(csp));
 app.use(helmet.hidePoweredBy());
 app.use(
 	helmet.hsts({
-		maxAge: sixtyDaysInSeconds,
-	}),
+		maxAge: sixtyDaysInSeconds
+	})
 );
 
 app.use(
-    cors({
-        credentials: true,
-        origin: true,
-    })
+	cors({
+		credentials: true,
+		origin: true
+	})
 );
 
 app.set('trust proxy', true); // trust first proxy
@@ -67,37 +67,38 @@ app.use(
 		resave: false,
 		rolling: false,
 		secret: SESSION_SECRET,
-
 		cookie: {
 			path: '/',
 			httpOnly: true,
 			maxAge: 1 * 60 * 1000,
 			sameSite: 'none',
 			secure: true,
-			HostOnly: true,
-		},
-	}),
+			HostOnly: true
+		}
+	})
 );
 
 // app middleware
 app.use(
-    express.urlencoded({
-        extended: true,
-    })
+	express.urlencoded({
+		extended: true
+	})
 );
 
 app.use(express.json());
 /* This is a middleware that is used to parse the body of the request. */
 const corsOptions = {
-    origin: [process.env.ORIGIN_FRONTEND_SERVER], //frontend server localhost:8080
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // enable set cookie
-    optionsSuccessStatus: 200,
-    credentials: true,
+	origin: [ process.env.ORIGIN_FRONTEND_SERVER ], //frontend server localhost:8080
+	methods: [ 'GET', 'POST', 'PUT', 'DELETE' ],
+	credentials: true, // enable set cookie
+	optionsSuccessStatus: 200,
+	credentials: true
 };
-
+// enabling CORS for all requests
 app.use(cors(corsOptions));
 
+// using bodyParser to parse JSON bodies into JS objects
+app.use(bodyParser.json());
 /*
  Use cookieParser and session middlewares together.
  By default Express/Connect app creates a cookie by name 'connect.sid'.But to scale Socket.io app,
@@ -105,11 +106,10 @@ app.use(cors(corsOptions));
  W/o this, Socket.io won't work if you have more than 1 instance.
  If you are NOT running on Cloud Foundry, having cookie name 'jsessionid' doesn't hurt - it's just a cookie name.
  */
-app.use(bodyParser.json());
 app.use(
-    bodyParser.urlencoded({
-        extended: true,
-    })
+	bodyParser.urlencoded({
+		extended: true
+	})
 );
 app.use(cookieParser(SESSION_SECRET)); // any string ex: 'keyboard cat'
 
@@ -126,7 +126,7 @@ const usermanagementRouter = require('./routes/user-management');
 app.use('/user-management', usermanagementRouter);
 
 app.get('/', (req, res, next) => {
-	getSessionIDCookie(req, res) 
+	getSessionIDCookie(req, res);
 	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 	if (ip.substr(0, 7) == '::ffff:') {
 		ip = ip.substr(7);
@@ -136,12 +136,11 @@ app.get('/', (req, res, next) => {
 	if (req.session.user) {
 		res.status(200).send({
 			loggedIn: true,
-			user: req.session.user,
-			
+			user: req.session.user
 		});
 	} else {
 		res.status(200).send({
-			loggedIn: false,
+			loggedIn: false
 		});
 	}
 });
@@ -156,24 +155,26 @@ if (app.get('env') === 'development') {
 	/* Development Error Handler - Prints stack trace */
 	app.use(errorHandlers.developmentErrors);
 }
-
-
-
-
 // production error handler
 app.use(errorHandlers.productionErrors);
 
-/* This is telling the server to listen to port 4000. */
+app.get('/shut', (req, res, next) => {
+	shutDown();
+	res.status(200).send({
+		loggedIn: false
+	});
+});
 
-https
+/* This is telling the server to listen to port 4000. */
+const server = https
 	.createServer(
 		// Provide the private and public key to the server by reading each
 		// file's content with the readFileSync() method.
 		{
 			key: fs.readFileSync(process.env.privateKey),
-			cert: fs.readFileSync(process.env.certificate),
+			cert: fs.readFileSync(process.env.certificate)
 		},
-		app,
+		app
 	)
 	.listen(SERVERPORT, '0.0.0.0', (err) => {
 		if (err) {
@@ -183,3 +184,18 @@ https
 		}
 	});
 
+function shutDown() {
+	console.log('Received kill signal, shutting down gracefully');
+	server.close(() => {
+		console.log('Closed out remaining connections');
+		process.exit(0);
+	});
+
+	setTimeout(() => {
+		console.error('Could not close connections in time, forcefully shutting down');
+		process.exit(1);
+	}, 10000);
+
+	connections.forEach((curr) => curr.end());
+	setTimeout(() => connections.forEach((curr) => curr.destroy()), 5000);
+}
