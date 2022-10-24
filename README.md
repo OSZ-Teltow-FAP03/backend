@@ -2,22 +2,14 @@
     backend
 </h1>
 
-
-## 💻 Projekt
-
-
-
-
 <div align="center">
 
 Before start, you need to have the following tools installed on computer: [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/) and/or [Yarn](https://yarnpkg.com/). [MySQl::Workbench](https://www.mysql.com/products/workbench/).
-
-[How To Install MySQL on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04)
-
 </div>
 
 ## Table of Contents
 - [Quick Start](#quick-start)
+  - [MySQL install](#mysql-install)
   - [Creating an SSL Certificate](#creating-an-ssl-certificate)
 - [errorcodes messages](#errorcodes-messages)
 - [API](#api)
@@ -74,6 +66,9 @@ Run in terminal this command:
 ```bash
 cd backend && npm i 
 ```
+## MySQL install 
+if you want install MySQL server on your Ubuntu machine
+[How To Install MySQL on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04); 
 ## Creating an SSL Certificate
 
 1. First, generate a key file used for self-signed certificate generation with the command below. The command will create a private key as a file called key.pem.
