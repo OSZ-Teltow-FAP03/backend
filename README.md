@@ -67,7 +67,7 @@ Run in terminal this command:
 cd backend && npm i 
 ```
 ## MySQL install 
-if you want install MySQL server on your Ubuntu machine
+if you want to install the MySQL server on your Ubuntu machine
 [How To Install MySQL on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04); 
 ## Creating an SSL Certificate
 
