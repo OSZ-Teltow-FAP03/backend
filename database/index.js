@@ -1,5 +1,6 @@
 const mysql = require('mysql');
-require('dotenv').config();
+require('dotenv').config({ path: '../config/.env' })
+
 
 /* This is creating a connection to the database. */
 

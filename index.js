@@ -1,5 +1,6 @@
 /* This is importing the modules that we need to use in our application. */
 const express = require('express');
+const app = express(); // create our Express app
 require('./modules/checkSystem');
 var useragent = require('express-useragent');
 const helmet = require('helmet');
@@ -11,12 +12,9 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const { clearAllcookie, getSessionIDCookie } = require('./modules/cookie');
+const { v4: uuidv4 } = require('uuid');
 
-require('dotenv').config();
-
-// create our Express app
-const app = express();
-app.use(useragent.express());
+require('dotenv').config({ path: './config/.env' });
 
 //setting CSP
 const csp = {
@@ -30,21 +28,19 @@ const csp = {
 	objectSrc: [ `'self'` ],
 	mediaSrc: [ `'self'` ]
 };
-
-//  app.use(helmet.noCache()); // noCache disabled by default
 const SERVERPORT = process.env.SERVERPORT || 4000;
-const SESSION_SECRET = process.env.SESSION_SECRET;
-const sixtyDaysInSeconds = 5184000; // 60 * 24 * 60 * 60
+const SESSION_SECRET = uuidv4();
 
-// ======== *** SECURITY MIDDLEWARE ***
+// || ======== *** SECURITY MIDDLEWARE *** ========= ||
 
 // adding Helmet to enhance your API's security
 app.use(helmet());
 app.use(helmet.contentSecurityPolicy(csp));
 app.use(helmet.hidePoweredBy());
+//  app.use(helmet.noCache()); // noCache disabled by default
 app.use(
 	helmet.hsts({
-		maxAge: sixtyDaysInSeconds
+		maxAge: 5184000
 	})
 );
 
@@ -112,6 +108,7 @@ app.use(
 	})
 );
 app.use(cookieParser(SESSION_SECRET)); // any string ex: 'keyboard cat'
+app.use(useragent.express());
 
 // Routers
 const authRouter = require('./routes/auth');
@@ -183,19 +180,3 @@ const server = https
 			console.log('🚀 Server running in the', SERVERPORT);
 		}
 	});
-
-function shutDown() {
-	console.log('Received kill signal, shutting down gracefully');
-	server.close(() => {
-		console.log('Closed out remaining connections');
-		process.exit(0);
-	});
-
-	setTimeout(() => {
-		console.error('Could not close connections in time, forcefully shutting down');
-		process.exit(1);
-	}, 10000);
-
-	connections.forEach((curr) => curr.end());
-	setTimeout(() => connections.forEach((curr) => curr.destroy()), 5000);
-}

@@ -500,16 +500,16 @@ function decrypt(text){
 
 # Libraries used
 
-  Backend: 
+* [pm2](https://www.npmjs.com/package/pm2) # for production
+* [pm2-server-monitor](https://www.npmjs.com/package/pm2-server-monitor)
+* [nodemon](https://www.npmjs.com/package/nodemon) # for Dev
 * [express](https://www.npmjs.com/package/express)
 * [express-session](https://www.npmjs.com/package/express-session)
 * [cors](https://www.npmjs.com/package/cors)
 * [cookie-parser](https://www.npmjs.com/package/cookie-parser)
 * [body-parser](https://www.npmjs.com/package/body-parser)
 * [mysql](https://www.npmjs.com/package/mysql)
-* [nodemon](https://www.npmjs.com/package/nodemon)
 * [cors](https://www.npmjs.com/package/cors)
 * [Formik](https://www.npmjs.com/package/formik)
 * [bcrypt](https://www.npmjs.com/package/bcrypt)
 * [crypto](https://www.npmjs.com/package/crypto)
-

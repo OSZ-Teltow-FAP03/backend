@@ -2,6 +2,9 @@
 /node_modules
 
 # testing
+./dev/error/*
+./dev/out/*
+
 
 # production
 /build

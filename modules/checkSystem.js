@@ -17,3 +17,12 @@ const job = schedule.scheduleJob('0 0 * * *', function() {
 	console.log("ich ");
 });
 
+const monitor = require('pm2-server-monitor');
+monitor({
+    // your server name, as a flag
+    name: 'local',
+
+    // your server listening port
+    port: 3001
+});
+console.error('server')

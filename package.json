@@ -4,7 +4,7 @@
 	"description": "Backend",
 	"main": "index.js",
 	"scripts": {
-		"start": "node index.js",
+		"start": "pm2 start ecosystem.config.js",
 		"dev": "nodemon index.js"
 	},
 	"keywords": [
@@ -32,7 +32,8 @@
 		"mysql": "github:felixge/node-mysql",
 		"node-schedule": "^2.1.0",
 		"nodemon": "^2.0.16",
-		"pm2": "^5.2.2"
+		"pm2": "^5.2.2",
+		"pm2-server-monitor": "^1.0.0"
 	},
 	"devDependencies": {
 		"uuid": "^2.0.3"
