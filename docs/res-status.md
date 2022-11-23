@@ -78,6 +78,6 @@ res.sendStatus(2000); // equivalent to res.status(2000).send('2000')
 |  res.networkAuthenticationRequired(); | 511 |Network Authentication Required |
 
 
-# Resources
+## Resources
 
 - [express-res-status](https://www.npmjs.com/package/express-res-status)

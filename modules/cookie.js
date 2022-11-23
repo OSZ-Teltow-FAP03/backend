@@ -8,11 +8,12 @@ const getSessionIDCookie = (req, res) => {
 				[data[0]]: data[1],
 			};
 		}, {});
-		const keys = Object.keys(item);
+
 		const values = Object.values(item);
 		res.locals.cookie = item;
-		req[keys] = values;
-	} else res.locals.cookie = {};
+		req.session.cookie = values;
+		return values;
+	} else return false;
 };
 
 const clearAllcookie = (req, res) => {

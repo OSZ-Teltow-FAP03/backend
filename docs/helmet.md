@@ -82,6 +82,6 @@ By default, Express.js sends the X-Powered-By response header banner. This can b
 app.disable('x-powered-by')
 ```
 
-# Resources
+## Resources
 
 [helmet.js](https://helmetjs.github.io/)
