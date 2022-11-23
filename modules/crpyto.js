@@ -204,7 +204,7 @@ const encrypt = (plainText) => {
 };
 
 const decrypt = (cipher) => {
-  if ((cipher === null && cipher.length === 0) || typeof cipher !== 'object') return cipher;
+  if ((cipher === null && cipher.length === 0) || typeof cipher !== 'object') return false;
   
   var text = otp(cipher.content, cipher.iv, 'decrypt');
   
