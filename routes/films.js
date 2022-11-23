@@ -77,6 +77,22 @@ router.post('/create', (req, res) => {
     const Lehrjahr = decrypt(req.body.Lehrjahr);//
     const Stichworte= decrypt(req.body.Stichworte);//
     
+router.get("/listFiles", (req, res) => {
+	if(!req.session.user){
+		res.status(400).send("Not logged in");
+		return;
+	}
+	const FilmID=req.query.FilmID;
+	if(!FilmID){
+		res.status(400).send("FilmID not set");
+		return;
+	}
+    db.query("SELECT ID, Dateipfad FROM FilmDateien WHERE FilmID = ?", [FilmID], function (err, result) {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
       /* This is checking if the password is at least 8 characters long. */
     if (Filmtitel == null)
     return res.status(400).send({
