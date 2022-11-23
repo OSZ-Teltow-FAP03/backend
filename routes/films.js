@@ -63,54 +63,69 @@ router.patch("/patch", (req, res) => {//https://localhost:40324/films/patch
     if (req.session.user == "admin" || req.session.user == "lehrer"|| req.session.user == "pruefer" || true){
 
         const FilmId = decrypt(req.body.ID);
-        const prüfstück = null;
-        db.query("SELECT Prüfstück FROM Film WHERE ID = ?",[FilmId], function (err, result) {
-            if (err) throw err;
-            prüfstück = result;
+        console.log(FilmId);
+        db.query("SELECT Prüfstück FROM Film WHERE ID = " + FilmId, function (err, result) {
+            if (err) console.log(err);
+            const prüfstück = result;
             console.log(prüfstück);
-        });
 
-        if (condition) {
-            
-        }
+            const prüfstückBody = (decrypt(req.body.Prüfstück))
 
-        let arrayOfValues = []
-        let updateQuery = 'UPDATE Film SET ';
-        
-        //iterating over req body to dynamically enter attribute names to sql query
-        Object.entries(req.body).forEach(entry => {
-            const [key, value] = entry;
-            arrayOfValues.push(decrypt(value));
-            updateQuery += key + ' = ?,';
-            //console.log(key, value);
-          });
-
-        //When no param is recognised in body then nothing is changed
-        if (arrayOfValues.length == 0) {
-            res.status(400).send('Nothing to update.');
-            return;
-        }
-
-        //Removes last character from string => removes the comma
-        updateQuery = updateQuery.slice(0, -1);
-
-        if (FilmId == null) {
-            res.status(400).send('FilmId is null.');
-            return;
-        }
-
-        //adds the Id to the query
-        arrayOfValues.push(FilmId);
-        updateQuery += ' WHERE Film.ID = ?'
-
-        db.query(updateQuery, arrayOfValues, function (err, result) {
-            if (err) {
-                res.status(500).send(err);
-                return;
+            //prüfstückänderung nicht zulassen wenn user nicht admin
+            if(prüfstückBody != null && req.session.user != "admin") {
+                prüfstückBody = prüfstück.Prüfstück
             }
-
-            res.send(result);
+            
+            if((prüfstück == 0 && (req.session.user == "admin" || req.session.user == "lehrer")) 
+                || (prüfstück == 1 && (req.session.user == "admin" || req.session.user == "pruefer"))) {
+                
+                let arrayOfValues = []
+                let updateQuery = 'UPDATE Film SET ';
+                
+                //iterating over req body to dynamically enter attribute names to sql query
+                Object.entries(req.body).forEach(entry => {
+                    const [key, value] = entry;
+                    if (key != Prüfstück) {
+                        arrayOfValues.push(decrypt(value));
+                        updateQuery += key + ' = ?,';
+                    }
+                    else{
+                        arrayOfValues.push(prüfstückBody)
+                        updateQuery += key + ' = ?,';
+                    }
+                    //console.log(key, value);
+                });
+        
+                //When no param is recognised in body then nothing is changed
+                if (arrayOfValues.length == 0) {
+                    res.status(400).send('Nothing to update.');
+                    return;
+                }
+        
+                //Removes last character from string => removes the comma
+                updateQuery = updateQuery.slice(0, -1);
+        
+                if (FilmId == null) {
+                    res.status(400).send('FilmId is null.');
+                    return;
+                }
+        
+                //adds the Id to the query
+                arrayOfValues.push(FilmId);
+                updateQuery += ' WHERE Film.ID = ?'
+        
+                db.query(updateQuery, arrayOfValues, function (err, result) {
+                    if (err) {
+                        res.status(500).send(err);
+                        return;
+                    }
+        
+                    res.send(result);
+                });
+            }
         });
+
+        
     }
     else {
         res.status(400).send("not logged in")
