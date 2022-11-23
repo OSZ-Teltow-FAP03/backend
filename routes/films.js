@@ -9,8 +9,7 @@ const {
 
 router.get("/get", (req, res) => { //https://localhost:40324/films/get?filmQuery={query}
     if (req.session.user) {
-
-        //when queryParam filmQuery is given (simple search)
+            //when queryParam filmQuery is given (simple search)
         if (req.query.filmQuery !== undefined) {
             let filmQuery = `%${req.query.filmQuery}%`;
             db.query("SELECT * FROM Film WHERE Filmtitel Like ? or Autor LIKE ? or Mitwirkende LIKE ? or Klasse like ? or Stichworte like ?", [filmQuery, filmQuery, filmQuery, filmQuery, filmQuery], function (err, result) {
@@ -32,8 +31,24 @@ router.get("/get", (req, res) => { //https://localhost:40324/films/get?filmQuery
 
 /* It's a mess. */
 router.post('/create', (req, res) => {
-    if (!req.session.user) return res.status(400).send("not logged in");
-
+    if (!req.session.user) return res.status(400).send("Not logged in");
+    const Prüfstück = decrypt(req.body.Prüfstück)
+    
+    const rights = false;
+    switch (req.session.user.role) {
+			case "admin":
+				rights = true;
+				break;
+			case "pruefer":
+				if(Prüfstück) rights = true;
+				break;
+			case "lehrerMedien":
+				if(!Prüfstück) rights = true;
+				break;
+			default:
+				break;
+		}
+    if (!rights) return res.status(400).send("Not enough privileges"); 
 	/* This is getting the data from the request body.*/
     const Filmtitel = decrypt(req.body.Filmtitel); //
     const Tonformat = decrypt(req.body.Tonformat);
