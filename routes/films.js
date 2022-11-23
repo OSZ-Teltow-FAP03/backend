@@ -29,6 +29,22 @@ router.get("/get", (req, res) => { //https://localhost:40324/films/get?filmQuery
     }
 });
 
+router.get("/listFiles", (req, res) => {
+	if(!req.session.user){
+		res.status(400).send("Not logged in");
+		return;
+	}
+	const FilmID=req.query.FilmID;
+	if(!FilmID){
+		res.status(400).send("FilmID not set");
+		return;
+	}
+    db.query("SELECT ID, Dateipfad FROM FilmDateien WHERE FilmID = ?", [FilmID], function (err, result) {
+        if (err) throw err;
+        res.send(result);
+    });
+});
+
 /* It's a mess. */
 router.post('/create', (req, res) => {
     if (!req.session.user) return res.status(400).send("Not logged in");
@@ -76,24 +92,8 @@ router.post('/create', (req, res) => {
     const Status = decrypt(req.body.Status);//
     const Lehrjahr = decrypt(req.body.Lehrjahr);//
     const Stichworte= decrypt(req.body.Stichworte);//
-    
-router.get("/listFiles", (req, res) => {
-	if(!req.session.user){
-		res.status(400).send("Not logged in");
-		return;
-	}
-	const FilmID=req.query.FilmID;
-	if(!FilmID){
-		res.status(400).send("FilmID not set");
-		return;
-	}
-    db.query("SELECT ID, Dateipfad FROM FilmDateien WHERE FilmID = ?", [FilmID], function (err, result) {
-        if (err) throw err;
-        res.send(result);
-    });
-});
 
-      /* This is checking if the password is at least 8 characters long. */
+    /* This is checking if the password is at least 8 characters long. */
     if (Filmtitel == null)
     return res.status(400).send({
       msg: 'Filmtitel cannot be null.',
