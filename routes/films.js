@@ -80,7 +80,7 @@ router.patch("/patch", (req, res) => {//https://localhost:40324/films/patch
         //iterating over req body to dynamically enter attribute names to sql query
         Object.entries(req.body).forEach(entry => {
             const [key, value] = entry;
-            arrayOfValues.push(value);
+            arrayOfValues.push(decrypt(value));
             updateQuery += key + ' = ?,';
             //console.log(key, value);
           });
