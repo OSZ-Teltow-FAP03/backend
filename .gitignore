@@ -9,6 +9,7 @@
 # production
 /build
 config/https_key
+dev/log
 
 # misc
 .DS_Store
