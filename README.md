@@ -64,15 +64,15 @@ https://github.com/OSZ-Teltow-FAP03/backend.git
 ```
 Run in terminal this command:
 ```bash
-cd backend && npm i 
+cd backend && npm i
 ```
-## MySQL install 
+## MySQL install
 if you want to install the MySQL server on your Ubuntu machine
-[How To Install MySQL on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04); 
+[How To Install MySQL on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04);
 ## Creating an SSL Certificate
 
 1. First, generate a key file used for self-signed certificate generation with the command below. The command will create a private key as a file called key.pem.
-  
+
 ```bash
 mkdir https_key && cd https_key && openssl genrsa -out key.pem
 ```
@@ -97,7 +97,7 @@ info about .env variable
 ```env
 host            =   ""  // Host name for database connection. //! localhost
 user            =   ""  // Database user. //! root
-password        =   ""  // Password for the above database user. 
+password        =   ""  // Password for the above database user.
 port            =   ""  // Port number for database connection. //! 3306
 database        =   ""  // Database name. //! auth_db
 SERVERPORT      =   ""  // Server port //! 4000
@@ -111,7 +111,7 @@ OriginFrontendServer = "" //frontend server //! localhost:8080
 
 Then run this command to start your local server
 ```bash
-npm start 
+npm start
 ```
 or
 ```bash
@@ -119,7 +119,7 @@ npm start
 ```
 ----
 
-# errorcodes messages 
+# errorcodes messages
 
 A table that shows the error codes and their respective messages.
 | code  | Msg  |
@@ -440,8 +440,8 @@ In my projects I essentially find useful two ways to encrypt strings: hash funct
 
 Hash functions are essentials for store encrypted password, and the best library for nodejs is Bcrypt. You can find more information in this article: why use Bcrypt?.
 
-Install: 
-```bash 
+Install:
+```bash
 npm install bcrypt
 ```
 To hash a password:
@@ -468,7 +468,7 @@ In other scenarios I needed to crypt strings in order to hide texts to users but
 
 Install:
 
-```bash 
+```bash
 npm install crypto
 ```
 To encrypt and decrypt a string:
@@ -501,7 +501,6 @@ function decrypt(text){
 # Libraries used
 
 * [pm2](https://www.npmjs.com/package/pm2) # for production
-* [pm2-server-monitor](https://www.npmjs.com/package/pm2-server-monitor)
 * [nodemon](https://www.npmjs.com/package/nodemon) # for Dev
 * [express](https://www.npmjs.com/package/express)
 * [express-session](https://www.npmjs.com/package/express-session)

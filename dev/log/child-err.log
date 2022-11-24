@@ -1,0 +1,640 @@
+2022-11-24 13:01:20: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:20: Require stack:
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:20:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:20:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:20:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:20:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:20:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:20:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:20:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:20:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:20:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:20:   requireStack: [
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:20:   ]
+2022-11-24 13:01:20: }
+2022-11-24 13:01:20: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:20: Require stack:
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:20:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:20:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:20:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:20:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:20:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:20:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:20:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:20:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:20:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:20:   requireStack: [
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:20:   ]
+2022-11-24 13:01:20: }
+2022-11-24 13:01:20: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:20: Require stack:
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:20:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:20:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:20:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:20:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:20:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:20:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:20:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:20:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:20:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:20:   requireStack: [
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:20:   ]
+2022-11-24 13:01:20: }
+2022-11-24 13:01:20: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:20: Require stack:
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:20:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:20:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:20:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:20:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:20:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:20:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:20:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:20:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:20:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:20:   requireStack: [
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:20:   ]
+2022-11-24 13:01:20: }
+2022-11-24 13:01:20: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:20: Require stack:
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:20:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:20:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:20:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:20:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:20:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:20:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:20:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:20:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:20:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:20:   requireStack: [
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:20:   ]
+2022-11-24 13:01:20: }
+2022-11-24 13:01:20: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:20: Require stack:
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:20:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:20:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:20:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:20:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:20:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:20:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:20:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:20:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:20:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:20:   requireStack: [
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:20:   ]
+2022-11-24 13:01:20: }
+2022-11-24 13:01:20: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:20: Require stack:
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:20: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:20:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:20:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:20:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:20:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:20:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:20:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:20:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:20:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:20:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:20:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:20:   requireStack: [
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:20:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:20:   ]
+2022-11-24 13:01:20: }
+2022-11-24 13:01:21: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:21: Require stack:
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:21:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:21:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:21:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:21:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:21:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:21:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:21:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:21:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:21:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:21:   requireStack: [
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:21:   ]
+2022-11-24 13:01:21: }
+2022-11-24 13:01:21: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:21: Require stack:
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:21:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:21:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:21:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:21:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:21:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:21:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:21:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:21:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:21:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:21:   requireStack: [
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:21:   ]
+2022-11-24 13:01:21: }
+2022-11-24 13:01:21: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:21: Require stack:
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:21:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:21:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:21:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:21:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:21:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:21:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:21:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:21:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:21:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:21:   requireStack: [
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:21:   ]
+2022-11-24 13:01:21: }
+2022-11-24 13:01:21: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:21: Require stack:
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:21:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:21:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:21:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:21:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:21:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:21:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:21:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:21:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:21:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:21:   requireStack: [
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:21:   ]
+2022-11-24 13:01:21: }
+2022-11-24 13:01:21: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:21: Require stack:
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:21:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:21:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:21:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:21:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:21:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:21:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:21:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:21:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:21:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:21:   requireStack: [
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:21:   ]
+2022-11-24 13:01:21: }
+2022-11-24 13:01:21: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:21: Require stack:
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:21:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:21:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:21:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:21:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:21:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:21:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:21:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:21:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:21:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:21:   requireStack: [
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:21:   ]
+2022-11-24 13:01:21: }
+2022-11-24 13:01:21: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:21: Require stack:
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:21:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:21:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:21:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:21:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:21:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:21:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:21:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:21:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:21:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:21:   requireStack: [
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:21:   ]
+2022-11-24 13:01:21: }
+2022-11-24 13:01:21: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:21: Require stack:
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:21:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:21:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:21:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:21:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:21:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:21:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:21:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:21:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:21:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:21:   requireStack: [
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:21:   ]
+2022-11-24 13:01:21: }
+2022-11-24 13:01:21: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:21: Require stack:
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:21: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:21:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:21:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:21:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:21:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:21:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:21:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:21:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:21:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:21:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:21:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:21:   requireStack: [
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:21:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:21:   ]
+2022-11-24 13:01:21: }
+2022-11-24 13:01:35: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:35: Require stack:
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:35:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:35:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:35:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:35:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:35:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:35:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:35:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:35:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:35:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:35:   requireStack: [
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:35:   ]
+2022-11-24 13:01:35: }
+2022-11-24 13:01:35: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:35: Require stack:
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:35:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:35:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:35:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:35:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:35:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:35:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:35:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:35:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:35:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:35:   requireStack: [
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:35:   ]
+2022-11-24 13:01:35: }
+2022-11-24 13:01:35: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:35: Require stack:
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:35:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:35:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:35:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:35:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:35:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:35:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:35:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:35:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:35:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:35:   requireStack: [
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:35:   ]
+2022-11-24 13:01:35: }
+2022-11-24 13:01:35: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:35: Require stack:
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:35:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:35:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:35:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:35:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:35:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:35:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:35:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:35:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:35:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:35:   requireStack: [
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:35:   ]
+2022-11-24 13:01:35: }
+2022-11-24 13:01:35: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:35: Require stack:
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:35:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:35:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:35:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:35:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:35:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:35:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:35:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:35:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:35:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:35:   requireStack: [
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:35:   ]
+2022-11-24 13:01:35: }
+2022-11-24 13:01:35: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:35: Require stack:
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:35:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:35:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:35:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:35:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:35:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:35:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:35:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:35:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:35:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:35:   requireStack: [
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:35:   ]
+2022-11-24 13:01:35: }
+2022-11-24 13:01:35: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:35: Require stack:
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:35:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:35:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:35:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:35:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:35:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:35:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:35:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:35:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:35:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:35:   requireStack: [
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:35:   ]
+2022-11-24 13:01:35: }
+2022-11-24 13:01:35: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:35: Require stack:
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:35:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:35:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:35:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:35:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:35:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:35:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:35:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:35:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:35:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:35:   requireStack: [
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:35:   ]
+2022-11-24 13:01:35: }
+2022-11-24 13:01:35: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:35: Require stack:
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:35:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:35:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:35:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:35:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:35:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:35:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:35:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:35:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:35:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:35:   requireStack: [
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:35:   ]
+2022-11-24 13:01:35: }
+2022-11-24 13:01:35: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:35: Require stack:
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:35: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:35:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:35:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:35:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:35:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:35:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:35:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:35:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:35:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:35:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:35:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:35:   requireStack: [
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:35:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:35:   ]
+2022-11-24 13:01:35: }
+2022-11-24 13:01:36: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:36: Require stack:
+2022-11-24 13:01:36: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:36: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:36:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:36:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:36:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:36:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:36:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:36:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:36:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:36:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:36:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:36:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:36:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:36:   requireStack: [
+2022-11-24 13:01:36:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:36:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:36:   ]
+2022-11-24 13:01:36: }
+2022-11-24 13:01:36: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:36: Require stack:
+2022-11-24 13:01:36: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:36: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:36:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:36:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:36:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:36:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:36:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:36:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:36:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:36:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:36:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:36:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:36:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:36:   requireStack: [
+2022-11-24 13:01:36:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:36:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:36:   ]
+2022-11-24 13:01:36: }
+2022-11-24 13:01:36: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:36: Require stack:
+2022-11-24 13:01:36: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:36: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:36:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:36:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:36:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:36:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:36:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:36:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:36:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:36:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:36:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:36:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:36:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:36:   requireStack: [
+2022-11-24 13:01:36:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:36:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:36:   ]
+2022-11-24 13:01:36: }
+2022-11-24 13:01:36: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:36: Require stack:
+2022-11-24 13:01:36: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:36: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:36:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:36:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:36:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:36:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:36:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:36:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:36:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:36:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:36:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:36:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:36:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:36:   requireStack: [
+2022-11-24 13:01:36:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:36:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:36:   ]
+2022-11-24 13:01:36: }
+2022-11-24 13:01:36: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:36: Require stack:
+2022-11-24 13:01:36: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:36: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:36:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:36:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:36:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:36:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:36:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:36:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:36:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:36:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:36:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:36:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:36:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:36:   requireStack: [
+2022-11-24 13:01:36:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:36:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:36:   ]
+2022-11-24 13:01:36: }
+2022-11-24 13:01:36: Error: Cannot find module 'node-schedule'
+2022-11-24 13:01:36: Require stack:
+2022-11-24 13:01:36: - /Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js
+2022-11-24 13:01:36: - /Users/snow/development/OSZ-Teltow/backend/index.js
+2022-11-24 13:01:36:     at Module._resolveFilename (node:internal/modules/cjs/loader:1026:15)
+2022-11-24 13:01:36:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2022-11-24 13:01:36:     at require (node:internal/modules/cjs/helpers:103:18)
+2022-11-24 13:01:36:     at Object.<anonymous> (/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js:1:18)
+2022-11-24 13:01:36:     at Module._compile (node:internal/modules/cjs/loader:1205:14)
+2022-11-24 13:01:36:     at Module._extensions..js (node:internal/modules/cjs/loader:1259:10)
+2022-11-24 13:01:36:     at Module.load (node:internal/modules/cjs/loader:1068:32)
+2022-11-24 13:01:36:     at Module._load (node:internal/modules/cjs/loader:909:12)
+2022-11-24 13:01:36:     at Module.require (node:internal/modules/cjs/loader:1092:19)
+2022-11-24 13:01:36:     at Hook._require.Module.require (/opt/homebrew/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:101:39) {
+2022-11-24 13:01:36:   code: 'MODULE_NOT_FOUND',
+2022-11-24 13:01:36:   requireStack: [
+2022-11-24 13:01:36:     '/Users/snow/development/OSZ-Teltow/backend/modules/checkSystem.js',
+2022-11-24 13:01:36:     '/Users/snow/development/OSZ-Teltow/backend/index.js'
+2022-11-24 13:01:36:   ]
+2022-11-24 13:01:36: }
