@@ -60,23 +60,23 @@ router.patch("/patch", (req, res) => {//https://localhost:40324/films/patch
     "Lehrjahr": "1999999",
     "Stichworte": "Stichworte"
 }*/
-    if (req.session.user == "admin" || req.session.user == "lehrer"|| req.session.user == "pruefer" || true){
+    if (req.session.user == "admin" || req.session.user == "lehrer"|| req.session.user == "pruefer"){
 
         const FilmId = decrypt(req.body.ID);
-        console.log(FilmId);
+        //console.log(FilmId);
         db.query("SELECT Prüfstück FROM Film WHERE ID = " + FilmId, function (err, result) {
             if (err) console.log(err);
-            const prüfstück = result;
-            console.log(prüfstück);
+            const prüfstück = result[0].Prüfstück;
+            //console.log(prüfstück);
 
-            const prüfstückBody = (decrypt(req.body.Prüfstück))
+            var prüfstückBody = (decrypt(req.body.Prüfstück))
 
             //prüfstückänderung nicht zulassen wenn user nicht admin
             if(prüfstückBody != null && req.session.user != "admin") {
-                prüfstückBody = prüfstück.Prüfstück
+                prüfstückBody = prüfstück
             }
-            
-            if((prüfstück == 0 && (req.session.user == "admin" || req.session.user == "lehrer")) 
+             
+            if((prüfstück == 0 && (req.session.user == "admin" || req.session.user == "lehrer"))
                 || (prüfstück == 1 && (req.session.user == "admin" || req.session.user == "pruefer"))) {
                 
                 let arrayOfValues = []
@@ -85,14 +85,13 @@ router.patch("/patch", (req, res) => {//https://localhost:40324/films/patch
                 //iterating over req body to dynamically enter attribute names to sql query
                 Object.entries(req.body).forEach(entry => {
                     const [key, value] = entry;
-                    if (key != Prüfstück) {
+                    if (key != "Prüfstück") {
                         arrayOfValues.push(decrypt(value));
-                        updateQuery += key + ' = ?,';
                     }
                     else{
                         arrayOfValues.push(prüfstückBody)
-                        updateQuery += key + ' = ?,';
                     }
+                    updateQuery += key + ' = ?,';
                     //console.log(key, value);
                 });
         
@@ -122,6 +121,10 @@ router.patch("/patch", (req, res) => {//https://localhost:40324/films/patch
         
                     res.send(result);
                 });
+            }
+            else{
+                res.status(403).send("Not enough rights")
+                return;
             }
         });
 
