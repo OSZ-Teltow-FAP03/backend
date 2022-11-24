@@ -4,7 +4,8 @@
 	"description": "Backend",
 	"main": "index.js",
 	"scripts": {
-		"start": "pm2 start ./config/ecosystem.config.js",
+		"start": "nodemon index.js",
+		"prod": "pm2 start ./config/ecosystem.config.js",
 		"dev": "nodemon index.js",
 		"stop": "pm2 stop ./config/ecosystem.config.js",
 		"status": "pm2 status ./config/ecosystem.config.js",
