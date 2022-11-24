@@ -212,7 +212,6 @@ function otp(message, key, mode, keyRepetition) {
 			return error;
 		}
 	}
-	console.log(codeKey);
 	// Convert the codeMessage and codeKey strings into arrays of numbers
 	codeMessage = codeMessage.split('');
 	codeKey = codeKey.split('');
@@ -291,8 +290,6 @@ const decrypt = (cipher) => {
 
 	// Decrypt the cipher
 	var text = otp(cipher.content, cipher.iv, 'decrypt', isLonger);
-
-	console.log('Decrypted Text', text);
 
 	return text;
 };
