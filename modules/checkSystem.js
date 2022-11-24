@@ -13,16 +13,3 @@ if (major < 14 || (major === 14 && minor <= 0)) {
 //  | | | | .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
 //  | | | | |
 //  * * * * * user-name command to be executed
-const job = schedule.scheduleJob('0 0 * * *', function() {
-	console.log("ich ");
-});
-
-const monitor = require('pm2-server-monitor');
-monitor({
-    // your server name, as a flag
-    name: 'local',
-
-    // your server listening port
-    port: 3001
-});
-console.error('server')

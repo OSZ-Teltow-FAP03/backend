@@ -1,12 +1,13 @@
 /* This is importing the modules that we need to use in our application. */
+require('./modules/checkSystem');
 const express = require('express');
 const app = express(); // create our Express app
-require('./modules/checkSystem');
 var useragent = require('express-useragent');
 const helmet = require('helmet');
 const cors = require('cors'); //  A middleware that is used to parse the body of the request.
 const https = require('https');
 const fs = require('fs');
+const os = require('os');
 const errorHandlers = require('./handlers/errorHandlers');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -122,26 +123,6 @@ app.use('/files', filesRouter);
 const usermanagementRouter = require('./routes/user-management');
 app.use('/user-management', usermanagementRouter);
 
-app.get('/', (req, res, next) => {
-	getSessionIDCookie(req, res);
-	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-	if (ip.substr(0, 7) == '::ffff:') {
-		ip = ip.substr(7);
-		req.useragent.ip_address = ip;
-	}
-	req.useragent.ip_address = ip;
-	if (req.session.user) {
-		res.status(200).send({
-			loggedIn: true,
-			user: req.session.user
-		});
-	} else {
-		res.status(200).send({
-			loggedIn: false
-		});
-	}
-});
-
 // pass variables to our templates + all requests
 
 // If that above routes didnt work, we 404 them and forward to error handler
@@ -154,13 +135,6 @@ if (app.get('env') === 'development') {
 }
 // production error handler
 app.use(errorHandlers.productionErrors);
-
-app.get('/shut', (req, res, next) => {
-	shutDown();
-	res.status(200).send({
-		loggedIn: false
-	});
-});
 
 /* This is telling the server to listen to port 4000. */
 const server = https
