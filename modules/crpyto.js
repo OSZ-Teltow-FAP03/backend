@@ -179,7 +179,7 @@ function otp(message, key, mode, keyRepetition) {
 	// If the message or key is empty, show an error and return the error
 	if (message === '' || key === '') {
 		var error = 'Error: The message and key must not be be empty.';
-		console.log('[crypto.js] ' + error);
+		console.error('[crypto.js] ' + error);
 		return error;
 	}
 
@@ -195,7 +195,7 @@ function otp(message, key, mode, keyRepetition) {
 			var codeMessage = message;
 		} else {
 			var error = 'Error: When decrypting, the message must only contain numbers.';
-			console.log('[crypto.js] ' + error);
+			console.error('[crypto.js] ' + error);
 			return error;
 		}
 	}
@@ -208,7 +208,7 @@ function otp(message, key, mode, keyRepetition) {
 			}
 		} else {
 			var error = 'Error: The key is shorter than the message.';
-			console.log('[crypto.js] ' + error);
+			console.error('[crypto.js] ' + error);
 			return error;
 		}
 	}
@@ -248,7 +248,6 @@ function otp(message, key, mode, keyRepetition) {
 		return decode(outputString);
 	} else {
 		// If the mode is encrypt, return the output string
-		console.log(outputString, mode);
 		return outputString;
 	}
 }
@@ -290,13 +289,8 @@ const decrypt = (cipher) => {
 
 	const isLonger = cipher.iv.length < cipher.content.length;
 
-	try {
-		// Decrypt the cipher
-		var text = otp(cipher.content, cipher.iv, 'decrypt', isLonger);
-	} catch (e) {
-		console.error('Error while decrypting', e);
-		return false;
-	}
+	// Decrypt the cipher
+	var text = otp(cipher.content, cipher.iv, 'decrypt', isLonger);
 
 	console.log('Decrypted Text', text);
 
