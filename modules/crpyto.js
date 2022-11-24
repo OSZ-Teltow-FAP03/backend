@@ -1,6 +1,7 @@
-const { v4: uuidv4 } = require('uuid');
-
 'use strict';
+
+// Generate a v4 (random) UUID
+const { v4: uuidv4 } = require('uuid');
 
 var codebook = [];
 codebook[0] = 'a';
@@ -104,68 +105,119 @@ codebook[97] = '\t';
 codebook[98] = '–';
 codebook[99] = '—';
 
+// Encode text using the given codebook.
+// The codebook is an array of characters.
+// The encoded text is an array of numbers.
+// Each number is the index of the codebook character.
+// If the codebook character is not found, the number is not added to the encoded text.
+
 function encode(text) {
-	var code = [];
-	for (var i = 0; i < text.length; i++) {
-		if (codebook.indexOf(text[i]) !== -1) {
-			code[i] = codebook.indexOf(text[i]).toString();
-			if (code[i].length === 1) {
-				code[i] = '0' + code[i];
-			}
+	let encoded = [];
+
+	for (let i = 0; i < text.length; i++) {
+		const codebookIndex = codebook.indexOf(text[i]);
+
+		if (codebookIndex !== -1) {
+			encoded[i] = codebookIndex.toString().padStart(2, '0');
+		} else {
+			console.error('Could not encode character: ' + text[i]);
 		}
 	}
-	return code.join('');
+
+	return encoded.join('');
 }
 
+// This code accepts a string of numbers and converts them into the corresponding
+// characters from the codebook. The codebook is an array of characters.
+
 function decode(code) {
+	// code must be a string
+	if (typeof code !== 'string') {
+		console.error('Code must be a string');
+	}
+	// code must be an even number of characters
+	if (code.length % 2 !== 0) {
+		console.error('Code must be an even number of characters');
+	}
+	// split code into pairs of characters
 	var codeLength = code.length / 2;
 	code = code.match(/.{1,2}/g);
 	var text = [];
 	for (var i = 0; i < codeLength; i++) {
+		// convert code character to a number
 		code[i] *= 1;
+		// code character must be in range
+		if (code[i] < 0 || code[i] > 25) {
+			console.error('Code character out of range');
+		}
+		// get corresponding character from codebook
 		text[i] = codebook[code[i]];
 	}
 	return text.join('');
 }
 
+/* The code above does the following, explained in English:
+1. The function takes the message, the key, and the mode (encrypt or decrypt) as arguments.
+2. If the message or key are empty, it returns an error.
+3. It then encodes the key into a code (see the encode() function below).
+4. If the mode is 'encrypt' then it encodes the message into a code (see the encode() function below).
+5. If the mode is 'decrypt' then it checks if the message is a number. If it is, then it sets the codeMessage to the message. If it isn't, it returns an error.
+6. If the codeKey is shorter than the codeMessage, and keyRepetition is true, it will repeat the key until it is long enough. Otherwise it will return an error.
+7. It then splits the codeMessage and codeKey into arrays of single numbers.
+8. It then sets the codeOutput variable to an empty array.
+9. It then loops through the codeMessage array.
+10. It then multiplies the number at the current index in the codeMessage array by 1 (to convert it into a number, rather than a string).
+11. It then multiplies the number at the current index in the codeKey array by 1 (to convert it into a number, rather than a string).
+12. If the mode is 'encrypt', it then adds the codeMessage number to the codeKey number and adds the result to the codeOutput array.
+13. If the mode is 'decrypt', it then subtracts the codeKey number from the codeMessage number and adds the result to the codeOutput array.
+14. If the result is less than 0, it adds 10 to it.
+15. It joins the codeOutput array into a string.
+16. If the mode is 'decrypt', it then decodes the output string (see the decode() function below).
+17. It then returns the output string. */
+
 function otp(message, key, mode, keyRepetition) {
-	var codeMessage, error;
+	// If the message or key is empty, show an error and return the error
 	if (message === '' || key === '') {
-		error = 'Error: The message and key must not be be empty.';
-		console.log(error);
+		var error = 'Error: The message and key must not be be empty.';
+		console.error('[crypto.js] ' + error);
 		return error;
 	}
+
+	// Encode the key
 	var codeKey = encode(key);
+
+	// If the mode is encrypt, encode the message
 	if (mode == 'encrypt') {
-		codeMessage = encode(message);
+		var codeMessage = encode(message);
 	} else if (mode == 'decrypt') {
+		// If the mode is decrypt, check the message doesn't contain any non-numbers
 		if (!isNaN(message)) {
-			codeMessage = message;
+			var codeMessage = message;
 		} else {
-			error = 'Error: When decrypting, the message must only contain numbers.';
-			console.log(error);
+			var error = 'Error: When decrypting, the message must only contain numbers.';
+			console.error('[crypto.js] ' + error);
 			return error;
 		}
 	}
+
+	// If the key is shorter than the message, either show an error or repeat the key until it's long enough
 	if (codeKey.length < codeMessage.length) {
 		if (keyRepetition === true) {
-			if (mode == 'encrypt') {
-				console.log(
-					"WARNING: The key is shorter than the message.\nThe keyRepetition flag has been set, so OneTimePad.js will now repeat the key until it's long enough, but this is not secure. Repetition of the key will cause statistical patterns in the ciphertext that will make it easier for a third party to decrypt it without the key. You really should use a key at that's least the same length as the message.",
-				);
-			}
 			while (codeKey.length < codeMessage.length) {
 				codeKey += codeKey;
 			}
 		} else {
-			error = 'Error: The key is shorter than the message.';
-			console.log('[One Time Pad] ' + error);
+			var error = 'Error: The key is shorter than the message.';
+			console.error('[crypto.js] ' + error);
 			return error;
 		}
 	}
+	// Convert the codeMessage and codeKey strings into arrays of numbers
 	codeMessage = codeMessage.split('');
 	codeKey = codeKey.split('');
 	var codeOutput = [];
+
+	// Loop through the arrays, add or subtract the numbers depending on the mode, and push the result into the codeOutput array
 	for (var i = 0; i < codeMessage.length; i++) {
 		codeMessage[i] *= 1;
 		codeKey[i] *= 1;
@@ -175,6 +227,10 @@ function otp(message, key, mode, keyRepetition) {
 				codeOutput[i] -= 10;
 			}
 		}
+		/*
+		 * This code converts the message into the output, based on the mode
+		 * and the key.
+		 */
 		if (mode == 'decrypt') {
 			codeOutput[i] = codeMessage[i] - codeKey[i];
 			if (codeOutput[i] < 0) {
@@ -182,37 +238,68 @@ function otp(message, key, mode, keyRepetition) {
 			}
 		}
 	}
+
+	// Convert the codeOutput array into a string
 	var outputString = codeOutput.join('');
+
+	// If the mode is decrypt, decode the output string and return it
 	if (mode == 'decrypt') {
 		return decode(outputString);
 	} else {
+		// If the mode is encrypt, return the output string
 		return outputString;
 	}
 }
 
-
+/* The code above does the following, explained in English:
+1. Define an "iv" variable as a random uuidv4.
+2. Define an "encrypt" function which takes a "plainText" argument.
+3. The function checks if the "plainText" argument is null or empty.
+4. If so, it returns null.
+5. It then defines a "isLonger" variable as false.
+6. If the length of the "iv" variable is less than the length of the "plainText" argument, it sets "isLonger" to true.
+7. It then logs the value of "isLonger" to the console.
+8. It defines a "cipher" variable as the output of the "otp" function, which takes the "plainText" argument, the "iv" variable, the string "encrypt" and the "isLonger" variable as arguments.
+9. It then logs the value of "cipher" to the console.
+10. It then returns an object with the properties "iv" and "content", both of which are set to the "iv" variable and the "cipher" variable respectively. */
 const iv = uuidv4();
+
 const encrypt = (plainText) => {
-  if (plainText === null && plainText.length === 0) return null;
-  
-	const cipher = otp(plainText, iv, 'encrypt');
-  
+	// Check if the plain text is null or empty
+	if (plainText === null && plainText.length === 0) return null;
+	// Check if the iv is longer than the plain text
+	const isLonger = iv.length < plainText.length;
+	// Encrypt the plain text
+	const cipher = otp(plainText, iv, 'encrypt', isLonger);
+	// Return the cipher text
 	return {
-    iv: iv,
-		content: cipher,
+		iv: iv,
+		content: cipher
 	};
 };
 
+/* The code above does the following, explained in English:
+1. Checks if the input is valid (not null or empty, and is an object)
+2. Runs the OTP function (see below) with the content and IV of the cipher, and specifies the operation as 'decrypt'
+3. Returns the decrypted text */
 const decrypt = (cipher) => {
+	// Check for empty cipher or invalid input
+	if ((cipher === null && cipher.length === 0) || typeof cipher !== 'object') return false;
+
+	const isLonger = cipher.iv.length < cipher.content.length;
+
+	// Decrypt the cipher
+	var text = otp(cipher.content, cipher.iv, 'decrypt', isLonger);
   if ((cipher === null && cipher.length === 0) || typeof cipher !== 'object') return false;
   
   var text = otp(cipher.content, cipher.iv, 'decrypt');
-  
 	return text;
 };
+
+/* Exporting the functions `encrypt`, `decrypt`, and `otp` so that they can be used in other files. */
 
 module.exports = {
 	encrypt,
 	decrypt,
-  otp
+	otp
 };

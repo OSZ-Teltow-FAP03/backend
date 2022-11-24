@@ -1,22 +1,21 @@
 /* This is importing the modules that we need to use in our application. */
-const express = require('express');
 require('./modules/checkSystem');
+const express = require('express');
+const app = express(); // create our Express app
 var useragent = require('express-useragent');
 const helmet = require('helmet');
 const cors = require('cors'); //  A middleware that is used to parse the body of the request.
 const https = require('https');
 const fs = require('fs');
+const os = require('os');
 const errorHandlers = require('./handlers/errorHandlers');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const { clearAllcookie, getSessionIDCookie } = require('./modules/cookie');
+const { v4: uuidv4 } = require('uuid');
 
-require('dotenv').config();
-
-// create our Express app
-const app = express();
-app.use(useragent.express());
+require('dotenv').config({ path: './config/.env' });
 
 //setting CSP
 const csp = {
@@ -28,31 +27,29 @@ const csp = {
 	frameSrc: [ `'self'` ],
 	fontSrc: [ `'self'`, 'data:' ],
 	objectSrc: [ `'self'` ],
-	mediaSrc: [ `'self'` ],
+	mediaSrc: [ `'self'` ]
 };
-
-//  app.use(helmet.noCache()); // noCache disabled by default
 const SERVERPORT = process.env.SERVERPORT || 4000;
-const SESSION_SECRET = process.env.SESSION_SECRET;
-const sixtyDaysInSeconds = 5184000; // 60 * 24 * 60 * 60
+const SESSION_SECRET = uuidv4();
 
-// ======== *** SECURITY MIDDLEWARE ***
+// || ======== *** SECURITY MIDDLEWARE *** ========= ||
 
-//setup helmet js
+// adding Helmet to enhance your API's security
 app.use(helmet());
 app.use(helmet.contentSecurityPolicy(csp));
 app.use(helmet.hidePoweredBy());
+//  app.use(helmet.noCache()); // noCache disabled by default
 app.use(
 	helmet.hsts({
-		maxAge: sixtyDaysInSeconds,
-	}),
+		maxAge: 5184000
+	})
 );
 
 app.use(
-    cors({
-        credentials: true,
-        origin: true,
-    })
+	cors({
+		credentials: true,
+		origin: true
+	})
 );
 
 app.set('trust proxy', true); // trust first proxy
@@ -67,37 +64,38 @@ app.use(
 		resave: false,
 		rolling: false,
 		secret: SESSION_SECRET,
-
 		cookie: {
 			path: '/',
 			httpOnly: true,
 			maxAge: 1 * 60 * 1000,
 			sameSite: 'none',
 			secure: true,
-			HostOnly: true,
-		},
-	}),
+			HostOnly: true
+		}
+	})
 );
 
 // app middleware
 app.use(
-    express.urlencoded({
-        extended: true,
-    })
+	express.urlencoded({
+		extended: true
+	})
 );
 
 app.use(express.json());
 /* This is a middleware that is used to parse the body of the request. */
 const corsOptions = {
-    origin: [process.env.ORIGIN_FRONTEND_SERVER], //frontend server localhost:8080
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // enable set cookie
-    optionsSuccessStatus: 200,
-    credentials: true,
+	origin: [ process.env.ORIGIN_FRONTEND_SERVER ], //frontend server localhost:8080
+	methods: [ 'GET', 'POST', 'PUT', 'DELETE' ],
+	credentials: true, // enable set cookie
+	optionsSuccessStatus: 200,
+	credentials: true
 };
-
+// enabling CORS for all requests
 app.use(cors(corsOptions));
 
+// using bodyParser to parse JSON bodies into JS objects
+app.use(bodyParser.json());
 /*
  Use cookieParser and session middlewares together.
  By default Express/Connect app creates a cookie by name 'connect.sid'.But to scale Socket.io app,
@@ -105,13 +103,13 @@ app.use(cors(corsOptions));
  W/o this, Socket.io won't work if you have more than 1 instance.
  If you are NOT running on Cloud Foundry, having cookie name 'jsessionid' doesn't hurt - it's just a cookie name.
  */
-app.use(bodyParser.json());
 app.use(
-    bodyParser.urlencoded({
-        extended: true,
-    })
+	bodyParser.urlencoded({
+		extended: true
+	})
 );
 app.use(cookieParser(SESSION_SECRET)); // any string ex: 'keyboard cat'
+app.use(useragent.express());
 
 // Routers
 const authRouter = require('./routes/auth');
@@ -125,27 +123,6 @@ app.use('/files', filesRouter);
 const usermanagementRouter = require('./routes/user-management');
 app.use('/user-management', usermanagementRouter);
 
-app.get('/', (req, res, next) => {
-	getSessionIDCookie(req, res) 
-	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-	if (ip.substr(0, 7) == '::ffff:') {
-		ip = ip.substr(7);
-		req.useragent.ip_address = ip;
-	}
-	req.useragent.ip_address = ip;
-	if (req.session.user) {
-		res.status(200).send({
-			loggedIn: true,
-			user: req.session.user,
-			
-		});
-	} else {
-		res.status(200).send({
-			loggedIn: false,
-		});
-	}
-});
-
 // pass variables to our templates + all requests
 
 // If that above routes didnt work, we 404 them and forward to error handler
@@ -156,24 +133,19 @@ if (app.get('env') === 'development') {
 	/* Development Error Handler - Prints stack trace */
 	app.use(errorHandlers.developmentErrors);
 }
-
-
-
-
 // production error handler
 app.use(errorHandlers.productionErrors);
 
 /* This is telling the server to listen to port 4000. */
-
-https
+const server = https
 	.createServer(
 		// Provide the private and public key to the server by reading each
 		// file's content with the readFileSync() method.
 		{
 			key: fs.readFileSync(process.env.privateKey),
-			cert: fs.readFileSync(process.env.certificate),
+			cert: fs.readFileSync(process.env.certificate)
 		},
-		app,
+		app
 	)
 	.listen(SERVERPORT, '0.0.0.0', (err) => {
 		if (err) {
@@ -182,4 +154,3 @@ https
 			console.log('🚀 Server running in the', SERVERPORT);
 		}
 	});
-

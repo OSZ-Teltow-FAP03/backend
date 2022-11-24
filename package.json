@@ -5,8 +5,11 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "nodemon index.js",
+		"prod": "pm2 start ./config/ecosystem.config.js",
 		"dev": "nodemon index.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"stop": "pm2 stop ./config/ecosystem.config.js",
+		"status": "pm2 status ./config/ecosystem.config.js",
+		"show log": "pm2 logs ./config/ecosystem.config.js"
 	},
 	"keywords": [ "node.js", "express", "login", "registration", "authentication", "authorization" ],
 	"author": "",
@@ -21,10 +24,12 @@
 		"express": "^4.18.1",
 		"express-session": "^1.17.3",
 		"express-useragent": "^1.0.15",
+		"forever": "^4.0.3",
 		"helmet": "^6.0.0",
 		"mysql": "github:felixge/node-mysql",
 		"node-schedule": "^2.1.0",
-		"nodemon": "^2.0.16"
+		"nodemon": "^2.0.16",
+		"pm2": "^5.2.2"
 	},
 	"devDependencies": {
 		"uuid": "^2.0.3"
