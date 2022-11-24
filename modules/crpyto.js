@@ -294,7 +294,7 @@ const decrypt = (cipher) => {
 		// Decrypt the cipher
 		var text = otp(cipher.content, cipher.iv, 'decrypt', isLonger);
 	} catch (e) {
-		console.log('Error while decrypting', e);
+		console.error('Error while decrypting', e);
 		return false;
 	}
 
