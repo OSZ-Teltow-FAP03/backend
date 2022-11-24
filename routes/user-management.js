@@ -33,6 +33,19 @@ router.post('/user-update', (req, res) => {
 	});
 });
 
+router.get('/user-list', (req, res) => {
+	/* list of user info: username, first name, last name, email, role */
+	if(req.session.user){
+		db.query('SELECT username, name, lastname, email, role FROM users', function(err, result) {
+			if(err) throw err;
+				res.send(result)
+		});
+	}
+	else {
+		res.statusCode(400).send("Bitte einloggen!")
+	}
+});
+
 router.post('/user-delete', (req, res) => {
 	/* This is getting the data from the request body.*/
 	const userID = decrypt(req.body.userID);

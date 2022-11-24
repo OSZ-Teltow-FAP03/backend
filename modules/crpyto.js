@@ -290,7 +290,9 @@ const decrypt = (cipher) => {
 
 	// Decrypt the cipher
 	var text = otp(cipher.content, cipher.iv, 'decrypt', isLonger);
-
+  if ((cipher === null && cipher.length === 0) || typeof cipher !== 'object') return false;
+  
+  var text = otp(cipher.content, cipher.iv, 'decrypt');
 	return text;
 };
 
