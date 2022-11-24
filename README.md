@@ -121,16 +121,28 @@ npm start
 
 # errorcodes messages
 
-A table that shows the error codes and their respective messages.
+
+A table that shows the error and status codes and their respective messages.
 | code  | Msg  |
 | :------------ |:---------------|
-| 100 | username or Email already registered|
-| 101 | Invalid email|
-| 102 | Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.|
-| 103 | Invalid email|
+| 101 | Username or Email already registered|
+| 102 | Invalid email|
+| 103 | Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen|
 | 104 | Not registered user!|
-| 105 | Email or password incorrect|
-| 106 | User successfully registered|
+| 105 | Username/Email or password incorrect|
+| 106 | Password must be at least 8 characters long|
+| 107 | Not logged in|
+| 108 | Requires Range header|
+| 109 | FileID not set|
+| 110 | File not found|
+| 111 | File not streamable|
+| 201 | User successfully registered|
+| 202 | User successfully logged in|
+| 203 | User successfully logged out|
+| 401 | DB Error|
+| 402 | Bycrypt Error|
+
+
 # API
 Server will listen on port `3001`, and it expose the following APIs:
 
