@@ -10,7 +10,7 @@ const { clearAllcookie, getSessionIDCookie } = require('../modules/cookie');
 const saltRounds = 10; // The number of rounds to use when generating a salt
 
 /* This is a post request that is used to register a user. */
-router.post('/register', (req, res) => {
+router.post('/register', function(req, res) {
 	/* This is getting the data from the request body. */
 	const name = decrypt(req.body.name).toLowerCase();
 	const lastname = decrypt(req.body.lastname).toLowerCase();
@@ -52,14 +52,14 @@ router.post('/register', (req, res) => {
 			});
 			return;
 		}
-		if (result.length == 0) {
+		if (result.length != 0) {
 			res.status(500).send({
-				msg: 'Not registered user!',
-				code: 104
+				msg: 'Username or Email already registered',
+				code: 101
 			});
 			return;
 		}
-		bcrypt.hash(password, saltRounds, (err2, hash) => {
+		bcrypt.hash(password, saltRounds, function(err2, hash) {
 			if (err2) {
 				throw res.status(500).send({
 					msg: err2,
@@ -86,7 +86,7 @@ router.post('/register', (req, res) => {
 });
 
 /* This is a post request that is used to login a user. */
-router.post('/login', (req, res) => {
+router.post('/login', function(req, res) {
 	// Unless we explicitly write to the session (and resave is false), the
 	// store is never updated, even though a new session is generated on each
 	// request. After we modify that session and during req.end(), it gets
@@ -109,7 +109,7 @@ router.post('/login', (req, res) => {
 		}
 	}
 	/* This is checking if the user is registered. */
-	db.query('SELECT * FROM users WHERE ' + userOrEmail + ' = ?', [ email ], (err, result) => {
+	db.query('SELECT * FROM users WHERE ' + userOrEmail + ' = ?', [ email ], function(err, result) {
 		if (err){
 			throw res.status(500).send({
 				msg: err,
@@ -124,7 +124,7 @@ router.post('/login', (req, res) => {
 			});
 			return;
 		}
-		bcrypt.compare(password, result[0].password, (error, response) => {
+		bcrypt.compare(password, result[0].password, function(error, response) {
 			if (error){
 				throw res.status(500).send({
 					msg: error,
@@ -165,7 +165,7 @@ router.post('/login', (req, res) => {
 	});
 });
 
-router.get('/logout', (req, res, next) => {
+router.get('/logout', function(req, res, next) {
 	// Upon logout, we can destroy the session and unset req.session.
 	req.session.destroy();
 	clearAllcookie(req, res);

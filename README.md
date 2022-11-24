@@ -440,11 +440,11 @@ function decrypt(text){
 A table that shows the error and status codes and their respective messages.
 | code  | Msg  |
 | :------------ |:---------------|
-| 101 | username or Email already registered|
+| 101 | Username or Email already registered|
 | 102 | Invalid email|
 | 103 | Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen|
 | 104 | Not registered user!|
-| 105 | Email or password incorrect|
+| 105 | Username/Email or password incorrect|
 | 106 | Password must be at least 8 characters long|
 | 107 | Not logged in|
 | 108 | Requires Range header|

@@ -14,7 +14,7 @@ function checkFileExistsSync(filepath){
 	return flag;
 }
 
-router.get('/stream', (req, res) => {
+router.get('/stream', function(req, res) {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
@@ -38,7 +38,7 @@ router.get('/stream', (req, res) => {
 		});
 		return;
 	}
-	db.query('SELECT * FROM FilmDateien where FilmDateien.ID = ?', [FileID], function (err, result) {
+	db.query('SELECT * FROM FilmDateien where FilmDateien.ID = ?', [FileID], function(err, result) {
 		if (err){
 			throw res.status(500).send({
 				msg: err,
@@ -99,7 +99,7 @@ router.get('/stream', (req, res) => {
 	});
 });
 
-router.get('/download', (req, res) => {
+router.get('/download', function(req, res) {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
@@ -115,7 +115,7 @@ router.get('/download', (req, res) => {
 		});
 		return;
 	}
-	db.query('SELECT * FROM FilmDateien where FilmDateien.ID = ?', [FileID], function (err, result) {
+	db.query('SELECT * FROM FilmDateien where FilmDateien.ID = ?', [FileID], function(err, result) {
 		if (err){
 			throw res.status(500).send({
 				msg: err,
