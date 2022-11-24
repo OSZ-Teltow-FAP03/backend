@@ -120,7 +120,7 @@ function encode(text) {
 		if (codebookIndex !== -1) {
 			encoded[i] = codebookIndex.toString().padStart(2, '0');
 		} else {
-			throw new Error('Could not encode character: ' + text[i]);
+			console.error('Could not encode character: ' + text[i]);
 		}
 	}
 
@@ -133,11 +133,11 @@ function encode(text) {
 function decode(code) {
 	// code must be a string
 	if (typeof code !== 'string') {
-		throw new Error('Code must be a string');
+		console.error('Code must be a string');
 	}
 	// code must be an even number of characters
 	if (code.length % 2 !== 0) {
-		throw new Error('Code must be an even number of characters');
+		console.error('Code must be an even number of characters');
 	}
 	// split code into pairs of characters
 	var codeLength = code.length / 2;
@@ -148,7 +148,7 @@ function decode(code) {
 		code[i] *= 1;
 		// code character must be in range
 		if (code[i] < 0 || code[i] > 25) {
-			throw new Error('Code character out of range');
+			console.error('Code character out of range');
 		}
 		// get corresponding character from codebook
 		text[i] = codebook[code[i]];
