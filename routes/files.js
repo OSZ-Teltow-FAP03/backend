@@ -16,30 +16,47 @@ function checkFileExistsSync(filepath){
 
 router.get('/stream', (req, res) => {
 	if(!req.session.user){
-		res.status(400).send("Not logged in");
+		res.status(400).send({
+			msg: 'Not logged in',
+			code: 107
+		});
 		return;
 	}
 	const range = req.headers.range;
 	if (!range) {
-		res.status(400).send("Requires Range header");
+		res.status(416).send({
+			msg: 'Requires Range header',
+			code: 108
+		});
 		return;
 	}
 	const FileID=req.query.FileID;
 	if(!FileID){
-		res.status(400).send("FileID not set");
+		res.status(400).send({
+			msg: 'FileID not set',
+			code: 109
+		});
 		return;
 	}
 	db.query('SELECT * FROM FilmDateien where FilmDateien.ID = ?', [FileID], function (err, result) {
-		if (err) throw err;
+		if (err){
+			throw res.status(500).send({
+				msg: err,
+				code: 402
+			});
+			return;
+		}
 		const filePath = result[0].Dateipfad;
 
 		if(!checkFileExistsSync(filePath)){
-			res.status(400).send("File not found");
+			res.status(400).send({
+				msg: 'File not found',
+				code: 110
+			});
 			return;
 		}
 
 		const fileSize = fs.statSync(filePath).size;
-
 		const fileExtension=path.extname(filePath);
 		var contentType;
 		switch (fileExtension) {
@@ -58,7 +75,10 @@ router.get('/stream', (req, res) => {
 		}
 
 		if(!contentType){
-			res.status(400).send("File not streamable");
+			res.status(400).send({
+				msg: 'File not streamable',
+				code: 111
+			});
 			return;
 		}
 
@@ -81,23 +101,36 @@ router.get('/stream', (req, res) => {
 
 router.get('/download', (req, res) => {
 	if(!req.session.user){
-		res.status(400).send("Not logged in");
+		res.status(400).send({
+			msg: 'Not logged in',
+			code: 107
+		});
 		return;
 	}
 	const FileID=req.query.FileID;
 	if(!FileID){
-		res.status(400).send("FileID not set");
+		res.status(400).send({
+			msg: 'FileID not set',
+			code: 109
+		});
 		return;
 	}
 	db.query('SELECT * FROM FilmDateien where FilmDateien.ID = ?', [FileID], function (err, result) {
-		if (err) throw err;
-		const videoPath = result[0].Dateipfad;
-
-		if(!checkFileExistsSync(videoPath)){
-			res.status(400).send("File not found");
+		if (err){
+			throw res.status(500).send({
+				msg: err,
+				code: 402
+			});
 			return;
 		}
-
+		const videoPath = result[0].Dateipfad;
+		if(!checkFileExistsSync(videoPath)){
+			res.status(400).send({
+				msg: 'File not found',
+				code: 110
+			});
+			return;
+		}
 		res.download(videoPath);
 	});
 });
