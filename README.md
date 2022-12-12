@@ -460,6 +460,7 @@ A table that shows the error and status codes and their respective messages.
 | 205 | User updated|
 | 206 | User deleted|
 | 207 | Film inserted|
+| 208 | File uploaded|
 | 401 | DB Error|
 | 402 | Bycrypt Error|
 

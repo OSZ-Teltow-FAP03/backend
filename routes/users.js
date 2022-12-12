@@ -22,8 +22,8 @@ router.get('/get', (req, res) => {
 			return;
 		}
 		res.send({
-			code: 204,
 			msg: "Data sent",
+			code: 204,
 			data: result
 		});
 	});
@@ -48,8 +48,8 @@ router.patch('/update', (req, res) => {
 			return;
 		}
 		res.send({
-			code: 205,
-			msg: "User updated"
+			msg: "User updated",
+			code: 205
 		});
 	});
 });
@@ -71,8 +71,8 @@ router.get('/list', (req, res) => {
 			return;
 		}
 		res.send({
-			code: 204,
 			msg: "Data sent",
+			code: 204,
 			data: result
 		});
 	});
@@ -102,5 +102,4 @@ router.delete('/delete', (req, res) => {
 	});
 });
 
-/* This is exporting the router object. */
 module.exports = router;

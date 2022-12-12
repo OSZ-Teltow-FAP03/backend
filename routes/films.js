@@ -174,10 +174,9 @@ router.post('/create', (req, res) => {
 	var arrayOfValues=[];
 	var replace=""
 	Object.entries(req.body).forEach(entry => {
-		//TODO DECRYPT
-		const [key, value] = decrypt(entry);
+		const [key, value] = entry;
 		arrayOfAttributes.push(key);
-		arrayOfValues.push(value);
+		arrayOfValues.push(decrypt(value));
 		replace +=  '?, ';
 	});
 	replace = attributes.slice(0, -1);

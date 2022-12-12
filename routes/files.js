@@ -4,6 +4,7 @@ const db = require('../database/index');
 const fs = require('fs');
 const path = require('path');
 
+
 function checkFileExistsSync(filepath){
 	let flag = true;
 	try{
@@ -142,5 +143,53 @@ router.get('/download', function(req, res) {
 	});
 });
 
-/* This is exporting the router object. */
+router.post('/upload', async (req, res) => {
+	if(!req.session.user){
+		res.status(400).send({
+			msg: 'Not logged in',
+			code: 107
+		});
+		return;
+	}
+
+	if(!req.files) {
+		res.status(400).send({
+			msg: 'File not found',
+			code: 110
+		});
+		return;
+	}
+
+	const FilmID=decrypt(req.body.FilmID);
+	if(!FilmID){
+		res.status(400).send({
+			msg: 'FilmID not set',
+			code: 112
+		});
+		return;
+	}
+	var file = req.files.File;
+	var path='./uploads/' + file.name
+	file.mv(path);
+
+	db.query('INSERT INTO FilmDateien (FilmID, Dateipfad) VALUES (?, ?)', [FilmID, path], function(err, result) {
+		if (err){
+			throw res.status(500).send({
+				msg: err,
+				code: 402
+			});
+			return;
+		}
+		res.status(200).send({
+			msg: 'File uploaded',
+			code: 208,
+			data: {
+				name: file.name,
+				mimetype: file.mimetype,
+				size: file.size
+			}
+		});
+	});
+});
+
 module.exports = router;

@@ -8,6 +8,7 @@ const https = require('https');
 const fs = require('fs');
 const errorHandlers = require('./handlers/errorHandlers');
 const session = require('express-session');
+const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const { clearAllcookie, getSessionIDCookie } = require('./modules/cookie');
@@ -85,6 +86,10 @@ app.use(
         extended: true,
     })
 );
+
+app.use(fileUpload({
+	createParentPath: true
+}));
 
 app.use(express.json());
 /* This is a middleware that is used to parse the body of the request. */

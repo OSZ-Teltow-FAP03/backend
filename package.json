@@ -8,7 +8,14 @@
 		"dev": "nodemon index.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
-	"keywords": [ "node.js", "express", "login", "registration", "authentication", "authorization" ],
+	"keywords": [
+		"node.js",
+		"express",
+		"login",
+		"registration",
+		"authentication",
+		"authorization"
+	],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
@@ -19,6 +26,7 @@
 		"dotenv": "^16.0.2",
 		"easy-https": "^1.0.1",
 		"express": "^4.18.1",
+		"express-fileupload": "^1.4.0",
 		"express-session": "^1.17.3",
 		"express-useragent": "^1.0.15",
 		"helmet": "^6.0.0",

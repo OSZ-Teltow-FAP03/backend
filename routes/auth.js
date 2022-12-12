@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router(); // Creating a router object.
 const db = require('../database/index');
-const bcrypt = require('bcrypt'); // A library that is used to hash passwords.
+const bcrypt = require('bcrypt');
 const { encrypt, decrypt } = require('../modules/crpyto');
 const { isEmail, checkUsername } = require('../modules/check_userOrEmail');
 const { clearAllcookie, getSessionIDCookie } = require('../modules/cookie');
@@ -171,5 +171,4 @@ router.get('/logout', function(req, res, next) {
 	next();
 });
 
-/* This is exporting the router object. */
 module.exports = router;
