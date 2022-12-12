@@ -22,6 +22,7 @@ router.get('/stream', function(req, res) {
 		});
 		return;
 	}
+
 	const range = req.headers.range;
 	if (!range) {
 		res.status(416).send({
@@ -30,6 +31,7 @@ router.get('/stream', function(req, res) {
 		});
 		return;
 	}
+
 	const FileID=req.query.FileID;
 	if(!FileID){
 		res.status(400).send({
@@ -38,6 +40,7 @@ router.get('/stream', function(req, res) {
 		});
 		return;
 	}
+
 	db.query('SELECT * FROM FilmDateien where FilmDateien.ID = ?', [FileID], function(err, result) {
 		if (err){
 			throw res.status(500).send({
@@ -46,8 +49,8 @@ router.get('/stream', function(req, res) {
 			});
 			return;
 		}
-		const filePath = result[0].Dateipfad;
 
+		const filePath = result[0].Dateipfad;
 		if(!checkFileExistsSync(filePath)){
 			res.status(400).send({
 				msg: 'File not found',
@@ -107,6 +110,7 @@ router.get('/download', function(req, res) {
 		});
 		return;
 	}
+
 	const FileID=req.query.FileID;
 	if(!FileID){
 		res.status(400).send({
@@ -115,6 +119,7 @@ router.get('/download', function(req, res) {
 		});
 		return;
 	}
+
 	db.query('SELECT * FROM FilmDateien where FilmDateien.ID = ?', [FileID], function(err, result) {
 		if (err){
 			throw res.status(500).send({
@@ -123,6 +128,7 @@ router.get('/download', function(req, res) {
 			});
 			return;
 		}
+
 		const videoPath = result[0].Dateipfad;
 		if(!checkFileExistsSync(videoPath)){
 			res.status(400).send({
@@ -131,6 +137,7 @@ router.get('/download', function(req, res) {
 			});
 			return;
 		}
+		
 		res.download(videoPath);
 	});
 });

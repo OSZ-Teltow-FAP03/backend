@@ -451,9 +451,15 @@ A table that shows the error and status codes and their respective messages.
 | 109 | FileID not set|
 | 110 | File not found|
 | 111 | File not streamable|
-| 201 | User successfully registered|
-| 202 | User successfully logged in|
-| 203 | User successfully logged out|
+| 112 | FilmID not set|
+| 113 | Missing privileges|
+| 201 | User registered|
+| 202 | User logged in|
+| 203 | User logged out|
+| 204 | Data sent|
+| 205 | User updated|
+| 206 | User deleted|
+| 207 | Film inserted|
 | 401 | DB Error|
 | 402 | Bycrypt Error|
 

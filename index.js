@@ -122,8 +122,8 @@ app.use('/films', filmsRouter);
 const filesRouter = require('./routes/files');
 app.use('/files', filesRouter);
 
-const usermanagementRouter = require('./routes/user-management');
-app.use('/user-management', usermanagementRouter);
+const usersRouter = require('./routes/users');
+app.use('/users', usersRouter);
 
 app.get('/', (req, res, next) => {
 	getSessionIDCookie(req, res) 
