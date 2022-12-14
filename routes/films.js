@@ -95,7 +95,14 @@ router.delete('/delete', (req, res) => {
 		return;
 	}
 
-	const filmID = decrypt(req.body.filmID);
+	const filmID = decrypt(req.body.FilmID);
+	if(!FilmID){
+		res.status(400).send({
+			msg: 'FilmID not set',
+			code: 112
+		});
+		return;
+	}
 	
 	db.query("SELECT Prüfstück FROM Film WHERE FilmID = ?", [filmID], function (err, result) {
 		if (err){
@@ -206,110 +213,99 @@ router.put('/create', (req, res) => {
 	});
 });
 
-router.patch("/patch", (req, res) => {//https://localhost:40324/films/patch
-    /*{
-    "ID": "9",
-    "Filmtitel": "Filmtitel",
-    "Tonformat": "Tonformat",
-    "Bildformat": "Bild",
-    "Bildfrequenz": "60hz",
-    "Farbtiefe": "Farbtiefe",
-    "Videocontainer": "Videocontainer",
-    "Tonspurbelegung": "A8",
-    "Timecode_Anfang": "00:00:00",
-    "Timecode_Ende": "00:00:00",
-    "Dauer": "00:00:00",
-    "Videocodec": "Videocodec",
-    "Auflösung": "Auflösung",
-    "Vorschaubild": "Vorschaubild",
-    "Erscheinungsdatum": "1999-02-15",
-    "Autor": "Autor",
-    "Programmtyp": "Programmtyp",
-    "Erzählsatz": "Erzählsatz",
-    "Bemerkung": "Bemerkung",
-    "Erstellungsdatum": "1999-02-15",
-    "Mitwirkende": "Mitwirkende",
-    "Bewertungen": "Bewertungen",
-    "Upload": "1999-02-15",
-    "Klasse": "Klasse",
-    "Status": "Status",
-    "Lehrjahr": "1999999",
-    "Stichworte": "Stichworte"
-}*/
-    if (req.session.user == "admin" || req.session.user == "lehrer"|| req.session.user == "pruefer"){
+router.patch("/patch", (req, res) => {
+	if(!req.session.user){
+		res.status(400).send({
+			msg: 'Not logged in',
+			code: 107
+		});
+		return;
+	}
+	if (!(req.session.user.role == "admin" || req.session.user.role == "lehrer"|| req.session.user.role == "pruefer")){
+		res.status(400).send({
+			msg: 'Missing privileges',
+			code: 113
+		});
+		return;
+	}
+	const FilmId = decrypt(req.body.ID);
+	if(!FilmID){
+		res.status(400).send({
+			msg: 'FilmID not set',
+			code: 112
+		});
+		return;
+	}
+	db.query("SELECT Prüfstück FROM Film WHERE ID = " + FilmId, function (err, result) {
+		if (err){
+			throw res.status(500).send({
+				msg: err,
+				code: 402
+			});
+			return;
+		}
+		const prüfstück = result[0].Prüfstück;
+		let prüfstückBody = decrypt(req.body.Prüfstück);
 
-        const FilmId = decrypt(req.body.ID);
-        //console.log(FilmId);
-        db.query("SELECT Prüfstück FROM Film WHERE ID = " + FilmId, function (err, result) {
-            if (err) console.log(err);
-            const prüfstück = result[0].Prüfstück;
-            //console.log(prüfstück);
+		//prüfstückänderung nicht zulassen wenn user nicht admin
+		if(req.session.user.role != "admin") {
+			prüfstückBody = prüfstück
+		}
 
-            var prüfstückBody = (decrypt(req.body.Prüfstück))
+		if(!((prüfstück == 0 && (req.session.user.role == "admin" || req.session.user.role == "lehrer"))
+		|| (prüfstück == 1 && (req.session.user.role == "admin" || req.session.user.role == "pruefer")))) {
+			res.status(400).send({
+				msg: 'Missing privileges',
+				code: 113
+			});
+			return;
+		}
 
-            //prüfstückänderung nicht zulassen wenn user nicht admin
-            if(prüfstückBody != null && req.session.user != "admin") {
-                prüfstückBody = prüfstück
-            }
-             
-            if((prüfstück == 0 && (req.session.user == "admin" || req.session.user == "lehrer"))
-                || (prüfstück == 1 && (req.session.user == "admin" || req.session.user == "pruefer"))) {
-                
-                let arrayOfValues = []
-                let updateQuery = 'UPDATE Film SET ';
-                
-                //iterating over req body to dynamically enter attribute names to sql query
-                Object.entries(req.body).forEach(entry => {
-                    const [key, value] = entry;
-                    if (key != "Prüfstück") {
-                        arrayOfValues.push(decrypt(value));
-                    }
-                    else{
-                        arrayOfValues.push(prüfstückBody)
-                    }
-                    updateQuery += key + ' = ?,';
-                    //console.log(key, value);
-                });
-        
-                //When no param is recognised in body then nothing is changed
-                if (arrayOfValues.length == 0) {
-                    res.status(400).send('Nothing to update.');
-                    return;
-                }
-        
-                //Removes last character from string => removes the comma
-                updateQuery = updateQuery.slice(0, -1);
-        
-                if (FilmId == null) {
-                    res.status(400).send('FilmId is null.');
-                    return;
-                }
-        
-                //adds the Id to the query
-                arrayOfValues.push(FilmId);
-                updateQuery += ' WHERE Film.ID = ?'
-        
-                db.query(updateQuery, arrayOfValues, function (err, result) {
-                    if (err) {
-                        res.status(500).send(err);
-                        return;
-                    }
-        
-                    res.send(result);
-                });
-            }
-            else{
-                res.status(403).send("Not enough rights")
-                return;
-            }
-        });
+		let arrayOfValues = [];
+		let updateQuery = 'UPDATE Film SET ';
 
-        
-    }
-    else {
-        res.status(400).send("not logged in")
-        return;
-    }
+		//iterating over req body to dynamically enter attribute names to sql query
+		Object.entries(req.body).forEach(entry => {
+			const [key, value] = entry;
+			if (key != "Prüfstück") {
+				arrayOfValues.push(decrypt(value));
+			} else{
+				arrayOfValues.push(prüfstückBody)
+			}
+			updateQuery += key + ' = ?,';
+		});
+
+		//When no param is recognised in body then nothing is changed
+		if (arrayOfValues.length == 0) {
+			res.status(400).send({
+				msg: 'Nothing to change',
+				code: 115
+			});
+			return;
+		}
+
+		//Removes last character from string => removes the comma
+		updateQuery = updateQuery.slice(0, -1);
+
+		//adds the Id to the query
+		arrayOfValues.push(FilmId);
+		updateQuery += ' WHERE Film.ID = ?'
+
+		db.query(updateQuery, arrayOfValues, function (err, result) {
+			if (err){
+				throw res.status(500).send({
+					msg: err,
+					code: 402
+				});
+				return;
+			}
+
+			res.send({
+				msg: 'Film updated',
+				code: 209
+			});
+		});
+	});
 });
 
 module.exports = router;

@@ -392,7 +392,7 @@ Server exposes the following Enpoints:
 - **DELETE** - `/films/delete` - Deletes Film
   - **FilmID** - *Request Body encrypted string* -- ID of the Film
 
-- **PUT** - `/films/create` - Deletes Film
+- **POST** - `/films/create` - Creates Film
   - **Filmtitel** - *Request Body encrypted string* -- Required
   - **Status** - *Request Body encrypted string* -- Required
   - **Lehrjahr** - *Request Body encrypted integer* -- Required
@@ -404,6 +404,37 @@ Server exposes the following Enpoints:
   - **Erstellungsdatum** - *Request Body encrypted date* -- Required
   - **Mitwirkende** - *Request Body encrypted string* -- Required
   - **Erscheinungsdatum** - *Request Body encrypted date* -- Required
+  - **Tonformat** - *Request Body encrypted string* -- Optional
+  - **Bildformat** - *Request Body encrypted string* -- Optional
+  - **Bildfrequenz** - *Request Body encrypted string* -- Optional
+  - **Farbtiefe** - *Request Body encrypted string* -- Optional
+  - **Videocontainer** - *Request Body encrypted string* -- Optional
+  - **Tonspurbelegung** - *Request Body encrypted string* -- Optional
+  - **Timecode_Anfang** - *Request Body encrypted string* -- Optional
+  - **Timecode_Ende** - *Request Body encrypted string* -- Optional
+  - **Dauer** - *Request Body encrypted string* -- Optional
+  - **Videocodec** - *Request Body encrypted string* -- Optional
+  - **Auflösung** - *Request Body encrypted string* -- Optional
+  - **Dauer** - *Request Body encrypted string* -- Optional
+  - **Vorschaubild** - *Request Body encrypted string* -- Optional
+  - **Autor** - *Request Body encrypted string* -- Optional
+  - **Bemerkung** - *Request Body encrypted string* -- Optional
+  - **Bewertungen** - *Request Body encrypted string* -- Optional
+  - **Klasse** - *Request Body encrypted string* -- Optional
+
+- **PATCH** - `/films/patch` - Updates Film, only send attributes are changed
+  - **FilmID** - *Request Body encrypted integer* -- Required
+  - **Prüfstück** - *Request Body encrypted 1 or 0* -- Required
+  - **Filmtitel** - *Request Body encrypted string* -- Optional
+  - **Status** - *Request Body encrypted string* -- Optional
+  - **Lehrjahr** - *Request Body encrypted integer* -- Optional
+  - **Stichworte** - *Request Body encrypted string* -- Optional
+  - **Programmtyp** - *Request Body encrypted string* -- Optional
+  - **Erzählsatz** - *Request Body encrypted string* -- Optional
+  - **Upload** - *Request Body encrypted date* -- Optional
+  - **Erstellungsdatum** - *Request Body encrypted date* -- Optional
+  - **Mitwirkende** - *Request Body encrypted string* -- Optional
+  - **Erscheinungsdatum** - *Request Body encrypted date* -- Optional
   - **Tonformat** - *Request Body encrypted string* -- Optional
   - **Bildformat** - *Request Body encrypted string* -- Optional
   - **Bildfrequenz** - *Request Body encrypted string* -- Optional
@@ -518,6 +549,7 @@ A table that shows the error and status codes and their respective messages.
 | 112 | FilmID not set|
 | 113 | Missing privileges|
 | 114 | userID not set|
+| 115 | Nothing to change|
 | 201 | User registered|
 | 202 | User logged in|
 | 203 | User logged out|
@@ -526,6 +558,7 @@ A table that shows the error and status codes and their respective messages.
 | 206 | User deleted|
 | 207 | Film inserted|
 | 208 | File uploaded|
+| 209 | Film updated|
 | 401 | DB Error|
 | 402 | Bycrypt Error|
 
@@ -534,6 +567,7 @@ A table that shows the error and status codes and their respective messages.
   Backend: 
 * [express](https://www.npmjs.com/package/express)
 * [express-session](https://www.npmjs.com/package/express-session)
+* [express-fileupload](https://www.npmjs.com/package/express-fileupload)
 * [cors](https://www.npmjs.com/package/cors)
 * [cookie-parser](https://www.npmjs.com/package/cookie-parser)
 * [body-parser](https://www.npmjs.com/package/body-parser)
