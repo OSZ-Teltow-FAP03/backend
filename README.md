@@ -355,20 +355,42 @@ Regardless of auth mechanism
 - two-factor auth
 - API throttling
 
-# API
-Server will listen on port `3001`, and it expose the following APIs:
+# Enpoints
+Server exposes the following Enpoints:
 
 
 - **POST** - `/auth/register` - Register a new user
-  - **name** - *string*
-  - **lastname** - *string*
-  - **username** - *string*
-  - **email** - *string*
-  - **password** - *string*
+	- **name** - *Request Body encrypted string* -- First name
+	- **lastname** - *Request Body encrypted string* -- Last name
+	- **username** - *Request Body encrypted string* -- Username
+	- **email** - *Request Body encrypted string* -- Email
+	- **password** - *Request Body encrypted string* -- Password
 
 - **POST** - `/auth/login` - Login user
-  - **email** - *string* or **username** - *string*
-  - **password** - *string*
+  - **email** - *Request Body encrypted string* -- Email or Username of User
+  - **password** - *Request Body encrypted string* -- Password
+
+- **GET** - `/auth/logout` - Logout user
+
+- **GET** - `/files/stream` - Streams File if it is Streamable
+  - **FileID** - *Query Attribute integer* -- ID of the File
+  - **range** - *HTTP Header* -- Data Range automatically set by Player
+
+- **GET** - `/files/download` - Downloads File
+  - **FileID** - *Query Attribute integer* -- ID of the File
+
+- **POST** - `/files/upload` - Uploads File
+  - **FilmID** - *Request Body encrypted string* -- ID of the Film
+  - **File** - *Multipart/Form-Data File* -- see https://stackoverflow.com/questions/35722093/send-multipart-form-data-files-with-angular-using-http
+
+- **GET** - `/films/get` - Lists/Searches Film
+  - **filmQuery** - *Query Attribute string* -- Optional search string
+  - 
+- **GET** - `/films/listFiles` - Lists Files assosiated with Film
+  - **FilmID** - *Query Attribute integer* -- ID of the Film
+  - 
+- **DELETE** - `/films/delete` - Deletes Film
+  - **FilmID** - *Request Body encrypted string* -- ID of the Film
 
 ---------
 # How to encrypt and decrypt in nodejs
@@ -443,7 +465,7 @@ A table that shows the error and status codes and their respective messages.
 | 101 | Username or Email already registered|
 | 102 | Invalid email|
 | 103 | Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen|
-| 104 | Not registered user!|
+| 104 | Request not valid|
 | 105 | Username/Email or password incorrect|
 | 106 | Password must be at least 8 characters long|
 | 107 | Not logged in|
