@@ -10,11 +10,23 @@ const { clearAllcookie, getSessionIDCookie } = require('../modules/cookie');
 const saltRounds = 10; // The number of rounds to use when generating a salt
 
 router.post('/register', function(req, res) {
-	const name = decrypt(req.body.name).toLowerCase();
-	const lastname = decrypt(req.body.lastname).toLowerCase();
-	const username = decrypt(req.body.username).toLowerCase();
-	const email = decrypt(req.body.email).toLowerCase();
-	const password = decrypt(req.body.password);
+	let name = decrypt(req.body.name);
+	let lastname = decrypt(req.body.lastname);
+	let username = decrypt(req.body.username);
+	let email = decrypt(req.body.email);
+	let password = decrypt(req.body.password);
+	
+	if(name===false || lastname===false || username===false || email===false || password===false){
+		res.status(400).send({
+			msg: 'Request not valid',
+			code: 104
+		});
+		return;
+	}
+	name=name.toLowerCase();
+	lastname=lastname.toLowerCase();
+	username=username.toLowerCase();
+	email=email.toLowerCase();
 
 	if (!isEmail(email)) {
 		res.status(400).send({
@@ -85,9 +97,18 @@ router.post('/register', function(req, res) {
 });
 
 router.post('/login', function(req, res) {
-	const email = decrypt(req.body.email).toLowerCase();
+	let email = decrypt(req.body.email);
 	const password = decrypt(req.body.password);
-	var userOrEmail = 'username';
+	let userOrEmail = 'username';
+	email=email.toLowerCase();
+	
+	if(email===false || password===false){
+		res.status(400).send({
+			msg: 'Request not valid',
+			code: 104
+		});
+		return;
+	}
 
 	if (isEmail(email)) {
 		userOrEmail = 'email';
