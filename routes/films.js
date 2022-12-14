@@ -15,9 +15,8 @@ router.get("/get", (req, res) => {
 		});
 		return;
 	}
-
-	if (req.query.filmQuery !== undefined) {
-		let filmQuery = `%${req.query.filmQuery}%`;
+	const filmQuery = `%${req.query.filmQuery}%`;
+	if (filmQuery !== undefined) {
 		db.query("SELECT * FROM Film WHERE Filmtitel Like ? or Autor LIKE ? or Mitwirkende LIKE ? or Klasse like ? or Stichworte like ?", [filmQuery, filmQuery, filmQuery, filmQuery, filmQuery], function (err, result) {
 			if (err){
 				throw res.status(500).send({
