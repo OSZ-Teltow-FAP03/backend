@@ -96,31 +96,8 @@ router.delete('/delete', (req, res) => {
 	}
 
 	const filmID = decrypt(req.body.filmID);
-	const prüfstück = decrypt(req.body.Prüfstück)
-	const rights = false;
-	switch (req.session.user.role) {
-		case "admin":
-			rights = true;
-			break;
-		case "pruefer":
-			if(prüfstück) rights = true;
-			break;
-		case "lehrerMedien":
-			if(!prüfstück) rights = true;
-			break;
-		default:
-			break;
-	}
-
-	if(!rights){
-		res.status(400).send({
-			msg: 'Missing privileges',
-			code: 113
-		});
-		return;
-	}
-
-	db.query('DELETE FROM Film WHERE ID = ?; DELETE FROM FilmDateien WHERE FilmID = ?;',[ filmID, filmID ],(err, result) => {
+	
+	db.query("SELECT Prüfstück FROM Film WHERE FilmID = ?", [filmID], function (err, result) {
 		if (err){
 			throw res.status(500).send({
 				msg: err,
@@ -128,10 +105,43 @@ router.delete('/delete', (req, res) => {
 			});
 			return;
 		}
+		const prüfstück = result[0].Prüfstück;
+		const rights = false;
+		switch (req.session.user.role) {
+			case "admin":
+				rights = true;
+				break;
+			case "pruefer":
+				if(prüfstück) rights = true;
+				break;
+			case "lehrerMedien":
+				if(!prüfstück) rights = true;
+				break;
+			default:
+				break;
+		}
 
-		res.send({
-			msg: 'Film deleted',
-			code: 200
+		if(!rights){
+			res.status(400).send({
+				msg: 'Missing privileges',
+				code: 113
+			});
+			return;
+		}
+
+		db.query('DELETE FROM Film WHERE ID = ?; DELETE FROM FilmDateien WHERE FilmID = ?;',[ filmID, filmID ],(err2, result2) => {
+			if (err2){
+				throw res.status(500).send({
+					msg: err2,
+					code: 402
+				});
+				return;
+			}
+
+			res.send({
+				msg: 'Film deleted',
+				code: 200
+			});
 		});
 	});
 });
