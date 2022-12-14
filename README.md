@@ -385,12 +385,54 @@ Server exposes the following Enpoints:
 
 - **GET** - `/films/get` - Lists/Searches Film
   - **filmQuery** - *Query Attribute string* -- Optional search string
-  - 
+
 - **GET** - `/films/listFiles` - Lists Files assosiated with Film
   - **FilmID** - *Query Attribute integer* -- ID of the Film
-  - 
+
 - **DELETE** - `/films/delete` - Deletes Film
   - **FilmID** - *Request Body encrypted string* -- ID of the Film
+
+- **PUT** - `/films/create` - Deletes Film
+  - **Filmtitel** - *Request Body encrypted string* -- Required
+  - **Status** - *Request Body encrypted string* -- Required
+  - **Lehrjahr** - *Request Body encrypted integer* -- Required
+  - **Stichworte** - *Request Body encrypted string* -- Required
+  - **Prüfstück** - *Request Body encrypted 1 or 0* -- Required
+  - **Programmtyp** - *Request Body encrypted string* -- Required
+  - **Erzählsatz** - *Request Body encrypted string* -- Required
+  - **Upload** - *Request Body encrypted date* -- Required
+  - **Erstellungsdatum** - *Request Body encrypted date* -- Required
+  - **Mitwirkende** - *Request Body encrypted string* -- Required
+  - **Erscheinungsdatum** - *Request Body encrypted date* -- Required
+  - **Tonformat** - *Request Body encrypted string* -- Optional
+  - **Bildformat** - *Request Body encrypted string* -- Optional
+  - **Bildfrequenz** - *Request Body encrypted string* -- Optional
+  - **Farbtiefe** - *Request Body encrypted string* -- Optional
+  - **Videocontainer** - *Request Body encrypted string* -- Optional
+  - **Tonspurbelegung** - *Request Body encrypted string* -- Optional
+  - **Timecode_Anfang** - *Request Body encrypted string* -- Optional
+  - **Timecode_Ende** - *Request Body encrypted string* -- Optional
+  - **Dauer** - *Request Body encrypted string* -- Optional
+  - **Videocodec** - *Request Body encrypted string* -- Optional
+  - **Auflösung** - *Request Body encrypted string* -- Optional
+  - **Dauer** - *Request Body encrypted string* -- Optional
+  - **Vorschaubild** - *Request Body encrypted string* -- Optional
+  - **Autor** - *Request Body encrypted string* -- Optional
+  - **Bemerkung** - *Request Body encrypted string* -- Optional
+  - **Bewertungen** - *Request Body encrypted string* -- Optional
+  - **Klasse** - *Request Body encrypted string* -- Optional
+
+- **GET** - `/users/get` - Gets all Data of User
+  - **userID** - *Query Attribute integer* -- ID of the User
+
+- **PATCH** - `/users/updateRole` - Updates role of User
+  - **userID** - *Request Body encrypted integer* -- ID of the User
+  - **role** - *Request Body encrypted string* -- new role of the User
+
+- **GET** - `/users/list` - Lists username, name, lastname, email and role of all Users
+
+- **DELETE** - `/users/delete` - Deletes Film
+  - **userID** - *Request Body encrypted string* -- ID of the User
 
 ---------
 # How to encrypt and decrypt in nodejs
@@ -475,6 +517,7 @@ A table that shows the error and status codes and their respective messages.
 | 111 | File not streamable|
 | 112 | FilmID not set|
 | 113 | Missing privileges|
+| 114 | userID not set|
 | 201 | User registered|
 | 202 | User logged in|
 | 203 | User logged out|

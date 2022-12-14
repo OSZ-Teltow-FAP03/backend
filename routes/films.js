@@ -146,7 +146,7 @@ router.delete('/delete', (req, res) => {
 	});
 });
 
-router.post('/create', (req, res) => {
+router.put('/create', (req, res) => {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',

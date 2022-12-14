@@ -11,7 +11,14 @@ router.get('/get', (req, res) => {
 		});
 		return;
 	}
-	const userID = decrypt(req.body.userID);
+	const userID = req.query.userID;
+	if(userID===false){
+		res.status(400).send({
+			msg: 'userID not set',
+			code: 114
+		});
+		return;
+	}
 
 	db.query('SELECT * FROM users WHERE userID = ?', [userID], function(err, result) {
 		if (err){
@@ -29,7 +36,7 @@ router.get('/get', (req, res) => {
 	});
 });
 
-router.patch('/update', (req, res) => {
+router.patch('/updateRole', (req, res) => {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
@@ -38,7 +45,15 @@ router.patch('/update', (req, res) => {
 		return;
 	}
 	const userID = decrypt(req.body.userID);
-	const role = decrypt(req.body.role).toLowerCase();
+	let role = decrypt(req.body.role);
+	if(userID===false || role===false){
+		res.status(400).send({
+			msg: 'Request not valid',
+			code: 104
+		});
+		return;
+	}
+	role=role.toLowerCase();
 	db.query('UPDATE users SET role = ? WHERE userID = ?', [ role, userID ], (err, result) => {
 		if (err){
 			throw res.status(500).send({
@@ -87,6 +102,13 @@ router.delete('/delete', (req, res) => {
 		return;
 	}
 	const userID = decrypt(req.body.userID);
+	if(userID===false){
+		res.status(400).send({
+			msg: 'userID not set',
+			code: 114
+		});
+		return;
+	}
 	db.query('DELETE FROM users WHERE userID = ?', [ userID ], (err, result) => {
 		if (err){
 			throw res.status(500).send({
