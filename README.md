@@ -551,6 +551,7 @@ A table that shows the error and status codes and their respective messages.
 | 114 | userID not set|
 | 115 | Nothing to change|
 | 116 | Film not found|
+| 117 | User not found|
 | 201 | User registered|
 | 202 | User logged in|
 | 203 | User logged out|
