@@ -8,7 +8,7 @@ router.get('/get', (req, res) => {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
-			code: 107
+			code: 102
 		});
 		return;
 	}
@@ -16,16 +16,16 @@ router.get('/get', (req, res) => {
 	if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role)){
 		res.status(400).send({
 			msg: 'Missing privileges',
-			code: 113
+			code: 103
 		});
 		return;
 	}
 	
-	const userID = req.query.userID;
+	const userID = req.query.UserID;
 	if(userID===false){
 		res.status(400).send({
-			msg: 'userID not set',
-			code: 114
+			msg: 'UserID not set',
+			code: 109
 		});
 		return;
 	}
@@ -40,7 +40,7 @@ router.get('/get', (req, res) => {
 		}
 		res.status(200).send({
 			msg: "Data sent",
-			code: 204,
+			code: 201,
 			data: result
 		});
 	});
@@ -50,7 +50,7 @@ router.patch('/updateRole', (req, res) => {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
-			code: 107
+			code: 102
 		});
 		return;
 	}
@@ -59,7 +59,7 @@ router.patch('/updateRole', (req, res) => {
 	if(userID===false || role===false){
 		res.status(400).send({
 			msg: 'Request not valid',
-			code: 104
+			code: 101
 		});
 		return;
 	}
@@ -76,7 +76,7 @@ router.patch('/updateRole', (req, res) => {
 		if(result.length!==1){
 			res.status(400).send({
 				msg: 'User not found',
-				code: 117
+				code: 110
 			});
 			return;
 		}
@@ -84,7 +84,7 @@ router.patch('/updateRole', (req, res) => {
 		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, false, {newRole: role, oldRole: result[0].role})){
 			res.status(400).send({
 				msg: 'Missing privileges',
-				code: 113
+				code: 103
 			});
 			return;
 		}
@@ -109,7 +109,7 @@ router.get('/list', (req, res) => {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
-			code: 107
+			code: 102
 		});
 		return;
 	}
@@ -117,7 +117,7 @@ router.get('/list', (req, res) => {
 	if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role)){
 		res.status(400).send({
 			msg: 'Missing privileges',
-			code: 113
+			code: 103
 		});
 		return;
 	}
@@ -132,7 +132,7 @@ router.get('/list', (req, res) => {
 		}
 		res.status(200).send({
 			msg: "Data sent",
-			code: 204,
+			code: 201,
 			data: result
 		});
 	});
@@ -142,7 +142,7 @@ router.delete('/delete', (req, res) => {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
-			code: 107
+			code: 102
 		});
 		return;
 	}
@@ -150,16 +150,16 @@ router.delete('/delete', (req, res) => {
 	if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role)){
 		res.status(400).send({
 			msg: 'Missing privileges',
-			code: 113
+			code: 103
 		});
 		return;
 	}
 	
-	const userID = decrypt(req.body.userID);
+	const userID = decrypt(req.body.UserID);
 	if(userID===false){
 		res.status(400).send({
-			msg: 'userID not set',
-			code: 114
+			msg: 'UserID not set',
+			code: 109
 		});
 		return;
 	}
