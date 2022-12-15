@@ -20,7 +20,7 @@ router.get('/stream', function(req, res) {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
-			code: 107
+			code: 102
 		});
 		return;
 	}
@@ -29,7 +29,7 @@ router.get('/stream', function(req, res) {
 	if (!range) {
 		res.status(416).send({
 			msg: 'Requires Range header',
-			code: 108
+			code: 116
 		});
 		return;
 	}
@@ -38,7 +38,7 @@ router.get('/stream', function(req, res) {
 	if(!FileID){
 		res.status(400).send({
 			msg: 'FileID not set',
-			code: 109
+			code: 113
 		});
 		return;
 	}
@@ -55,7 +55,7 @@ router.get('/stream', function(req, res) {
 		if(result.length!==1){
 			res.status(400).send({
 				msg: 'File not found',
-				code: 110
+				code: 114
 			});
 			return;
 		}
@@ -63,7 +63,7 @@ router.get('/stream', function(req, res) {
 		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
 			res.status(400).send({
 				msg: 'Missing privileges',
-				code: 113
+				code: 103
 			});
 			return;
 		}
@@ -72,7 +72,7 @@ router.get('/stream', function(req, res) {
 		if(!checkFileExistsSync(filePath)){
 			res.status(400).send({
 				msg: 'File not found',
-				code: 110
+				code: 114
 			});
 			return;
 		}
@@ -98,7 +98,7 @@ router.get('/stream', function(req, res) {
 		if(!contentType){
 			res.status(400).send({
 				msg: 'File not streamable',
-				code: 111
+				code: 115
 			});
 			return;
 		}
@@ -124,7 +124,7 @@ router.get('/download', function(req, res) {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
-			code: 107
+			code: 102
 		});
 		return;
 	}
@@ -133,7 +133,7 @@ router.get('/download', function(req, res) {
 	if(!FileID){
 		res.status(400).send({
 			msg: 'FileID not set',
-			code: 109
+			code: 113
 		});
 		return;
 	}
@@ -150,7 +150,7 @@ router.get('/download', function(req, res) {
 		if(result.length!==1){
 			res.status(400).send({
 				msg: 'File not found',
-				code: 110
+				code: 114
 			});
 			return;
 		}
@@ -158,7 +158,7 @@ router.get('/download', function(req, res) {
 		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
 			res.status(400).send({
 				msg: 'Missing privileges',
-				code: 113
+				code: 103
 			});
 			return;
 		}
@@ -167,7 +167,7 @@ router.get('/download', function(req, res) {
 		if(!checkFileExistsSync(videoPath)){
 			res.status(400).send({
 				msg: 'File not found',
-				code: 110
+				code: 114
 			});
 			return;
 		}
@@ -180,7 +180,7 @@ router.post('/upload', async (req, res) => {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
-			code: 107
+			code: 102
 		});
 		return;
 	}
@@ -188,7 +188,7 @@ router.post('/upload', async (req, res) => {
 	if(!req.files) {
 		res.status(400).send({
 			msg: 'File not found',
-			code: 110
+			code: 114
 		});
 		return;
 	}
@@ -197,7 +197,7 @@ router.post('/upload', async (req, res) => {
 	if(!FilmID){
 		res.status(400).send({
 			msg: 'FilmID not set',
-			code: 112
+			code: 111
 		});
 		return;
 	}
@@ -214,7 +214,7 @@ router.post('/upload', async (req, res) => {
 		if(result.length!==1){
 			res.status(400).send({
 				msg: 'Film not found',
-				code: 116
+				code: 112
 			});
 			return;
 		}
@@ -222,7 +222,7 @@ router.post('/upload', async (req, res) => {
 		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
 			res.status(400).send({
 				msg: 'Missing privileges',
-				code: 113
+				code: 103
 			});
 			return;
 		}
@@ -241,7 +241,7 @@ router.post('/upload', async (req, res) => {
 			}
 			res.status(200).send({
 				msg: 'File uploaded',
-				code: 208,
+				code: 210,
 				data: {
 					name: file.name,
 					mimetype: file.mimetype,
