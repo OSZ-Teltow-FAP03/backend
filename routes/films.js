@@ -15,40 +15,38 @@ router.get("/get", (req, res) => {
 		});
 		return;
 	}
-	const filmQuery = `%${req.query.filmQuery}%`;
-	if (filmQuery !== undefined) {
-		db.query("SELECT * FROM Film WHERE Filmtitel Like ? or Autor LIKE ? or Mitwirkende LIKE ? or Klasse like ? or Stichworte like ?", [filmQuery, filmQuery, filmQuery, filmQuery, filmQuery], function (err, result) {
-			if (err){
-				throw res.status(500).send({
-					msg: err,
-					code: 402
-				});
-				return;
-			}
-
-			res.send({
-				msg: "Data sent",
-				code: 204,
-				data: result
-			});
-		});
-	} else {
-		db.query('SELECT * FROM Film', function (err, result) {
-			if (err){
-				throw res.status(500).send({
-					msg: err,
-					code: 402
-				});
-				return;
-			}
-
-			res.send({
-				msg: "Data sent",
-				code: 204,
-				data: result
-			});
-		});
+	let prüfstück=false;
+	if(["admin", "pruefer"].indexOf(req.session.user.role)!==-1){
+		prüfstück=true;
 	}
+	let filmQuery="";
+	if(req.query.filmQuery!==undefined && req.query.filmQuery.length>0)
+		filmQuery = `%${req.query.filmQuery}%`;
+	
+	let queryString="SELECT * FROM Film";
+	if(!prüfstück || filmQuery.length>0)
+		queryString+=" WHERE ";
+	if(!prüfstück)
+		queryString+="Prüfstück = 0";
+	if(!prüfstück && filmQuery.length>0)
+		queryString+=" AND ";
+	if(filmQuery.length>0)
+		queryString+="(Filmtitel Like ? or Autor LIKE ? or Mitwirkende LIKE ? or Klasse like ? or Stichworte like ?)"
+	db.query(queryString, (filmQuery.length>0)?[filmQuery, filmQuery, filmQuery, filmQuery, filmQuery]:[], function (err, result) {
+		if (err){
+			throw res.status(500).send({
+				msg: err,
+				code: 402
+			});
+			return;
+		}
+
+		res.send({
+			msg: "Data sent",
+			code: 204,
+			data: result
+		});
+	});
 });
 
 router.get("/listFiles", (req, res) => {
@@ -69,11 +67,19 @@ router.get("/listFiles", (req, res) => {
 		return;
 	}
 
-	db.query("SELECT ID FROM FilmDateien WHERE FilmID = ?", [FilmID], function (err, result) {
+	db.query("SELECT ID, Prüfstück FROM FilmDateien, Film WHERE Film.ID = ? AND Film.ID = FilmDateien.FilmID", [FilmID], function (err, result) {
 		if (err){
 			throw res.status(500).send({
 				msg: err,
 				code: 402
+			});
+			return;
+		}
+		
+		if(result.length>0 && !checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
+			res.status(400).send({
+				msg: 'Missing privileges',
+				code: 113
 			});
 			return;
 		}
@@ -112,23 +118,16 @@ router.delete('/delete', (req, res) => {
 			});
 			return;
 		}
-		const prüfstück = result[0].Prüfstück;
-		const rights = false;
-		switch (req.session.user.role) {
-			case "admin":
-				rights = true;
-				break;
-			case "pruefer":
-				if(prüfstück) rights = true;
-				break;
-			case "lehrerMedien":
-				if(!prüfstück) rights = true;
-				break;
-			default:
-				break;
-		}
 
-		if(!rights){
+		if(result.length!==1){
+			res.status(400).send({
+				msg: 'Film not found',
+				code: 116
+			});
+			return;
+		}
+		
+		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
 			res.status(400).send({
 				msg: 'Missing privileges',
 				code: 113
@@ -162,23 +161,8 @@ router.put('/create', (req, res) => {
 		return;
 	}
 
-	const Prüfstück = decrypt(req.body.Prüfstück)
-	const rights = false;
-	switch (req.session.user.role) {
-		case "admin":
-			rights = true;
-			break;
-		case "pruefer":
-			if(Prüfstück) rights = true;
-			break;
-		case "lehrerMedien":
-			if(!Prüfstück) rights = true;
-			break;
-		default:
-			break;
-	}
-
-	if(!rights){
+	const Prüfstück = decrypt(req.body.Prüfstück)=="true";
+	if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, Prüfstück)){
 		res.status(400).send({
 			msg: 'Missing privileges',
 			code: 113
@@ -221,13 +205,6 @@ router.patch("/update", (req, res) => {
 		});
 		return;
 	}
-	if (!(req.session.user.role == "admin" || req.session.user.role == "lehrer"|| req.session.user.role == "pruefer")){
-		res.status(400).send({
-			msg: 'Missing privileges',
-			code: 113
-		});
-		return;
-	}
 	const FilmId = decrypt(req.body.ID);
 	if(!FilmID){
 		res.status(400).send({
@@ -236,7 +213,7 @@ router.patch("/update", (req, res) => {
 		});
 		return;
 	}
-	db.query("SELECT Prüfstück FROM Film WHERE ID = " + FilmId, function (err, result) {
+	db.query("SELECT Prüfstück FROM Film WHERE ID = ?", [FilmId], function (err, result) {
 		if (err){
 			throw res.status(500).send({
 				msg: err,
@@ -246,19 +223,18 @@ router.patch("/update", (req, res) => {
 		}
 		const prüfstück = result[0].Prüfstück;
 		let prüfstückBody = decrypt(req.body.Prüfstück);
-
-		//prüfstückänderung nicht zulassen wenn user nicht admin
-		if(req.session.user.role != "admin") {
-			prüfstückBody = prüfstück
-		}
-
-		if(!((prüfstück == 0 && (req.session.user.role == "admin" || req.session.user.role == "lehrer"))
-		|| (prüfstück == 1 && (req.session.user.role == "admin" || req.session.user.role == "pruefer")))) {
+		
+		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, prüfstück)){
 			res.status(400).send({
 				msg: 'Missing privileges',
 				code: 113
 			});
 			return;
+		}
+
+		//prüfstückänderung nicht zulassen wenn user nicht admin
+		if(req.session.user.role != "admin") {
+			prüfstückBody = prüfstück
 		}
 
 		let arrayOfValues = [];
