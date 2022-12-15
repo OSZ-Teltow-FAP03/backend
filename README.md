@@ -561,6 +561,7 @@ A table that shows the error and status codes and their respective messages.
 | 207 | Film inserted|
 | 208 | File uploaded|
 | 209 | Film updated|
+| 210 | Film deleted|
 | 401 | DB Error|
 | 402 | Bycrypt Error|
 
