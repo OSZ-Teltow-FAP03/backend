@@ -154,19 +154,19 @@ app.get('/', (req, res, next) => {
 // pass variables to our templates + all requests
 
 // If that above routes didnt work, we 404 them and forward to error handler
-app.use(errorHandlers.notFound);
+//app.use(errorHandlers.notFound);
 
 // Otherwise this was a really bad error we didn't expect! Shoot eh
 if (app.get('env') === 'development') {
 	/* Development Error Handler - Prints stack trace */
-	app.use(errorHandlers.developmentErrors);
+//	app.use(errorHandlers.developmentErrors);
 }
 
 
 
 
 // production error handler
-app.use(errorHandlers.productionErrors);
+//app.use(errorHandlers.productionErrors);
 
 /* This is telling the server to listen to port 4000. */
 

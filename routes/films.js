@@ -213,7 +213,7 @@ router.put('/create', (req, res) => {
 	});
 });
 
-router.patch("/patch", (req, res) => {
+router.patch("/update", (req, res) => {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',

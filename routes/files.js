@@ -3,6 +3,7 @@ const router = express.Router(); // Creating a router object.
 const db = require('../database/index');
 const fs = require('fs');
 const path = require('path');
+const { checkPrivileges } = require('../modules/check_privileges');
 
 
 function checkFileExistsSync(filepath){
@@ -42,11 +43,27 @@ router.get('/stream', function(req, res) {
 		return;
 	}
 
-	db.query('SELECT * FROM FilmDateien where FilmDateien.ID = ?', [FileID], function(err, result) {
+	db.query('SELECT Prüfstück, Dateipfad FROM FilmDateien, Film WHERE FilmDateien.ID = ? AND Film.ID = FilmDateien.FilmID', [FileID], function(err, result) {
 		if (err){
 			throw res.status(500).send({
 				msg: err,
 				code: 402
+			});
+			return;
+		}
+
+		if(result.length!==1){
+			res.status(400).send({
+				msg: 'File not found',
+				code: 110
+			});
+			return;
+		}
+
+		if(checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
+			res.status(400).send({
+				msg: 'Missing privileges',
+				code: 113
 			});
 			return;
 		}
@@ -121,11 +138,27 @@ router.get('/download', function(req, res) {
 		return;
 	}
 
-	db.query('SELECT * FROM FilmDateien where FilmDateien.ID = ?', [FileID], function(err, result) {
+	db.query('SELECT Prüfstück, Dateipfad FROM FilmDateien, Film WHERE FilmDateien.ID = ? AND Film.ID = FilmDateien.FilmID', [FileID], function(err, result) {
 		if (err){
 			throw res.status(500).send({
 				msg: err,
 				code: 402
+			});
+			return;
+		}
+
+		if(result.length!==1){
+			res.status(400).send({
+				msg: 'File not found',
+				code: 110
+			});
+			return;
+		}
+
+		if(checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
+			res.status(400).send({
+				msg: 'Missing privileges',
+				code: 113
 			});
 			return;
 		}
@@ -168,11 +201,8 @@ router.post('/upload', async (req, res) => {
 		});
 		return;
 	}
-	var file = req.files.File;
-	var path='./uploads/' + file.name
-	file.mv(path);
 
-	db.query('INSERT INTO FilmDateien (FilmID, Dateipfad) VALUES (?, ?)', [FilmID, path], function(err, result) {
+	db.query('SELECT Prüfstück FROM Film WHERE Film.ID = ?', [FilmID, path], function(err, result) {
 		if (err){
 			throw res.status(500).send({
 				msg: err,
@@ -180,14 +210,44 @@ router.post('/upload', async (req, res) => {
 			});
 			return;
 		}
-		res.status(200).send({
-			msg: 'File uploaded',
-			code: 208,
-			data: {
-				name: file.name,
-				mimetype: file.mimetype,
-				size: file.size
+
+		if(result.length!==1){
+			res.status(400).send({
+				msg: 'Film not found',
+				code: 116
+			});
+			return;
+		}
+
+		if(checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
+			res.status(400).send({
+				msg: 'Missing privileges',
+				code: 113
+			});
+			return;
+		}
+		
+		var file = req.files.File;
+		var path='./uploads/' + file.name
+		file.mv(path);
+
+		db.query('INSERT INTO FilmDateien (FilmID, Dateipfad) VALUES (?, ?)', [FilmID, path], function(err2, result2) {
+			if (err2){
+				throw res.status(500).send({
+					msg: err2,
+					code: 402
+				});
+				return;
 			}
+			res.status(200).send({
+				msg: 'File uploaded',
+				code: 208,
+				data: {
+					name: file.name,
+					mimetype: file.mimetype,
+					size: file.size
+				}
+			});
 		});
 	});
 });

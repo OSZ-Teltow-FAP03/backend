@@ -422,7 +422,7 @@ Server exposes the following Enpoints:
   - **Bewertungen** - *Request Body encrypted string* -- Optional
   - **Klasse** - *Request Body encrypted string* -- Optional
 
-- **PATCH** - `/films/patch` - Updates Film, only send attributes are changed
+- **PATCH** - `/films/update` - Updates Film, only send attributes are changed
   - **FilmID** - *Request Body encrypted integer* -- Required
   - **Prüfstück** - *Request Body encrypted 1 or 0* -- Required
   - **Filmtitel** - *Request Body encrypted string* -- Optional
@@ -550,6 +550,7 @@ A table that shows the error and status codes and their respective messages.
 | 113 | Missing privileges|
 | 114 | userID not set|
 | 115 | Nothing to change|
+| 116 | Film not found|
 | 201 | User registered|
 | 202 | User logged in|
 | 203 | User logged out|
