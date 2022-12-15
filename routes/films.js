@@ -222,6 +222,15 @@ router.patch("/update", (req, res) => {
 			});
 			return;
 		}
+
+		if(result.length!==1){
+			res.status(400).send({
+				msg: 'Film not found',
+				code: 116
+			});
+			return;
+		}
+		
 		const prüfstück = result[0].Prüfstück;
 		let prüfstückBody = decrypt(req.body.Prüfstück);
 		
