@@ -454,16 +454,16 @@ Server exposes the following Enpoints:
   - **Klasse** - *Request Body encrypted string* -- Optional
 
 - **GET** - `/users/get` - Gets all Data of User
-  - **userID** - *Query Attribute integer* -- ID of the User
+  - **UserID** - *Query Attribute integer* -- ID of the User
 
 - **PATCH** - `/users/updateRole` - Updates role of User
-  - **userID** - *Request Body encrypted integer* -- ID of the User
+  - **UserID** - *Request Body encrypted integer* -- ID of the User
   - **role** - *Request Body encrypted string* -- new role of the User
 
 - **GET** - `/users/list` - Lists username, name, lastname, email and role of all Users
 
 - **DELETE** - `/users/delete` - Deletes Film
-  - **userID** - *Request Body encrypted string* -- ID of the User
+  - **UserID** - *Request Body encrypted string* -- ID of the User
 
 ---------
 # How to encrypt and decrypt in nodejs
@@ -535,33 +535,32 @@ function decrypt(text){
 A table that shows the error and status codes and their respective messages.
 | code  | Msg  |
 | :------------ |:---------------|
-| 101 | Username or Email already registered|
-| 102 | Invalid email|
-| 103 | Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen|
-| 104 | Request not valid|
-| 105 | Username/Email or password incorrect|
+| 101 | Request not valid|
+| 102 | Not logged in|
+| 103 | Missing privileges|
+| 104 | Username or Email already registered|
+| 105 | Email not valid|
 | 106 | Password must be at least 8 characters long|
-| 107 | Not logged in|
-| 108 | Requires Range header|
-| 109 | FileID not set|
-| 110 | File not found|
-| 111 | File not streamable|
-| 112 | FilmID not set|
-| 113 | Missing privileges|
-| 114 | userID not set|
-| 115 | Nothing to change|
-| 116 | Film not found|
-| 117 | User not found|
-| 201 | User registered|
-| 202 | User logged in|
-| 203 | User logged out|
-| 204 | Data sent|
+| 107 | Username has invalid characters|
+| 108 | Username/Email or password incorrect|
+| 109 | UserID not set|
+| 110 | User not found|
+| 111 | FilmID not set|
+| 112 | Film not found|
+| 113 | FileID not set|
+| 114 | File not found|
+| 115 | File not streamable|
+| 116 | Requires Range header|
+| 201 | Data sent|
+| 202 | User registered|
+| 203 | User logged in|
+| 204 | User logged out|
 | 205 | User updated|
 | 206 | User deleted|
 | 207 | Film inserted|
-| 208 | File uploaded|
-| 209 | Film updated|
-| 210 | Film deleted|
+| 208 | Film updated|
+| 209 | Film deleted|
+| 210 | File uploaded|
 | 401 | DB Error|
 | 402 | Bycrypt Error|
 
