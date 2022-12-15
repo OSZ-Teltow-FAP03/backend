@@ -202,7 +202,7 @@ router.post('/upload', async (req, res) => {
 		return;
 	}
 
-	db.query('SELECT Prüfstück FROM Film WHERE Film.ID = ?', [FilmID, path], function(err, result) {
+	db.query('SELECT Prüfstück FROM Film WHERE Film.ID = ?', [FilmID], function(err, result) {
 		if (err){
 			throw res.status(500).send({
 				msg: err,
