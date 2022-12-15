@@ -60,7 +60,7 @@ router.get('/stream', function(req, res) {
 			return;
 		}
 
-		if(checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
+		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
 			res.status(400).send({
 				msg: 'Missing privileges',
 				code: 113
@@ -155,7 +155,7 @@ router.get('/download', function(req, res) {
 			return;
 		}
 
-		if(checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
+		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
 			res.status(400).send({
 				msg: 'Missing privileges',
 				code: 113
@@ -219,7 +219,7 @@ router.post('/upload', async (req, res) => {
 			return;
 		}
 
-		if(checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
+		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
 			res.status(400).send({
 				msg: 'Missing privileges',
 				code: 113
