@@ -17,7 +17,6 @@ let checkPrivileges = (endpoint, role, prüfstück, options=false) => {
         case "files/download":
         case "films/get":
         case "films/listFiles":
-        case "films/get":
             if((!prüfstück && [admin, lehrerMedien, lehrer, azubi].indexOf(role)!==-1)
             || (prüfstück && [admin, pruefer].indexOf(role)!==-1))
                 return true;
