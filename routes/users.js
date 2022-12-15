@@ -32,7 +32,8 @@ router.get('/get', (req, res) => {
 
 	db.query('SELECT * FROM users WHERE userID = ?', [userID], function(err, result) {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 402
 			});
@@ -66,7 +67,8 @@ router.patch('/updateRole', (req, res) => {
 	
 	db.query('SELECT role FROM users WHERE userID = ?', [ userID ], (err, result) => {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 402
 			});
@@ -91,7 +93,8 @@ router.patch('/updateRole', (req, res) => {
 
 		db.query('UPDATE users SET role = ? WHERE userID = ?', [ role, userID ], (err2, result2) => {
 			if (err2){
-				throw res.status(500).send({
+				console.error(err2);
+				res.status(500).send({
 					msg: err2,
 					code: 402
 				});
@@ -124,7 +127,8 @@ router.get('/list', (req, res) => {
 	
 	db.query('SELECT username, name, lastname, email, role FROM users', function(err, result) {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 402
 			});
@@ -166,7 +170,8 @@ router.delete('/delete', (req, res) => {
 	
 	db.query('DELETE FROM users WHERE userID = ?', [ userID ], (err, result) => {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 402
 			});

@@ -45,7 +45,8 @@ router.get('/stream', function(req, res) {
 
 	db.query('SELECT Prüfstück, Dateipfad FROM FilmDateien, Film WHERE FilmDateien.ID = ? AND Film.ID = FilmDateien.FilmID', [FileID], function(err, result) {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 402
 			});
@@ -140,7 +141,8 @@ router.get('/download', function(req, res) {
 
 	db.query('SELECT Prüfstück, Dateipfad FROM FilmDateien, Film WHERE FilmDateien.ID = ? AND Film.ID = FilmDateien.FilmID', [FileID], function(err, result) {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 402
 			});
@@ -204,7 +206,8 @@ router.post('/upload', async (req, res) => {
 
 	db.query('SELECT Prüfstück FROM Film WHERE Film.ID = ?', [FilmID], function(err, result) {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 402
 			});
@@ -233,7 +236,8 @@ router.post('/upload', async (req, res) => {
 
 		db.query('INSERT INTO FilmDateien (FilmID, Dateipfad) VALUES (?, ?)', [FilmID, path], function(err2, result2) {
 			if (err2){
-				throw res.status(500).send({
+				console.error(err2);
+				res.status(500).send({
 					msg: err2,
 					code: 402
 				});

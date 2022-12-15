@@ -54,7 +54,8 @@ router.post('/register', function(req, res) {
 
 	db.query('SELECT * FROM users WHERE username = ? OR email = ?', [ username, email ], function(err, result) {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 401
 			});
@@ -71,16 +72,18 @@ router.post('/register', function(req, res) {
 
 		bcrypt.hash(password, saltRounds, function(err2, hash) {
 			if (err2) {
-				throw res.status(500).send({
+				console.error(err2);
+				res.status(500).send({
 					msg: err2,
 					code: 402
 				});
 				return;
 			}
 
-			db.query('INSERT INTO users (name, lastname, username, email, password ) VALUE (?,?,?,?,?)', [ name, lastname, username, email, password ], function(error, response) {
+			db.query('INSERT INTO users (name, lastname, username, email, password ) VALUE (?,?,?,?,?)', [ name, lastname, username, email, hash ], function(error, response) {
 				if (error) {
-					throw res.status(500).send({
+					console.error(error);
+					res.status(500).send({
 						msg: error,
 						code: 401
 					});
@@ -100,7 +103,6 @@ router.post('/login', function(req, res) {
 	let email = decrypt(req.body.email);
 	const password = decrypt(req.body.password);
 	let userOrEmail = 'username';
-	email=email.toLowerCase();
 	
 	if(email===false || password===false){
 		res.status(400).send({
@@ -122,7 +124,8 @@ router.post('/login', function(req, res) {
 
 	db.query('SELECT * FROM users WHERE ' + userOrEmail + ' = ?', [ email ], function(err, result) {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 401
 			});
@@ -139,7 +142,8 @@ router.post('/login', function(req, res) {
 
 		bcrypt.compare(password, result[0].password, function(error, response) {
 			if (error){
-				throw res.status(500).send({
+				console.error(err);
+				res.status(500).send({
 					msg: error,
 					code: 402
 				});
@@ -169,8 +173,7 @@ router.post('/login', function(req, res) {
 				lastname: result[0].lastname,
 				userID: result[0].userID,
 				username: email,
-				role: result[0].role,
-				loggedIn: true
+				role: result[0].role
 			};
 
 			res.status(200).send({

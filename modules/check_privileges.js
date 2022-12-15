@@ -13,32 +13,33 @@ let checkPrivileges = (endpoint, role, prüfstück=false, options=false) => {
     const pruefer = "pruefer";
     const azubi = "azubi";
     switch(endpoint){
-        case "files/stream":
-        case "files/download":
-        case "films/get":
-        case "films/listFiles":
+        case "/files/stream":
+        case "/files/download":
+        case "/films/get":
+        case "/films/listFiles":
+            console.log([admin, lehrerMedien, lehrer, azubi].indexOf(role)!==-1)
             if((!prüfstück && [admin, lehrerMedien, lehrer, azubi].indexOf(role)!==-1)
             || (prüfstück && [admin, pruefer].indexOf(role)!==-1))
                 return true;
             break;
 
-        case "files/upload":
-        case "films/delete":
-        case "films/create":
-        case "films/update":
+        case "/files/upload":
+        case "/films/delete":
+        case "/films/create":
+        case "/films/update":
             if((!prüfstück && [admin, lehrerMedien].indexOf(role)!==-1)
             || (prüfstück && [admin, pruefer].indexOf(role)!==-1))
                 return true;
             break;
         
-        case "users/get":
-        case "users/list":
-        case "users/delete":
+        case "/users/get":
+        case "/users/list":
+        case "/users/delete":
             if([admin].indexOf(role)!==-1)
                 return true;
             break;
         
-        case "users/updateRole":
+        case "/users/updateRole":
             if([admin, lehrerMedien, lehrer].indexOf(role)!==-1 && options!==false && options.oldRole==null && options.newRole==azubi)
                 return true;
             if([admin].indexOf(role)!==-1)

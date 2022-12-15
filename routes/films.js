@@ -9,6 +9,7 @@ const { checkPrivileges } = require('../modules/check_privileges');
 
 
 router.get("/get", (req, res) => {
+	console.log(req.session)
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
@@ -16,6 +17,15 @@ router.get("/get", (req, res) => {
 		});
 		return;
 	}
+
+	if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role)){
+		res.status(400).send({
+			msg: 'Missing privileges',
+			code: 103
+		});
+		return;
+	}
+	
 	let prüfstück=false;
 	if(["admin", "pruefer"].indexOf(req.session.user.role)!==-1){
 		prüfstück=true;
@@ -35,7 +45,8 @@ router.get("/get", (req, res) => {
 		queryString+="(Filmtitel Like ? or Autor LIKE ? or Mitwirkende LIKE ? or Klasse like ? or Stichworte like ?)"
 	db.query(queryString, (filmQuery.length>0)?[filmQuery, filmQuery, filmQuery, filmQuery, filmQuery]:[], function (err, result) {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 402
 			});
@@ -70,7 +81,8 @@ router.get("/listFiles", (req, res) => {
 
 	db.query("SELECT ID, Prüfstück FROM FilmDateien, Film WHERE Film.ID = ? AND Film.ID = FilmDateien.FilmID", [FilmID], function (err, result) {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 402
 			});
@@ -113,7 +125,8 @@ router.delete('/delete', (req, res) => {
 	
 	db.query("SELECT Prüfstück FROM Film WHERE FilmID = ?", [filmID], function (err, result) {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 402
 			});
@@ -138,7 +151,8 @@ router.delete('/delete', (req, res) => {
 
 		db.query('DELETE FROM Film WHERE ID = ?; DELETE FROM FilmDateien WHERE FilmID = ?;',[ filmID, filmID ],(err2, result2) => {
 			if (err2){
-				throw res.status(500).send({
+				console.error(err2);
+				res.status(500).send({
 					msg: err2,
 					code: 402
 				});
@@ -184,7 +198,8 @@ router.put('/create', (req, res) => {
 
 	db.query('INSERT INTO Film ('+replace+') VALUE ('+replace+')', arrayOfAttributes.concat(arrayOfValues), (err, result) => {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 402
 			});
@@ -216,7 +231,8 @@ router.patch("/update", (req, res) => {
 	}
 	db.query("SELECT Prüfstück FROM Film WHERE ID = ?", [FilmId], function (err, result) {
 		if (err){
-			throw res.status(500).send({
+			console.error(err);
+			res.status(500).send({
 				msg: err,
 				code: 402
 			});
@@ -279,7 +295,8 @@ router.patch("/update", (req, res) => {
 
 		db.query(updateQuery, arrayOfValues, function (err, result) {
 			if (err){
-				throw res.status(500).send({
+				console.error(err);
+				res.status(500).send({
 					msg: err,
 					code: 402
 				});
