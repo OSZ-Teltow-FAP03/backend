@@ -4,7 +4,7 @@
  * @param role - Role of User (req.session.user.role).
  * @param prüfstück - Wheather a prüfstück is concerned.
  * @param options - Optional data that can influence privileges.
- * @returns A boolean.
+ * @returns True if user has the required Privileges else returns false.
  */
 let checkPrivileges = (endpoint, role, prüfstück, options=false) => {
     const admin="admin";
