@@ -19,7 +19,7 @@ router.post('/register', function(req, res) {
 	if(name===false || lastname===false || username===false || email===false || password===false){
 		res.status(400).send({
 			msg: 'Request not valid',
-			code: 104
+			code: 101
 		});
 		return;
 	}
@@ -30,23 +30,23 @@ router.post('/register', function(req, res) {
 
 	if (!isEmail(email)) {
 		res.status(400).send({
-			msg: 'Invalid email',
-			code: 102
+			msg: 'Email not valid',
+			code: 105
 		});
 		return;
 	}
 
 	if (!checkUsername(username)) {
 		res.status(400).send({
-			msg: 'Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.',
-			code: 103
+			msg: 'Username has invalid characters',
+			code: 107
 		});
 		return;
 	}
 
 	if (password.length < 8){
 		res.status(400).send({
-			msg: 'Password must be at least 8 characters long.',
+			msg: 'Password must be at least 8 characters long',
 			code: 106
 		});
 		return;
@@ -64,7 +64,7 @@ router.post('/register', function(req, res) {
 		if (result.length != 0) {
 			res.status(500).send({
 				msg: 'Username or Email already registered',
-				code: 101
+				code: 104
 			});
 			return;
 		}
@@ -89,7 +89,7 @@ router.post('/register', function(req, res) {
 
 				res.status(200).send({
 					msg: 'User registered',
-					code: 201
+					code: 202
 				});
 			});
 		});
@@ -105,7 +105,7 @@ router.post('/login', function(req, res) {
 	if(email===false || password===false){
 		res.status(400).send({
 			msg: 'Request not valid',
-			code: 104
+			code: 101
 		});
 		return;
 	}
@@ -115,7 +115,7 @@ router.post('/login', function(req, res) {
 	} else if (!checkUsername(email)) {
 		res.status(500).send({
 			msg: 'Username/Email or password incorrect',
-			code: 105
+			code: 108
 		});
 		return;
 	}
@@ -132,7 +132,7 @@ router.post('/login', function(req, res) {
 		if (result.length == 0) {
 			res.status(500).send({
 				msg: 'Username/Email or password incorrect',
-				code: 105
+				code: 108
 			});
 			return;
 		}
@@ -149,7 +149,7 @@ router.post('/login', function(req, res) {
 			if (response == false) {
 				res.status(400).send({
 					msg: 'Username/Email or password incorrect',
-					code: 105
+					code: 108
 				});
 				return;
 			}
@@ -157,7 +157,7 @@ router.post('/login', function(req, res) {
 			if (req.session.user) {
 				res.status(200).send({
 					msg: 'User logged in',
-					code: 202,
+					code: 203,
 					data: req.session.user
 				});
 				return;
@@ -175,7 +175,7 @@ router.post('/login', function(req, res) {
 
 			res.status(200).send({
 				msg: 'User logged in',
-				code: 202,
+				code: 203,
 				data: req.session.user
 			});
 		});
@@ -187,7 +187,7 @@ router.get('/logout', function(req, res, next) {
 	clearAllcookie(req, res);
 	res.status(200).send({
 		msg: 'User logged out',
-		code: 203
+		code: 204
 	});
 	next();
 });
