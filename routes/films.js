@@ -5,6 +5,7 @@ const {
 	encrypt,
 	decrypt
 } = require('../modules/crpyto');
+const { checkPrivileges } = require('../modules/check_privileges');
 
 
 router.get("/get", (req, res) => {
