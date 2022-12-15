@@ -12,7 +12,7 @@ router.get("/get", (req, res) => {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
-			code: 107
+			code: 102
 		});
 		return;
 	}
@@ -44,7 +44,7 @@ router.get("/get", (req, res) => {
 
 		res.status(200).send({
 			msg: "Data sent",
-			code: 204,
+			code: 201,
 			data: result
 		});
 	});
@@ -54,7 +54,7 @@ router.get("/listFiles", (req, res) => {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
-			code: 107
+			code: 102
 		});
 		return;
 	}
@@ -63,7 +63,7 @@ router.get("/listFiles", (req, res) => {
 	if(!FilmID){
 		res.status(400).send({
 			msg: 'FilmID not set',
-			code: 112
+			code: 111
 		});
 		return;
 	}
@@ -80,14 +80,14 @@ router.get("/listFiles", (req, res) => {
 		if(result.length>0 && !checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
 			res.status(400).send({
 				msg: 'Missing privileges',
-				code: 113
+				code: 103
 			});
 			return;
 		}
 
 		res.status(200).send({
 			msg: "Data sent",
-			code: 204,
+			code: 201,
 			data: result
 		});
 	});
@@ -97,7 +97,7 @@ router.delete('/delete', (req, res) => {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
-			code: 107
+			code: 102
 		});
 		return;
 	}
@@ -106,7 +106,7 @@ router.delete('/delete', (req, res) => {
 	if(!FilmID){
 		res.status(400).send({
 			msg: 'FilmID not set',
-			code: 112
+			code: 111
 		});
 		return;
 	}
@@ -123,7 +123,7 @@ router.delete('/delete', (req, res) => {
 		if(result.length!==1){
 			res.status(400).send({
 				msg: 'Film not found',
-				code: 116
+				code: 112
 			});
 			return;
 		}
@@ -131,7 +131,7 @@ router.delete('/delete', (req, res) => {
 		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
 			res.status(400).send({
 				msg: 'Missing privileges',
-				code: 113
+				code: 103
 			});
 			return;
 		}
@@ -147,7 +147,7 @@ router.delete('/delete', (req, res) => {
 			
 			res.status(200).send({
 				msg: 'Film deleted',
-				code: 210
+				code: 209
 			});
 		});
 	});
@@ -157,7 +157,7 @@ router.put('/create', (req, res) => {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
-			code: 107
+			code: 102
 		});
 		return;
 	}
@@ -166,7 +166,7 @@ router.put('/create', (req, res) => {
 	if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, Prüfstück)){
 		res.status(400).send({
 			msg: 'Missing privileges',
-			code: 113
+			code: 103
 		});
 		return;
 	}
@@ -202,7 +202,7 @@ router.patch("/update", (req, res) => {
 	if(!req.session.user){
 		res.status(400).send({
 			msg: 'Not logged in',
-			code: 107
+			code: 102
 		});
 		return;
 	}
@@ -210,7 +210,7 @@ router.patch("/update", (req, res) => {
 	if(!FilmID){
 		res.status(400).send({
 			msg: 'FilmID not set',
-			code: 112
+			code: 111
 		});
 		return;
 	}
@@ -226,7 +226,7 @@ router.patch("/update", (req, res) => {
 		if(result.length!==1){
 			res.status(400).send({
 				msg: 'Film not found',
-				code: 116
+				code: 112
 			});
 			return;
 		}
@@ -237,7 +237,7 @@ router.patch("/update", (req, res) => {
 		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, prüfstück)){
 			res.status(400).send({
 				msg: 'Missing privileges',
-				code: 113
+				code: 103
 			});
 			return;
 		}
@@ -265,7 +265,7 @@ router.patch("/update", (req, res) => {
 		if (arrayOfValues.length == 0) {
 			res.status(200).send({
 				msg: 'Film updated',
-				code: 209
+				code: 208
 			});
 			return;
 		}
@@ -288,7 +288,7 @@ router.patch("/update", (req, res) => {
 
 			res.status(200).send({
 				msg: 'Film updated',
-				code: 209
+				code: 208
 			});
 		});
 	});
