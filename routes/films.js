@@ -263,9 +263,9 @@ router.patch("/update", (req, res) => {
 
 		//When no param is recognised in body then nothing is changed
 		if (arrayOfValues.length == 0) {
-			res.status(400).send({
-				msg: 'Nothing to change',
-				code: 115
+			res.status(200).send({
+				msg: 'Film updated',
+				code: 209
 			});
 			return;
 		}
