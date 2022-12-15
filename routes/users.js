@@ -38,7 +38,7 @@ router.get('/get', (req, res) => {
 			});
 			return;
 		}
-		res.send({
+		res.status(200).send({
 			msg: "Data sent",
 			code: 204,
 			data: result
@@ -97,7 +97,7 @@ router.patch('/updateRole', (req, res) => {
 				});
 				return;
 			}
-			res.send({
+			res.status(200).send({
 				msg: "User updated",
 				code: 205
 			});
@@ -130,7 +130,7 @@ router.get('/list', (req, res) => {
 			});
 			return;
 		}
-		res.send({
+		res.status(200).send({
 			msg: "Data sent",
 			code: 204,
 			data: result
@@ -172,7 +172,7 @@ router.delete('/delete', (req, res) => {
 			});
 			return;
 		}
-		res.send({
+		res.status(200).send({
 			code: 206,
 			msg: "User deleted"
 		});
