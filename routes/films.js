@@ -42,7 +42,7 @@ router.get("/get", (req, res) => {
 			return;
 		}
 
-		res.send({
+		res.status(200).send({
 			msg: "Data sent",
 			code: 204,
 			data: result
@@ -85,7 +85,7 @@ router.get("/listFiles", (req, res) => {
 			return;
 		}
 
-		res.send({
+		res.status(200).send({
 			msg: "Data sent",
 			code: 204,
 			data: result
@@ -144,10 +144,10 @@ router.delete('/delete', (req, res) => {
 				});
 				return;
 			}
-
-			res.send({
+			
+			res.status(200).send({
 				msg: 'Film deleted',
-				code: 200
+				code: 210
 			});
 		});
 	});
@@ -191,7 +191,7 @@ router.put('/create', (req, res) => {
 			return;
 		}
 
-		res.send({
+		res.status(200).send({
 			msg: 'Film inserted',
 			code: 207
 		});
@@ -286,7 +286,7 @@ router.patch("/update", (req, res) => {
 				return;
 			}
 
-			res.send({
+			res.status(200).send({
 				msg: 'Film updated',
 				code: 209
 			});
