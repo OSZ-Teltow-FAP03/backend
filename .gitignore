@@ -2,11 +2,14 @@
 /node_modules
 
 # testing
+./dev/error/*
+./dev/out/*
+
 
 # production
 /build
-
-/https_key
+config/https_key
+dev/log
 
 # misc
 .DS_Store
@@ -18,7 +21,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .env
-.vscode
-.prettierrc
 .gitignore
+.prettierrc
+.vscode
 /uploads

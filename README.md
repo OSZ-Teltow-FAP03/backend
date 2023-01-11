@@ -2,15 +2,58 @@
     backend
 </h1>
 
-
-## 💻 Projekt
-
+<div align="center">
 
 Before start, you need to have the following tools installed on computer: [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/) and/or [Yarn](https://yarnpkg.com/). [MySQl::Workbench](https://www.mysql.com/products/workbench/).
+</div>
 
-[How To Install MySQL on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04)
+## Table of Contents
+- [Quick Start](#quick-start)
+  - [MySQL install](#mysql-install)
+  - [Creating an SSL Certificate](#creating-an-ssl-certificate)
+- [errorcodes messages](#errorcodes-messages)
+- [API](#api)
+- [Sessions](#sessions)
+    - [Flow](#flow)
+    - [Features](#features)
+  - [Cookies](#cookies)
+    - [Security](#security)
+    - [Attributes](#attributes)
+    - [Flags](#flags)
+    - [CSRF](#csrf)
+  - [Tokens](#tokens)
+    - [Flow](#flow-1)
+    - [Features](#features-1)
+  - [JWT (JSON Web Tokens)](#jwt-json-web-tokens)
+    - [Security](#security-1)
+    - [XSS](#xss)
+  - [Client Storage](#client-storage)
+    - [`localStorage`](#localstorage)
+      - [Pros](#pros)
+      - [Cons](#cons)
+      - [Best for](#best-for)
+      - [Worst for](#worst-for)
+  - [Sessions vs. JWT](#sessions-vs-jwt)
+    - [Sessions + Cookies](#sessions--cookies)
+      - [Pros](#pros-1)
+      - [Cons](#cons-1)
+    - [JWT Auth](#jwt-auth)
+      - [Pros](#pros-2)
+      - [Cons](#cons-2)
+  - [Options for Auth in SPAs / APIs](#options-for-auth-in-spas--apis)
+    - [Stateless JWT](#stateless-jwt)
+    - [Stateful JWT](#stateful-jwt)
+    - [Sessions](#sessions-1)
+  - [Verdict](#verdict)
+  - [Why not JWT?](#why-not-jwt)
+    - [Important](#important)
+    - [Auxiliary measures](#auxiliary-measures)
+- [How to encrypt and decrypt in nodejs](#how-to-encrypt-and-decrypt-in-nodejs)
+  - [1. Hash functions with Bcrypt (one-way)](#1-hash-functions-with-bcrypt-one-way)
+- [2. Simple Encryption and Decryption (two-way)](#2-simple-encryption-and-decryption-two-way)
+- [Libraries used](#libraries-used)
 
-### 📗 Quick Start
+# Quick Start
 
 Install backend by running either of the following:
 > Install NodeJS LTS from NodeJs Official Page (NOTE: Product only works with LTS version)
@@ -21,12 +64,15 @@ https://github.com/OSZ-Teltow-FAP03/backend.git
 ```
 Run in terminal this command:
 ```bash
-cd backend && npm i 
+cd backend && npm i
 ```
+## MySQL install
+if you want to install the MySQL server on your Ubuntu machine
+[How To Install MySQL on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04);
 ## Creating an SSL Certificate
 
 1. First, generate a key file used for self-signed certificate generation with the command below. The command will create a private key as a file called key.pem.
-  
+
 ```bash
 mkdir https_key && cd https_key && openssl genrsa -out key.pem
 ```
@@ -51,7 +97,7 @@ info about .env variable
 ```env
 host            =   ""  // Host name for database connection. //! localhost
 user            =   ""  // Database user. //! root
-password        =   ""  // Password for the above database user. 
+password        =   ""  // Password for the above database user.
 port            =   ""  // Port number for database connection. //! 3306
 database        =   ""  // Database name. //! auth_db
 SERVERPORT      =   ""  // Server port //! 4000
@@ -62,14 +108,30 @@ OriginFrontendServer = "" //frontend server //! localhost:8080
 
 Then run this command to start your local server
 ```bash
-npm start 
+npm start
 ```
 or
 ```bash
 npm start
 ```
 ----
-## Sessions
+
+# API
+Server will listen on port `3001`, and it expose the following APIs:
+
+
+- **POST** - `/auth/register` - Register a new user
+  - **name** - *string*
+  - **lastname** - *string*
+  - **username** - *string*
+  - **email** - *string*
+  - **password** - *string*
+
+- **POST** - `/auth/login` - Login user
+  - **email** - *string* or **username** - *string*
+  - **password** - *string*
+
+# Sessions
 
 ### Flow
 
@@ -471,8 +533,8 @@ In my projects I essentially find useful two ways to encrypt strings: hash funct
 
 Hash functions are essentials for store encrypted password, and the best library for nodejs is Bcrypt. You can find more information in this article: why use Bcrypt?.
 
-Install: 
-```bash 
+Install:
+```bash
 npm install bcrypt
 ```
 To hash a password:
@@ -499,7 +561,7 @@ In other scenarios I needed to crypt strings in order to hide texts to users but
 
 Install:
 
-```bash 
+```bash
 npm install crypto
 ```
 To encrypt and decrypt a string:
@@ -561,9 +623,10 @@ A table that shows the error and status codes and their respective messages.
 | 401 | DB Error|
 | 402 | Bycrypt Error|
 
-## 🚀 Libraries used
+# Libraries used
 
-  Backend: 
+* [pm2](https://www.npmjs.com/package/pm2) # for production
+* [nodemon](https://www.npmjs.com/package/nodemon) # for Dev
 * [express](https://www.npmjs.com/package/express)
 * [express-session](https://www.npmjs.com/package/express-session)
 * [express-fileupload](https://www.npmjs.com/package/express-fileupload)
@@ -571,9 +634,7 @@ A table that shows the error and status codes and their respective messages.
 * [cookie-parser](https://www.npmjs.com/package/cookie-parser)
 * [body-parser](https://www.npmjs.com/package/body-parser)
 * [mysql](https://www.npmjs.com/package/mysql)
-* [nodemon](https://www.npmjs.com/package/nodemon)
 * [cors](https://www.npmjs.com/package/cors)
 * [Formik](https://www.npmjs.com/package/formik)
 * [bcrypt](https://www.npmjs.com/package/bcrypt)
 * [crypto](https://www.npmjs.com/package/crypto)
-
