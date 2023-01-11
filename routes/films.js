@@ -1,32 +1,62 @@
 const express = require("express");
-const { crossOriginResourcePolicy } = require("helmet");
-const router = express.Router(); // Creating a router object.
+const router = express.Router();
 const db = require("../database/index");
-const {
-	encrypt,
-	decrypt
-} = require('../modules/crpyto');
+const { decrypt } = require('../modules/crpyto');
+const { checkPrivileges } = require('../modules/check_privileges');
+const fs = require('fs');
 
-router.get("/get", (req, res) => { //https://localhost:40324/films/get?filmQuery={query}
-    if (req.session.user) {
-            //when queryParam filmQuery is given (simple search)
-        if (req.query.filmQuery !== undefined) {
-            let filmQuery = `%${req.query.filmQuery}%`;
-            db.query("SELECT * FROM Film WHERE Filmtitel Like ? or Autor LIKE ? or Mitwirkende LIKE ? or Klasse like ? or Stichworte like ?", [filmQuery, filmQuery, filmQuery, filmQuery, filmQuery], function (err, result) {
-                if (err) throw err;
-                res.send(result);
-            });
-        } else {
-            db.query('SELECT * FROM Film', function (err, result) {
-                if (err) throw err;
-                res.send(result);
-            });
-        }
-    }
-    else {
-        res.status(400).send("not logged in")
-        return
-    }
+
+router.get("/get", (req, res) => {
+	console.log(req.session)
+	if(!req.session.user){
+		res.status(400).send({
+			msg: 'Not logged in',
+			code: 102
+		});
+		return;
+	}
+
+	if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role)){
+		res.status(400).send({
+			msg: 'Missing privileges',
+			code: 103
+		});
+		return;
+	}
+	
+	let prüfstück=false;
+	if(["admin", "pruefer"].indexOf(req.session.user.role)!==-1){
+		prüfstück=true;
+	}
+	let filmQuery="";
+	if(req.query.filmQuery!==undefined && req.query.filmQuery.length>0)
+		filmQuery = `%${req.query.filmQuery}%`;
+	
+	let queryString="SELECT * FROM Film";
+	if(!prüfstück || filmQuery.length>0)
+		queryString+=" WHERE ";
+	if(!prüfstück)
+		queryString+="Prüfstück = 0";
+	if(!prüfstück && filmQuery.length>0)
+		queryString+=" AND ";
+	if(filmQuery.length>0)
+		queryString+="(Filmtitel Like ? or Autor LIKE ? or Mitwirkende LIKE ? or Klasse like ? or Stichworte like ?)"
+	db.query(queryString, (filmQuery.length>0)?[filmQuery, filmQuery, filmQuery, filmQuery, filmQuery]:[], function (err, result) {
+		if (err){
+			console.error(err);
+			res.status(500).send({
+				msg: err,
+				code: 402
+			});
+			return;
+		}
+
+		res.status(200).send({
+			msg: "Data sent",
+			code: 201,
+			data: result
+		});
+	});
 });
 
 router.patch("/patch", (req, res) => {//https://localhost:40324/films/patch
@@ -137,120 +167,258 @@ router.patch("/patch", (req, res) => {//https://localhost:40324/films/patch
 
 router.get("/listFiles", (req, res) => {
 	if(!req.session.user){
-		res.status(400).send("Not logged in");
+		res.status(400).send({
+			msg: 'Not logged in',
+			code: 102
+		});
 		return;
 	}
+
 	const FilmID=req.query.FilmID;
 	if(!FilmID){
-		res.status(400).send("FilmID not set");
-		return;
-	}
-    db.query("SELECT ID, Dateipfad FROM FilmDateien WHERE FilmID = ?", [FilmID], function (err, result) {
-        if (err) throw err;
-        res.send(result);
-    });
-});
-
-/* This is a post request that is used to delete a film from db. */ 
-/* test: https://localhost:40324/filmDelete/delete (json: {"filmID":"1"}) */
-router.delete('/delete', (req, res) => {
-	/* check if user is logged in */
-	if(!req.session.user){
-		res.status(400).send("Not logged in");
+		res.status(400).send({
+			msg: 'FilmID not set',
+			code: 111
+		});
 		return;
 	}
 
-	const filmID = decrypt(req.body.filmID);
-	const prüfstück = decrypt(req.body.Prüfstück)
-	const rights = false;
-	switch (req.session.user.role) {
-		case "admin":
-			rights = true;
-			break;
-		case "pruefer":
-			if(prüfstück) rights = true;
-			break;
-		case "lehrerMedien":
-			if(!prüfstück) rights = true;
-			break;
-		default:
-			break;
-	}
-	if (!rights) return res.status(400).send("Not enough privileges"); 
-
-	/* Trying to delete the film */	
-	db.query('DELETE FROM Film WHERE ID = ?',[ filmID ],(error, response) => {
-		if (error) {
-			res.send({
-				msg: error
+	db.query("SELECT ID, Prüfstück FROM FilmDateien, Film WHERE Film.ID = ? AND Film.ID = FilmDateien.FilmID", [FilmID], function (err, result) {
+		if (err){
+			console.error(err);
+			res.status(500).send({
+				msg: err,
+				code: 402
 			});
-		} else {
-			/* delete Filmdateien */
-			db.query('DELETE FROM FilmDateien WHERE FilmID = ?',[ filmID ],(error2, response2) => {
-				if (error2) {
-					res.send({
-						msg: error2
-					});
-				} else {
-					res.send({
-						/* Film got deleted */
-						msg: 'Film successfully deleted',
-						code: 200
-					});
-				}
-			});
+			return;
 		}
-	});		
-})
-/* It's a mess. */
-router.post('/create', (req, res) => {
-    if (!req.session.user) return res.status(400).send("Not logged in");
-    const Prüfstück = decrypt(req.body.Prüfstück)
+		
+		if(result.length>0 && !checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
+			res.status(400).send({
+				msg: 'Missing privileges',
+				code: 103
+			});
+			return;
+		}
 
-    const rights = false;
-    switch (req.session.user.role) {
-	 		case "admin":
-	 			rights = true;
-	 			break;
-	 		case "pruefer":
-	 			if(Prüfstück) rights = true;
-	 			break;
-	 		case "lehrerMedien":
-	 			if(!Prüfstück) rights = true;
-	 			break;
-	 		default:
-	 			break;
-	}
-    if (!rights) return res.status(400).send("Not enough privileges");
-    var attributes = ""
-    var arrayOfValues=[];
-    var vals=""
-    Object.entries(req.body).forEach(entry => {
-        const [key, value] = entry;
-        arrayOfValues.push(value);
-        attributes += key + ',';
-        vals +=  '?,';
-    });
-    attributes = attributes.slice(0, -1);
-    vals = vals.slice(0, -1);
-
-    /* This is inserting the data into the database. */
-    db.query(
-    	'INSERT INTO Film ('+attributes+') VALUE ('+vals+')',
-    	arrayOfValues,
-    	(error, response) => {
-    		if (error) {
-    			res.send({
-    				msg: error
-    			});
-    		} else {
-    			res.send({
-    				msg: 'Film inserted',
-    				code: 201
-    		    });
-		    }
-	    }
-	);
+		res.status(200).send({
+			msg: "Data sent",
+			code: 201,
+			data: result
+		});
+	});
 });
-/* This is exporting the router object. */
+
+router.delete('/delete', (req, res) => {
+	if(!req.session.user){
+		res.status(400).send({
+			msg: 'Not logged in',
+			code: 102
+		});
+		return;
+	}
+
+	const filmID = decrypt(req.body.FilmID);
+	if(!FilmID){
+		res.status(400).send({
+			msg: 'FilmID not set',
+			code: 111
+		});
+		return;
+	}
+	
+	db.query("SELECT Prüfstück FROM Film WHERE FilmID = ?", [filmID], function (err, result) {
+		if (err){
+			console.error(err);
+			res.status(500).send({
+				msg: err,
+				code: 402
+			});
+			return;
+		}
+
+		if(result.length!==1){
+			res.status(400).send({
+				msg: 'Film not found',
+				code: 112
+			});
+			return;
+		}
+		
+		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
+			res.status(400).send({
+				msg: 'Missing privileges',
+				code: 103
+			});
+			return;
+		}
+
+		db.query('DELETE FROM Film WHERE ID = ?; DELETE FROM FilmDateien WHERE FilmID = ?;',[ filmID, filmID ],(err2, result2) => {
+			if (err2){
+				console.error(err2);
+				res.status(500).send({
+					msg: err2,
+					code: 402
+				});
+				return;
+			}
+			let rootFolder=process.env.filePath;
+			if(rootFolder.slice(-1)!=="/")
+				rootFolder+="/";
+			let path=rootFolder + `${filmID}`
+
+			fs.rmSync(path, { recursive: true, force: true })
+			
+			res.status(200).send({
+				msg: 'Film deleted',
+				code: 209
+			});
+		});
+	});
+});
+
+router.put('/create', (req, res) => {
+	if(!req.session.user){
+		res.status(400).send({
+			msg: 'Not logged in',
+			code: 102
+		});
+		return;
+	}
+
+	const Prüfstück = decrypt(req.body.Prüfstück)=="true";
+	if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, Prüfstück)){
+		res.status(400).send({
+			msg: 'Missing privileges',
+			code: 103
+		});
+		return;
+	}
+
+	let arrayOfAttributes=[];
+	let arrayOfValues=[];
+	let replace=""
+	Object.entries(req.body).forEach(entry => {
+		const [key, value] = entry;
+		arrayOfAttributes.push(key);
+		arrayOfValues.push(decrypt(value));
+		replace +=  '?, ';
+	});
+	replace = attributes.slice(0, -1);
+
+	db.query('INSERT INTO Film ('+replace+') VALUE ('+replace+')', arrayOfAttributes.concat(arrayOfValues), (err, result) => {
+		if (err){
+			console.error(err);
+			res.status(500).send({
+				msg: err,
+				code: 402
+			});
+			return;
+		}
+
+		res.status(200).send({
+			msg: 'Film inserted',
+			code: 207
+		});
+	});
+});
+
+router.patch("/update", (req, res) => {
+	if(!req.session.user){
+		res.status(400).send({
+			msg: 'Not logged in',
+			code: 102
+		});
+		return;
+	}
+	const FilmId = decrypt(req.body.ID);
+	if(!FilmID){
+		res.status(400).send({
+			msg: 'FilmID not set',
+			code: 111
+		});
+		return;
+	}
+	db.query("SELECT Prüfstück FROM Film WHERE ID = ?", [FilmId], function (err, result) {
+		if (err){
+			console.error(err);
+			res.status(500).send({
+				msg: err,
+				code: 402
+			});
+			return;
+		}
+
+		if(result.length!==1){
+			res.status(400).send({
+				msg: 'Film not found',
+				code: 112
+			});
+			return;
+		}
+		
+		const prüfstück = result[0].Prüfstück;
+		let prüfstückBody = decrypt(req.body.Prüfstück);
+		
+		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, prüfstück)){
+			res.status(400).send({
+				msg: 'Missing privileges',
+				code: 103
+			});
+			return;
+		}
+
+		//prüfstückänderung nicht zulassen wenn user nicht admin
+		if(req.session.user.role != "admin") {
+			prüfstückBody = prüfstück
+		}
+
+		let arrayOfValues = [];
+		let updateQuery = 'UPDATE Film SET ';
+
+		//iterating over req body to dynamically enter attribute names to sql query
+		Object.entries(req.body).forEach(entry => {
+			const [key, value] = entry;
+			if (key != "Prüfstück") {
+				arrayOfValues.push(decrypt(value));
+			} else{
+				arrayOfValues.push(prüfstückBody)
+			}
+			updateQuery += key + ' = ?,';
+		});
+
+		//When no param is recognised in body then nothing is changed
+		if (arrayOfValues.length == 0) {
+			res.status(200).send({
+				msg: 'Film updated',
+				code: 208
+			});
+			return;
+		}
+
+		//Removes last character from string => removes the comma
+		updateQuery = updateQuery.slice(0, -1);
+
+		//adds the Id to the query
+		arrayOfValues.push(FilmId);
+		updateQuery += ' WHERE Film.ID = ?'
+
+		db.query(updateQuery, arrayOfValues, function (err, result) {
+			if (err){
+				console.error(err);
+				res.status(500).send({
+					msg: err,
+					code: 402
+				});
+				return;
+			}
+
+			res.status(200).send({
+				msg: 'Film updated',
+				code: 208
+			});
+		});
+	});
+});
+
 module.exports = router;

@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router(); // Creating a router object.
 const db = require('../database/index');
+const { decrypt } = require('../modules/crpyto');
+const { checkPrivileges } = require('../modules/check_privileges');
 const fs = require('fs');
 const path = require('path');
+
 
 function checkFileExistsSync(filepath){
 	let flag = true;
@@ -14,34 +17,71 @@ function checkFileExistsSync(filepath){
 	return flag;
 }
 
-router.get('/stream', (req, res) => {
+router.get('/stream', function(req, res) {
 	if(!req.session.user){
-		res.status(400).send("Not logged in");
+		res.status(400).send({
+			msg: 'Not logged in',
+			code: 102
+		});
 		return;
 	}
+
 	const range = req.headers.range;
 	if (!range) {
-		res.status(400).send("Requires Range header");
+		res.status(416).send({
+			msg: 'Requires Range header',
+			code: 116
+		});
 		return;
 	}
+
 	const FileID=req.query.FileID;
 	if(!FileID){
-		res.status(400).send("FileID not set");
+		res.status(400).send({
+			msg: 'FileID not set',
+			code: 113
+		});
 		return;
 	}
-	db.query('SELECT * FROM FilmDateien where FilmDateien.ID = ?', [FileID], function (err, result) {
-		if (err) throw err;
-		const filePath = result[0].Dateipfad;
 
+	db.query('SELECT Prüfstück, Dateipfad FROM FilmDateien, Film WHERE FilmDateien.ID = ? AND Film.ID = FilmDateien.FilmID', [FileID], function(err, result) {
+		if (err){
+			console.error(err);
+			res.status(500).send({
+				msg: err,
+				code: 402
+			});
+			return;
+		}
+
+		if(result.length!==1){
+			res.status(400).send({
+				msg: 'File not found',
+				code: 114
+			});
+			return;
+		}
+
+		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
+			res.status(400).send({
+				msg: 'Missing privileges',
+				code: 103
+			});
+			return;
+		}
+
+		const filePath = result[0].Dateipfad;
 		if(!checkFileExistsSync(filePath)){
-			res.status(400).send("File not found");
+			res.status(400).send({
+				msg: 'File not found',
+				code: 114
+			});
 			return;
 		}
 
 		const fileSize = fs.statSync(filePath).size;
-
 		const fileExtension=path.extname(filePath);
-		var contentType;
+		let contentType;
 		switch (fileExtension) {
 			case ".mp4":
 				contentType="video/mp4";
@@ -58,7 +98,10 @@ router.get('/stream', (req, res) => {
 		}
 
 		if(!contentType){
-			res.status(400).send("File not streamable");
+			res.status(400).send({
+				msg: 'File not streamable',
+				code: 115
+			});
 			return;
 		}
 
@@ -79,28 +122,141 @@ router.get('/stream', (req, res) => {
 	});
 });
 
-router.get('/download', (req, res) => {
+router.get('/download', function(req, res) {
 	if(!req.session.user){
-		res.status(400).send("Not logged in");
+		res.status(400).send({
+			msg: 'Not logged in',
+			code: 102
+		});
 		return;
 	}
+
 	const FileID=req.query.FileID;
 	if(!FileID){
-		res.status(400).send("FileID not set");
+		res.status(400).send({
+			msg: 'FileID not set',
+			code: 113
+		});
 		return;
 	}
-	db.query('SELECT * FROM FilmDateien where FilmDateien.ID = ?', [FileID], function (err, result) {
-		if (err) throw err;
-		const videoPath = result[0].Dateipfad;
 
-		if(!checkFileExistsSync(videoPath)){
-			res.status(400).send("File not found");
+	db.query('SELECT Prüfstück, Dateipfad FROM FilmDateien, Film WHERE FilmDateien.ID = ? AND Film.ID = FilmDateien.FilmID', [FileID], function(err, result) {
+		if (err){
+			console.error(err);
+			res.status(500).send({
+				msg: err,
+				code: 402
+			});
 			return;
 		}
 
+		if(result.length!==1){
+			res.status(400).send({
+				msg: 'File not found',
+				code: 114
+			});
+			return;
+		}
+
+		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
+			res.status(400).send({
+				msg: 'Missing privileges',
+				code: 103
+			});
+			return;
+		}
+
+		const videoPath = result[0].Dateipfad;
+		if(!checkFileExistsSync(videoPath)){
+			res.status(400).send({
+				msg: 'File not found',
+				code: 114
+			});
+			return;
+		}
+		
 		res.download(videoPath);
 	});
 });
 
-/* This is exporting the router object. */
+router.post('/upload', async (req, res) => {
+	if(!req.session.user){
+		res.status(400).send({
+			msg: 'Not logged in',
+			code: 102
+		});
+		return;
+	}
+
+	if(!req.files) {
+		res.status(400).send({
+			msg: 'File not found',
+			code: 114
+		});
+		return;
+	}
+
+	const FilmID=decrypt(req.body.FilmID);
+	if(!FilmID){
+		res.status(400).send({
+			msg: 'FilmID not set',
+			code: 111
+		});
+		return;
+	}
+
+	db.query('SELECT Prüfstück FROM Film WHERE Film.ID = ?', [FilmID], function(err, result) {
+		if (err){
+			console.error(err);
+			res.status(500).send({
+				msg: err,
+				code: 402
+			});
+			return;
+		}
+
+		if(result.length!==1){
+			res.status(400).send({
+				msg: 'Film not found',
+				code: 112
+			});
+			return;
+		}
+
+		if(!checkPrivileges(req.baseUrl+req.path, req.session.user.role, result[0].Prüfstück)){
+			res.status(400).send({
+				msg: 'Missing privileges',
+				code: 103
+			});
+			return;
+		}
+		let file = req.files.File;
+		let rootFolder=process.env.filePath;
+		if(rootFolder.slice(-1)!=="/")
+			rootFolder+="/";
+		let path=rootFolder + `${FilmID}/` + file.name
+		file.mv(path);
+
+		db.query('INSERT INTO FilmDateien (FilmID, Dateipfad) VALUES (?, ?)', [FilmID, path], function(err2, result2) {
+			if (err2){
+				console.error(err2);
+				res.status(500).send({
+					msg: err2,
+					code: 402
+				});
+				return;
+			}
+			res.status(200).send({
+				msg: 'File uploaded',
+				code: 210,
+				data: {
+					name: file.name,
+					mimetype: file.mimetype,
+					size: file.size
+				}
+			});
+		});
+	});
+});
+
 module.exports = router;

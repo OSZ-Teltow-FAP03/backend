@@ -10,6 +10,7 @@ const fs = require('fs');
 const os = require('os');
 const errorHandlers = require('./handlers/errorHandlers');
 const session = require('express-session');
+const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const { clearAllcookie, getSessionIDCookie } = require('./modules/cookie');
@@ -82,6 +83,10 @@ app.use(
 	})
 );
 
+app.use(fileUpload({
+	createParentPath: true
+}));
+
 app.use(express.json());
 /* This is a middleware that is used to parse the body of the request. */
 const corsOptions = {
@@ -120,21 +125,21 @@ app.use('/films', filmsRouter);
 const filesRouter = require('./routes/files');
 app.use('/files', filesRouter);
 
-const usermanagementRouter = require('./routes/user-management');
-app.use('/user-management', usermanagementRouter);
+const usersRouter = require('./routes/users');
+app.use('/users', usersRouter);
 
 // pass variables to our templates + all requests
 
 // If that above routes didnt work, we 404 them and forward to error handler
-app.use(errorHandlers.notFound);
+//app.use(errorHandlers.notFound);
 
 // Otherwise this was a really bad error we didn't expect! Shoot eh
 if (app.get('env') === 'development') {
 	/* Development Error Handler - Prints stack trace */
-	app.use(errorHandlers.developmentErrors);
+//	app.use(errorHandlers.developmentErrors);
 }
 // production error handler
-app.use(errorHandlers.productionErrors);
+//app.use(errorHandlers.productionErrors);
 
 /* This is telling the server to listen to port 4000. */
 const server = https

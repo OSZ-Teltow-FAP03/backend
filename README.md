@@ -102,9 +102,6 @@ port            =   ""  // Port number for database connection. //! 3306
 database        =   ""  // Database name. //! auth_db
 SERVERPORT      =   ""  // Server port //! 4000
 SESSION_SECRET  =   ""  // Session secret //! Harley Davidson
-algorithm       =   ""  // Algorithm used to generate the encryption //! aes-256-ctr
-secretKey       =   ""  // Secret key for the above encryption  //! vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3
-viByte          =   ""  // Encryption key for the above encryption //! 16
 OriginFrontendServer = "" //frontend server //! localhost:8080
 ```
 
@@ -118,30 +115,6 @@ or
 npm start
 ```
 ----
-
-# errorcodes messages
-
-
-A table that shows the error and status codes and their respective messages.
-| code  | Msg  |
-| :------------ |:---------------|
-| 101 | Username or Email already registered|
-| 102 | Invalid email|
-| 103 | Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen|
-| 104 | Not registered user!|
-| 105 | Username/Email or password incorrect|
-| 106 | Password must be at least 8 characters long|
-| 107 | Not logged in|
-| 108 | Requires Range header|
-| 109 | FileID not set|
-| 110 | File not found|
-| 111 | File not streamable|
-| 201 | User successfully registered|
-| 202 | User successfully logged in|
-| 203 | User successfully logged out|
-| 401 | DB Error|
-| 402 | Bycrypt Error|
-
 
 # API
 Server will listen on port `3001`, and it expose the following APIs:
@@ -441,7 +414,115 @@ Regardless of auth mechanism
 - two-factor auth
 - API throttling
 
+# Enpoints
+Server exposes the following Enpoints:
 
+
+- **POST** - `/auth/register` - Register a new user
+	- **name** - *Request Body encrypted string* -- First name
+	- **lastname** - *Request Body encrypted string* -- Last name
+	- **username** - *Request Body encrypted string* -- Username
+	- **email** - *Request Body encrypted string* -- Email
+	- **password** - *Request Body encrypted string* -- Password
+
+- **POST** - `/auth/login` - Login user
+  - **email** - *Request Body encrypted string* -- Email or Username of User
+  - **password** - *Request Body encrypted string* -- Password
+
+- **GET** - `/auth/logout` - Logout user
+
+- **GET** - `/files/stream` - Streams File if it is Streamable
+  - **FileID** - *Query Attribute integer* -- ID of the File
+  - **range** - *HTTP Header* -- Data Range automatically set by Player
+
+- **GET** - `/files/download` - Downloads File
+  - **FileID** - *Query Attribute integer* -- ID of the File
+
+- **POST** - `/files/upload` - Uploads File
+  - **FilmID** - *Request Body encrypted string* -- ID of the Film
+  - **File** - *Multipart/Form-Data File* -- see https://stackoverflow.com/questions/35722093/send-multipart-form-data-files-with-angular-using-http
+
+- **GET** - `/films/get` - Lists/Searches Film
+  - **filmQuery** - *Query Attribute string* -- Optional search string
+
+- **GET** - `/films/listFiles` - Lists Files assosiated with Film
+  - **FilmID** - *Query Attribute integer* -- ID of the Film
+
+- **DELETE** - `/films/delete` - Deletes Film
+  - **FilmID** - *Request Body encrypted string* -- ID of the Film
+
+- **POST** - `/films/create` - Creates Film
+  - **Filmtitel** - *Request Body encrypted string* -- Required
+  - **Status** - *Request Body encrypted string* -- Required
+  - **Lehrjahr** - *Request Body encrypted integer* -- Required
+  - **Stichworte** - *Request Body encrypted string* -- Required
+  - **Prüfstück** - *Request Body encrypted 1 or 0* -- Required
+  - **Programmtyp** - *Request Body encrypted string* -- Required
+  - **Erzählsatz** - *Request Body encrypted string* -- Required
+  - **Upload** - *Request Body encrypted date* -- Required
+  - **Erstellungsdatum** - *Request Body encrypted date* -- Required
+  - **Mitwirkende** - *Request Body encrypted string* -- Required
+  - **Erscheinungsdatum** - *Request Body encrypted date* -- Required
+  - **Tonformat** - *Request Body encrypted string* -- Optional
+  - **Bildformat** - *Request Body encrypted string* -- Optional
+  - **Bildfrequenz** - *Request Body encrypted string* -- Optional
+  - **Farbtiefe** - *Request Body encrypted string* -- Optional
+  - **Videocontainer** - *Request Body encrypted string* -- Optional
+  - **Tonspurbelegung** - *Request Body encrypted string* -- Optional
+  - **Timecode_Anfang** - *Request Body encrypted string* -- Optional
+  - **Timecode_Ende** - *Request Body encrypted string* -- Optional
+  - **Dauer** - *Request Body encrypted string* -- Optional
+  - **Videocodec** - *Request Body encrypted string* -- Optional
+  - **Auflösung** - *Request Body encrypted string* -- Optional
+  - **Dauer** - *Request Body encrypted string* -- Optional
+  - **Vorschaubild** - *Request Body encrypted string* -- Optional
+  - **Autor** - *Request Body encrypted string* -- Optional
+  - **Bemerkung** - *Request Body encrypted string* -- Optional
+  - **Bewertungen** - *Request Body encrypted string* -- Optional
+  - **Klasse** - *Request Body encrypted string* -- Optional
+
+- **PATCH** - `/films/update` - Updates Film, only send attributes are changed
+  - **FilmID** - *Request Body encrypted integer* -- Required
+  - **Prüfstück** - *Request Body encrypted 1 or 0* -- Required
+  - **Filmtitel** - *Request Body encrypted string* -- Optional
+  - **Status** - *Request Body encrypted string* -- Optional
+  - **Lehrjahr** - *Request Body encrypted integer* -- Optional
+  - **Stichworte** - *Request Body encrypted string* -- Optional
+  - **Programmtyp** - *Request Body encrypted string* -- Optional
+  - **Erzählsatz** - *Request Body encrypted string* -- Optional
+  - **Upload** - *Request Body encrypted date* -- Optional
+  - **Erstellungsdatum** - *Request Body encrypted date* -- Optional
+  - **Mitwirkende** - *Request Body encrypted string* -- Optional
+  - **Erscheinungsdatum** - *Request Body encrypted date* -- Optional
+  - **Tonformat** - *Request Body encrypted string* -- Optional
+  - **Bildformat** - *Request Body encrypted string* -- Optional
+  - **Bildfrequenz** - *Request Body encrypted string* -- Optional
+  - **Farbtiefe** - *Request Body encrypted string* -- Optional
+  - **Videocontainer** - *Request Body encrypted string* -- Optional
+  - **Tonspurbelegung** - *Request Body encrypted string* -- Optional
+  - **Timecode_Anfang** - *Request Body encrypted string* -- Optional
+  - **Timecode_Ende** - *Request Body encrypted string* -- Optional
+  - **Dauer** - *Request Body encrypted string* -- Optional
+  - **Videocodec** - *Request Body encrypted string* -- Optional
+  - **Auflösung** - *Request Body encrypted string* -- Optional
+  - **Dauer** - *Request Body encrypted string* -- Optional
+  - **Vorschaubild** - *Request Body encrypted string* -- Optional
+  - **Autor** - *Request Body encrypted string* -- Optional
+  - **Bemerkung** - *Request Body encrypted string* -- Optional
+  - **Bewertungen** - *Request Body encrypted string* -- Optional
+  - **Klasse** - *Request Body encrypted string* -- Optional
+
+- **GET** - `/users/get` - Gets all Data of User
+  - **UserID** - *Query Attribute integer* -- ID of the User
+
+- **PATCH** - `/users/updateRole` - Updates role of User
+  - **UserID** - *Request Body encrypted integer* -- ID of the User
+  - **role** - *Request Body encrypted string* -- new role of the User
+
+- **GET** - `/users/list` - Lists username, name, lastname, email and role of all Users
+
+- **DELETE** - `/users/delete` - Deletes Film
+  - **UserID** - *Request Body encrypted string* -- ID of the User
 
 ---------
 # How to encrypt and decrypt in nodejs
@@ -508,7 +589,39 @@ function decrypt(text){
 
 
 ---
+## 🦠  errorcodes and statuscode messages 
 
+A table that shows the error and status codes and their respective messages.
+| code  | Msg  |
+| :------------ |:---------------|
+| 101 | Request not valid|
+| 102 | Not logged in|
+| 103 | Missing privileges|
+| 104 | Username or Email already registered|
+| 105 | Email not valid|
+| 106 | Password must be at least 8 characters long|
+| 107 | Username has invalid characters|
+| 108 | Username/Email or password incorrect|
+| 109 | UserID not set|
+| 110 | User not found|
+| 111 | FilmID not set|
+| 112 | Film not found|
+| 113 | FileID not set|
+| 114 | File not found|
+| 115 | File not streamable|
+| 116 | Requires Range header|
+| 201 | Data sent|
+| 202 | User registered|
+| 203 | User logged in|
+| 204 | User logged out|
+| 205 | User updated|
+| 206 | User deleted|
+| 207 | Film inserted|
+| 208 | Film updated|
+| 209 | Film deleted|
+| 210 | File uploaded|
+| 401 | DB Error|
+| 402 | Bycrypt Error|
 
 # Libraries used
 
@@ -516,6 +629,7 @@ function decrypt(text){
 * [nodemon](https://www.npmjs.com/package/nodemon) # for Dev
 * [express](https://www.npmjs.com/package/express)
 * [express-session](https://www.npmjs.com/package/express-session)
+* [express-fileupload](https://www.npmjs.com/package/express-fileupload)
 * [cors](https://www.npmjs.com/package/cors)
 * [cookie-parser](https://www.npmjs.com/package/cookie-parser)
 * [body-parser](https://www.npmjs.com/package/body-parser)
