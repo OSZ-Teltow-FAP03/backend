@@ -1,7 +1,7 @@
-const { encrypt, decrypt } = require('../modules/crpyto');
 const express = require('express');
-const router = express.Router(); // Creating a router object.
+const router = express.Router();
 const db = require('../database/index');
+const { decrypt } = require('../modules/crpyto');
 const { checkPrivileges } = require('../modules/check_privileges');
 
 router.get('/get', (req, res) => {

@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router(); // Creating a router object.
 const db = require('../database/index');
+const { decrypt } = require('../modules/crpyto');
+const { checkPrivileges } = require('../modules/check_privileges');
 const fs = require('fs');
 const path = require('path');
-const { checkPrivileges } = require('../modules/check_privileges');
 
 
 function checkFileExistsSync(filepath){
@@ -80,7 +81,7 @@ router.get('/stream', function(req, res) {
 
 		const fileSize = fs.statSync(filePath).size;
 		const fileExtension=path.extname(filePath);
-		var contentType;
+		let contentType;
 		switch (fileExtension) {
 			case ".mp4":
 				contentType="video/mp4";
@@ -229,9 +230,11 @@ router.post('/upload', async (req, res) => {
 			});
 			return;
 		}
-		
-		var file = req.files.File;
-		var path='./uploads/' + file.name
+		let file = req.files.File;
+		let rootFolder=process.env.filePath;
+		if(rootFolder.slice(-1)!=="/")
+			rootFolder+="/";
+		let path=rootFolder + `${FilmID}/` + file.name
 		file.mv(path);
 
 		db.query('INSERT INTO FilmDateien (FilmID, Dateipfad) VALUES (?, ?)', [FilmID, path], function(err2, result2) {

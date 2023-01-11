@@ -56,9 +56,6 @@ port            =   ""  // Port number for database connection. //! 3306
 database        =   ""  // Database name. //! auth_db
 SERVERPORT      =   ""  // Server port //! 4000
 SESSION_SECRET  =   ""  // Session secret //! Harley Davidson
-algorithm       =   ""  // Algorithm used to generate the encryption //! aes-256-ctr
-secretKey       =   ""  // Secret key for the above encryption  //! vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3
-viByte          =   ""  // Encryption key for the above encryption //! 16
 OriginFrontendServer = "" //frontend server //! localhost:8080
 ```
 

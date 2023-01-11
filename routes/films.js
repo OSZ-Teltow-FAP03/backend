@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../database/index");
-const {
-	encrypt,
-	decrypt
-} = require('../modules/crpyto');
+const { decrypt } = require('../modules/crpyto');
 const { checkPrivileges } = require('../modules/check_privileges');
+const fs = require('fs');
 
 
 router.get("/get", (req, res) => {
@@ -158,6 +156,12 @@ router.delete('/delete', (req, res) => {
 				});
 				return;
 			}
+			let rootFolder=process.env.filePath;
+			if(rootFolder.slice(-1)!=="/")
+				rootFolder+="/";
+			let path=rootFolder + `${filmID}`
+
+			fs.rmSync(path, { recursive: true, force: true })
 			
 			res.status(200).send({
 				msg: 'Film deleted',
@@ -185,9 +189,9 @@ router.put('/create', (req, res) => {
 		return;
 	}
 
-	var arrayOfAttributes=[];
-	var arrayOfValues=[];
-	var replace=""
+	let arrayOfAttributes=[];
+	let arrayOfValues=[];
+	let replace=""
 	Object.entries(req.body).forEach(entry => {
 		const [key, value] = entry;
 		arrayOfAttributes.push(key);

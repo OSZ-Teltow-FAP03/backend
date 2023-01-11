@@ -7,6 +7,8 @@
  * @returns True if user has the required Privileges else returns false.
  */
 let checkPrivileges = (endpoint, role, prüfstück=false, options=false) => {
+    if(prüfstück==1)
+        prüfstück=true;
     const admin="admin";
     const lehrerMedien = "lehrerMedien";
     const lehrer = "lehrer";

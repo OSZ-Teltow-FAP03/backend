@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router(); // Creating a router object.
 const db = require('../database/index');
+const { decrypt } = require('../modules/crpyto');
 const bcrypt = require('bcrypt');
-const { encrypt, decrypt } = require('../modules/crpyto');
 const { isEmail, checkUsername } = require('../modules/check_userOrEmail');
 const { clearAllcookie, getSessionIDCookie } = require('../modules/cookie');
 
@@ -23,8 +23,6 @@ router.post('/register', function(req, res) {
 		});
 		return;
 	}
-	name=name.toLowerCase();
-	lastname=lastname.toLowerCase();
 	username=username.toLowerCase();
 	email=email.toLowerCase();
 
@@ -121,6 +119,7 @@ router.post('/login', function(req, res) {
 		});
 		return;
 	}
+	email=email.toLowerCase();
 
 	db.query('SELECT * FROM users WHERE ' + userOrEmail + ' = ?', [ email ], function(err, result) {
 		if (err){
