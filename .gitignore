@@ -4,7 +4,7 @@
 # testing
 ./dev/error/*
 ./dev/out/*
-
+./modules/pm2-server/*
 
 # production
 /build

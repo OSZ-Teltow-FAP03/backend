@@ -6,17 +6,16 @@ const { encrypt, decrypt } = require('../modules/crpyto');
 const { isEmail, checkUsername } = require('../modules/check_userOrEmail');
 const { clearAllcookie, getSessionIDCookie } = require('../modules/cookie');
 
-
 const saltRounds = 10; // The number of rounds to use when generating a salt
 
 /* This is a post request that is used to register a user. */
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
 	/* This is getting the data from the request body. */
-	const name = decrypt(req.body.name).toLowerCase();
-	const lastname = decrypt(req.body.lastname).toLowerCase();
-	const username = decrypt(req.body.username).toLowerCase();
-	const email = decrypt(req.body.email).toLowerCase();
-	const password = decrypt(req.body.password); //! I expect to receive an encrypted password
+	const name = await decrypt(req.body.name).toLowerCase();
+	const lastname = await decrypt(req.body.lastname).toLowerCase();
+	const username = await decrypt(req.body.username).toLowerCase();
+	const email = await decrypt(req.body.email).toLowerCase();
+	const password = await decrypt(req.body.password); //! I expect to receive an encrypted password
 	/* This is checking if the email is valid. */
 	if (!isEmail(email)) {
 		res.status(203).send({
@@ -92,14 +91,14 @@ router.post('/register', (req, res) => {
 });
 
 /* This is a post request that is used to login a user. */
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
 	// Unless we explicitly write to the session (and resave is false), the
 	// store is never updated, even though a new session is generated on each
 	// request. After we modify that session and during req.end(), it gets
 	// persisted. On subsequent writes, it's updated and synced with the store.
 
-	const email = decrypt(req.body.email).toLowerCase();
-	const password = decrypt(req.body.password);
+	const email = await decrypt(req.body.email).toLowerCase();
+	const password = await decrypt(req.body.password);
 	var userOrEmail = 'username';
 
 	/* This is checking if the email or username. */
@@ -172,6 +171,9 @@ router.get('/logout', (req, res, next) => {
 });
 
 
+// reset password with token
+
+router.get('/resetpassword:')
 
 /* This is exporting the router object. */
 module.exports = router;

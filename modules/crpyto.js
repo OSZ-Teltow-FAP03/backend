@@ -228,9 +228,9 @@ function otp(message, key, mode, keyRepetition) {
 			}
 		}
 		/*
-		 * This code converts the message into the output, based on the mode
-		 * and the key.
-		 */
+     * This code converts the message into the output, based on the mode
+     * and the key.
+     */
 		if (mode == 'decrypt') {
 			codeOutput[i] = codeMessage[i] - codeKey[i];
 			if (codeOutput[i] < 0) {
@@ -264,36 +264,40 @@ function otp(message, key, mode, keyRepetition) {
 10. It then returns an object with the properties "iv" and "content", both of which are set to the "iv" variable and the "cipher" variable respectively. */
 const iv = uuidv4();
 
-const encrypt = (plainText) => {
-	// Check if the plain text is null or empty
-	if (plainText === null && plainText.length === 0) return null;
-	// Check if the iv is longer than the plain text
-	const isLonger = iv.length < plainText.length;
-	// Encrypt the plain text
-	const cipher = otp(plainText, iv, 'encrypt', isLonger);
-	// Return the cipher text
-	return {
-		iv: iv,
-		content: cipher
-	};
+const encrypt = async (plainText) => {
+	return new Promise((resolve, reason) => {
+		// Check if the plain text is null or empty
+		if (plainText === null && plainText.length === 0) reason(null);
+		// Check if the iv is longer than the plain text
+		const isLonger = iv.length < plainText.length;
+		// Encrypt the plain text
+		const cipher = otp(plainText, iv, 'encrypt', isLonger);
+		// Return the cipher text
+		resolve({
+			iv: iv,
+			content: cipher
+		});
+	});
 };
 
 /* The code above does the following, explained in English:
 1. Checks if the input is valid (not null or empty, and is an object)
 2. Runs the OTP function (see below) with the content and IV of the cipher, and specifies the operation as 'decrypt'
 3. Returns the decrypted text */
-const decrypt = (cipher) => {
-	// Check for empty cipher or invalid input
-	if ((cipher === null && cipher.length === 0) || typeof cipher !== 'object') return false;
+const decrypt = async (cipher) => {
+	return new Promise((resolve, reason) => {
+		// Check for empty cipher or invalid input
+		if ((cipher === null && cipher.length === 0) || typeof cipher !== 'object') reason(false);
 
-	const isLonger = cipher.iv.length < cipher.content.length;
+		const isLonger = cipher.iv.length < cipher.content.length;
 
-	// Decrypt the cipher
-	var text = otp(cipher.content, cipher.iv, 'decrypt', isLonger);
-  if ((cipher === null && cipher.length === 0) || typeof cipher !== 'object') return false;
-  
-  var text = otp(cipher.content, cipher.iv, 'decrypt');
-	return text;
+		// Decrypt the cipher
+		var text = otp(cipher.content, cipher.iv, 'decrypt', isLonger);
+		if ((cipher === null && cipher.length === 0) || typeof cipher !== 'object') reason(false);
+
+		var text = otp(cipher.content, cipher.iv, 'decrypt');
+		resolve(text);
+	});
 };
 
 /* Exporting the functions `encrypt`, `decrypt`, and `otp` so that they can be used in other files. */
