@@ -11,7 +11,14 @@
 		"status": "pm2 status ./config/ecosystem.config.js",
 		"show log": "pm2 logs ./config/ecosystem.config.js"
 	},
-	"keywords": [ "node.js", "express", "login", "registration", "authentication", "authorization" ],
+	"keywords": [
+		"node.js",
+		"express",
+		"login",
+		"registration",
+		"authentication",
+		"authorization"
+	],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
@@ -22,6 +29,7 @@
 		"dotenv": "^16.0.2",
 		"easy-https": "^1.0.1",
 		"express": "^4.18.1",
+		"express-fileupload": "^1.4.0",
 		"express-session": "^1.17.3",
 		"express-useragent": "^1.0.15",
 		"forever": "^4.0.3",
