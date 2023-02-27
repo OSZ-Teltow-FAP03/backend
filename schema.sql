@@ -10,26 +10,19 @@
 -- Table structure for table `users`
 --
 
--- /! DoTo add :
--- userID
--- name
--- lastname
--- userstatusID
--- isLogged
--- alias
-
 
 
 CREATE TABLE `users` (
   userID int unsigned not null auto_increment primary key,
-  `name` varchar(255) DEFAULT NULL,
-  `lastname` varchar(255) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `role` varchar(255) DEFAULT NULL,
-  `ischecked` bit(1),
-  `isLogged` bit(1),
+  `name` varchar(255) DEFAULT NOT NULL,
+  `lastname` varchar(255) DEFAULT NOT NULL,
+  `username` varchar(255) DEFAULT NOT NULL,
+  `email` varchar(255) DEFAULT NOT NULL,
+  `password` varchar(255) DEFAULT NOT NULL,
+  `role` varchar(255) DEFAULT NOT NULL,
+  `ischecked` bit(1) DEFAULT NOT NULL,
+  `isLogged` bit(1) DEFAULT NOT NULL,
+  `token` TEXT DEFAULT NOT NULL,
   `createdOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `LastUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -39,32 +32,9 @@ CREATE TABLE `users` (
 --
 
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `userID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
-
-
---
--- AUTO_INCREMENT for table `sessions_users`
---
-
-CREATE TABLE `session_users` ( 
-  `userId` varchar(255) DEFAULT NULL,
-  `session_id` varchar(255) COLLATE utf8mb4_bin NOT NULL primary key,
-  `ip_address` varchar(255) DEFAULT NULL,
-  `browser_name` varchar(255) DEFAULT NULL,
-  `browser_version` varchar(255) DEFAULT NULL,
-  `platform` varchar(255) DEFAULT NULL,
-  `createdOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `LastUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `projektarbeit`
@@ -132,5 +102,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-

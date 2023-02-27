@@ -11,7 +11,6 @@ Before start, you need to have the following tools installed on computer: [Git](
 - [Quick Start](#quick-start)
   - [MySQL install](#mysql-install)
   - [Creating an SSL Certificate](#creating-an-ssl-certificate)
-- [errorcodes messages](#errorcodes-messages)
 - [API](#api)
 - [Sessions](#sessions)
     - [Flow](#flow)
@@ -48,9 +47,11 @@ Before start, you need to have the following tools installed on computer: [Git](
   - [Why not JWT?](#why-not-jwt)
     - [Important](#important)
     - [Auxiliary measures](#auxiliary-measures)
+- [Enpoints](#enpoints)
 - [How to encrypt and decrypt in nodejs](#how-to-encrypt-and-decrypt-in-nodejs)
   - [1. Hash functions with Bcrypt (one-way)](#1-hash-functions-with-bcrypt-one-way)
 - [2. Simple Encryption and Decryption (two-way)](#2-simple-encryption-and-decryption-two-way)
+  - [🦠  errorcodes and statuscode messages](#--errorcodes-and-statuscode-messages)
 - [Libraries used](#libraries-used)
 
 # Quick Start
@@ -89,20 +90,46 @@ openssl req -new -key key.pem -out csr.pem
 openssl x509 -req -days 9999 -in csr.pem -signkey key.pem -out cert.pem
 ```
 
-The following environment variables can be used to modify how the software works.
+The following config Data can be used to modify how the software works.
 ```bash
-cp -r env .env
+cp -r ./config/.config.json ./config/config.json
 ```
-info about .env variable
-```env
-host            =   ""  // Host name for database connection. //! localhost
-user            =   ""  // Database user. //! root
-password        =   ""  // Password for the above database user.
-port            =   ""  // Port number for database connection. //! 3306
-database        =   ""  // Database name. //! auth_db
-SERVERPORT      =   ""  // Server port //! 4000
-SESSION_SECRET  =   ""  // Session secret //! Harley Davidson
-OriginFrontendServer = "" //frontend server //! localhost:8080
+info about config data
+```json
+{
+  "host": "0.0.0.0",
+  "port": 4000,
+  "databank": [{
+    "host": "nearix67.de",
+    "port": 17172,
+    "user": "hildegardt",
+    "password": "hildegardt",
+    "database": "projektarbeit",
+    "clearExpired": true,
+    "checkExpirationInterval": 900000,
+    "expiration": 86400000,
+    "createDatabaseTable": true,
+    "connectionLimit": 1,
+    "endConnectionOnClose": true,
+    "charset": "utf8mb4_bin"
+  }],
+  "mailAuth": [{
+    "host": "smtp",
+    "port": 465,
+    "secure": true,
+    "auth": {
+      "user": "",
+      "pass": ""
+    }
+  }],
+  "https": true,
+  "ssl_keys": [{
+    "key": "/config/ssl/server.key",
+    "cert": "/config/ssl/server.crt"
+  }],
+  "filePath": "./uploads/"
+}
+
 ```
 
 
@@ -589,7 +616,7 @@ function decrypt(text){
 
 
 ---
-## 🦠  errorcodes and statuscode messages 
+## 🦠  errorcodes and statuscode messages
 
 A table that shows the error and status codes and their respective messages.
 | code  | Msg  |

@@ -13,24 +13,28 @@ const session = require('express-session');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const { clearAllcookie, getSessionIDCookie } = require('./modules/cookie');
-const { v4: uuidv4 } = require('uuid');
-
-require('dotenv').config({ path: './config/.env' });
-
+const {
+	clearAllcookie,
+	getSessionIDCookie
+} = require('./modules/cookie');
+const {
+	v4: uuidv4
+} = require('uuid');
+const config = require('./config/config.json');
+const hostname = config.host;
+const port = config.port
 //setting CSP
 const csp = {
-	defaultSrc: [ `'none'` ],
-	styleSrc: [ `'self'`, `'unsafe-inline'` ],
-	scriptSrc: [ `'self'` ],
-	imgSrc: [ `'self'` ],
-	connectSrc: [ `'self'` ],
-	frameSrc: [ `'self'` ],
-	fontSrc: [ `'self'`, 'data:' ],
-	objectSrc: [ `'self'` ],
-	mediaSrc: [ `'self'` ]
+	defaultSrc: [`'none'`],
+	styleSrc: [`'self'`, `'unsafe-inline'`],
+	scriptSrc: [`'self'`],
+	imgSrc: [`'self'`],
+	connectSrc: [`'self'`],
+	frameSrc: [`'self'`],
+	fontSrc: [`'self'`, 'data:'],
+	objectSrc: [`'self'`],
+	mediaSrc: [`'self'`]
 };
-const SERVERPORT = process.env.SERVERPORT || 4000;
 const SESSION_SECRET = uuidv4();
 
 // || ======== *** SECURITY MIDDLEWARE *** ========= ||
@@ -90,8 +94,8 @@ app.use(fileUpload({
 app.use(express.json());
 /* This is a middleware that is used to parse the body of the request. */
 const corsOptions = {
-	origin: [ process.env.ORIGIN_FRONTEND_SERVER ], //frontend server localhost:8080
-	methods: [ 'GET', 'POST', 'PUT', 'DELETE' ],
+	origin: [process.env.ORIGIN_FRONTEND_SERVER], //frontend server localhost:8080
+	methods: ['GET', 'POST', 'PUT', 'DELETE'],
 	credentials: true, // enable set cookie
 	optionsSuccessStatus: 200,
 	credentials: true
@@ -136,7 +140,7 @@ app.use('/users', usersRouter);
 // Otherwise this was a really bad error we didn't expect! Shoot eh
 if (app.get('env') === 'development') {
 	/* Development Error Handler - Prints stack trace */
-//	app.use(errorHandlers.developmentErrors);
+	//	app.use(errorHandlers.developmentErrors);
 }
 // production error handler
 //app.use(errorHandlers.productionErrors);
@@ -147,15 +151,15 @@ const server = https
 		// Provide the private and public key to the server by reading each
 		// file's content with the readFileSync() method.
 		{
-			key: fs.readFileSync(process.env.privateKey),
-			cert: fs.readFileSync(process.env.certificate)
+			key: fs.readFileSync(config.ssl_keys[0].key),
+			cert: fs.readFileSync(config.ssl_keys[0].cert)
 		},
 		app
 	)
-	.listen(SERVERPORT, '0.0.0.0', (err) => {
+	.listen(port, '0.0.0.0', (err) => {
 		if (err) {
 			throw err;
 		} else {
-			console.log('🚀 Server running in the', SERVERPORT);
+			console.log(`🚀 Monitor Server running in the https://${hostname}:${port}`);
 		}
 	});

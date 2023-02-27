@@ -36,6 +36,7 @@
 		"helmet": "^6.0.0",
 		"mysql": "github:felixge/node-mysql",
 		"node-schedule": "^2.1.0",
+		"nodemailer": "^6.9.1",
 		"nodemon": "^2.0.16",
 		"pm2": "^5.2.2"
 	},
