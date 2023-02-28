@@ -1,26 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../database/index');
-const {
-	decrypt
-} = require('../modules/crpyto');
-const {
-	checkPrivileges
-} = require('../modules/check_privileges');
-const getUserOnDbByUserId = require("../modules/database/getUserOnDbByUserId");
+const { decrypt } = require('../modules/crpyto');
+const { checkPrivileges } = require('../modules/check_privileges');
+const getUserOnDbByUserId = require('../modules/database/getUserOnDbByUserId');
 router.get('/get', (req, res) => {
 	if (!req.session.user) {
 		res.status(400).send({
-			msg: 'Not logged in',
-			code: 102
+			msg: 'Nicht angemeldet',
+			code: 102,
 		});
 		return;
 	}
 
 	if (!checkPrivileges(req.baseUrl + req.path, req.session.user.role)) {
 		res.status(400).send({
-			msg: 'Missing privileges',
-			code: 103
+			msg: 'Berechtigungen fehlen',
+			code: 103,
 		});
 		return;
 	}
@@ -28,8 +24,8 @@ router.get('/get', (req, res) => {
 	const userID = req.query.UserID;
 	if (userID === false) {
 		res.status(400).send({
-			msg: 'UserID not set',
-			code: 109
+			msg: '"UserID" nicht gesetzt',
+			code: 109,
 		});
 		return;
 	}
@@ -39,14 +35,14 @@ router.get('/get', (req, res) => {
 			console.error(err);
 			res.status(500).send({
 				msg: err,
-				code: 402
+				code: 402,
 			});
 			return;
 		}
 		res.status(200).send({
-			msg: "Data sent",
+			msg: 'Daten gesendet',
 			code: 201,
-			data: result
+			data: result,
 		});
 	});
 });
@@ -54,8 +50,8 @@ router.get('/get', (req, res) => {
 router.patch('/updateRole', (req, res) => {
 	if (!req.session.user) {
 		res.status(400).send({
-			msg: 'Not logged in',
-			code: 102
+			msg: 'Nicht angemeldet',
+			code: 102,
 		});
 		return;
 	}
@@ -63,8 +59,8 @@ router.patch('/updateRole', (req, res) => {
 	const role = decrypt(req.body.role);
 	if (userID === false || role === false) {
 		res.status(400).send({
-			msg: 'Request not valid',
-			code: 101
+			msg: 'Anfrage nicht korrekt',
+			code: 101,
 		});
 		return;
 	}
@@ -74,26 +70,28 @@ router.patch('/updateRole', (req, res) => {
 			console.error(err);
 			res.status(500).send({
 				msg: err,
-				code: 402
+				code: 402,
 			});
 			return;
 		}
 
 		if (result.length !== 1) {
 			res.status(400).send({
-				msg: 'User not found',
-				code: 110
+				msg: 'Benutzer nicht gefunden',
+				code: 110,
 			});
 			return;
 		}
 
-		if (!checkPrivileges(req.baseUrl + req.path, req.session.user.role, false, {
+		if (
+			!checkPrivileges(req.baseUrl + req.path, req.session.user.role, false, {
 				newRole: role,
-				oldRole: result[0].role
-			})) {
+				oldRole: result[0].role,
+			})
+		) {
 			res.status(400).send({
-				msg: 'Missing privileges',
-				code: 103
+				msg: 'Berechtigungen fehlen',
+				code: 103,
 			});
 			return;
 		}
@@ -103,13 +101,13 @@ router.patch('/updateRole', (req, res) => {
 				console.error(err2);
 				res.status(500).send({
 					msg: err2,
-					code: 402
+					code: 402,
 				});
 				return;
 			}
 			res.status(200).send({
-				msg: "User updated",
-				code: 205
+				msg: 'Benutzer geändert',
+				code: 205,
 			});
 		});
 	});
@@ -118,16 +116,16 @@ router.patch('/updateRole', (req, res) => {
 router.get('/list', (req, res) => {
 	if (!req.session.user) {
 		res.status(400).send({
-			msg: 'Not logged in',
-			code: 102
+			msg: 'Nicht angemeldet',
+			code: 102,
 		});
 		return;
 	}
 
 	if (!checkPrivileges(req.baseUrl + req.path, req.session.user.role)) {
 		res.status(400).send({
-			msg: 'Missing privileges',
-			code: 103
+			msg: 'Berechtigungen fehlen',
+			code: 103,
 		});
 		return;
 	}
@@ -136,33 +134,34 @@ router.get('/list', (req, res) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: err,
-				code: 402
+				msg: 'DB Error',
+				code: 402,
+				err: err,
 			});
 			return;
 		}
 		res.status(200).send({
-			msg: "Data sent",
+			msg: 'Daten gesendet',
 			code: 201,
-			data: result
+			data: result,
 		});
 	});
 });
 
 router.post('/changePassword', async (req, res) => {
-	const userID = decrypt(req.body.userID)
+	const userID = decrypt(req.body.userID);
 	const user = await getUserOnDbByUserId(userID);
 	const password = decrypt(req.body.password);
 
 	if (password === false) {
 		res.status(400).send({
-			msg: "Request not valid",
+			msg: 'Anfrage nicht korrekt',
 			code: 101,
 		});
 		return;
 	} else if (password.length < 8) {
 		res.status(400).send({
-			msg: "Das Kennwort muss eine Mindestlänge von 8 Zeichen haben.",
+			msg: 'Das Kennwort muss eine Mindestlänge von 8 Zeichen haben.',
 			code: 106,
 		});
 		return;
@@ -172,8 +171,9 @@ router.post('/changePassword', async (req, res) => {
 			if (err2) {
 				console.error(err2);
 				res.status(500).send({
-					msg: err2,
+					msg: 'Bycrypt Error',
 					code: 402,
+					err: err2,
 				});
 				return;
 			}
@@ -182,62 +182,62 @@ router.post('/changePassword', async (req, res) => {
 				const transporter = nodemailer.createTransport(config.mailAuth[0]);
 				const mailOptions = {
 					from: {
-						name: "OSZ-Teltow Filmarchiv Passwort vergessen",
+						name: 'OSZ-Teltow Filmarchiv Passwort vergessen',
 						address: config.mailAuth[0].auth.user,
 					},
 					to: user.email,
-					subject: "Filmarchiv Passwort vergessen",
+					subject: 'Filmarchiv Passwort vergessen',
 					html: `
-								`
+								`,
 				};
 				transporter.sendMail(mailOptions, async (err) => {
 					if (err) {
-						console.log(err);
+						console.error(err);
 						res.status(400).send({
-							msg: `Error sendMail: ${err}`,
+							msg: 'Mail Error',
 							code: 403,
+							err: err,
 						});
-						return
+						return;
 					}
 
-					res.status(400).send({
-						msg: `Es wurde eine E-Mail mit weiteren Anweisungen an ${ user.email } gesendet.`,
-						data: encrypt(user),
-						code: 405,
+					res.status(200).send({
+						msg: 'E-Mail gesendet',
+						data: user,
+						code: 211,
 					});
-					return
+					return;
 				});
 			} else {
 				res.status(400).send({
-					msg: "Kennwort konnte nicht geändert werden",
-					data: isChangePassword,
-					code: 401,
+					msg: 'Kennwort Änderung fehlgeschlagen',
+					code: 404,
 				});
-				return
+				return;
 			}
 		});
 	} else {
 		res.status(400).send({
-			msg: `Das Token zum Zurücksetzen des Passworts ist ungültig oder abgelaufen.`,
-			code: 407,
+			msg: 'Token ungültig',
+			code: 405,
 		});
-		return
+		return;
 	}
 });
 
 router.delete('/delete', (req, res) => {
 	if (!req.session.user) {
 		res.status(400).send({
-			msg: 'Not logged in',
-			code: 102
+			msg: 'Nicht angemeldet',
+			code: 102,
 		});
 		return;
 	}
 
 	if (!checkPrivileges(req.baseUrl + req.path, req.session.user.role)) {
 		res.status(400).send({
-			msg: 'Missing privileges',
-			code: 103
+			msg: 'Berechtigungen fehlen',
+			code: 103,
 		});
 		return;
 	}
@@ -245,8 +245,8 @@ router.delete('/delete', (req, res) => {
 	const userID = decrypt(req.body.UserID);
 	if (userID === false) {
 		res.status(400).send({
-			msg: 'UserID not set',
-			code: 109
+			msg: '"UserID" nicht gesetzt',
+			code: 109,
 		});
 		return;
 	}
@@ -256,13 +256,13 @@ router.delete('/delete', (req, res) => {
 			console.error(err);
 			res.status(500).send({
 				msg: err,
-				code: 402
+				code: 402,
 			});
 			return;
 		}
 		res.status(200).send({
 			code: 206,
-			msg: "User deleted"
+			msg: 'Benutzer gelöscht',
 		});
 	});
 });

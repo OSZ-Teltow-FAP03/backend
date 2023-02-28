@@ -5,16 +5,18 @@
 <div align="center">
 
 Before start, you need to have the following tools installed on computer: [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/) and/or [Yarn](https://yarnpkg.com/). [MySQl::Workbench](https://www.mysql.com/products/workbench/).
+
 </div>
 
 ## Table of Contents
+
 - [Quick Start](#quick-start)
   - [MySQL install](#mysql-install)
   - [Creating an SSL Certificate](#creating-an-ssl-certificate)
 - [API](#api)
 - [Sessions](#sessions)
-    - [Flow](#flow)
-    - [Features](#features)
+  - [Flow](#flow)
+  - [Features](#features)
   - [Cookies](#cookies)
     - [Security](#security)
     - [Attributes](#attributes)
@@ -51,25 +53,32 @@ Before start, you need to have the following tools installed on computer: [Git](
 - [How to encrypt and decrypt in nodejs](#how-to-encrypt-and-decrypt-in-nodejs)
   - [1. Hash functions with Bcrypt (one-way)](#1-hash-functions-with-bcrypt-one-way)
 - [2. Simple Encryption and Decryption (two-way)](#2-simple-encryption-and-decryption-two-way)
-  - [🦠  errorcodes and statuscode messages](#--errorcodes-and-statuscode-messages)
+  - [🦠 errorcodes and statuscode messages](#--errorcodes-and-statuscode-messages)
 - [Libraries used](#libraries-used)
 
 # Quick Start
 
 Install backend by running either of the following:
+
 > Install NodeJS LTS from NodeJs Official Page (NOTE: Product only works with LTS version)
 
 Clone the repository with the following command:
+
 ```bash
 https://github.com/OSZ-Teltow-FAP03/backend.git
 ```
+
 Run in terminal this command:
+
 ```bash
 cd backend && npm i
 ```
+
 ## MySQL install
+
 if you want to install the MySQL server on your Ubuntu machine
 [How To Install MySQL on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04);
+
 ## Creating an SSL Certificate
 
 1. First, generate a key file used for self-signed certificate generation with the command below. The command will create a private key as a file called key.pem.
@@ -83,80 +92,94 @@ mkdir https_key && cd https_key && openssl genrsa -out key.pem
 ```bash
 openssl req -new -key key.pem -out csr.pem
 ```
+
 <img src="./src/img/openssl_1.png" alt="openssl_1">
 
 3. Finally, generate your certificate by providing the private key created to sign it with the public key created in step two with an expiry date of 9,999 days. This command below will create a certificate called cert.pem.
+
 ```bash
 openssl x509 -req -days 9999 -in csr.pem -signkey key.pem -out cert.pem
 ```
 
 The following config Data can be used to modify how the software works.
+
 ```bash
 cp -r ./config/.config.json ./config/config.json
 ```
+
 info about config data
+
 ```json
 {
-  "host": "0.0.0.0",
-  "port": 4000,
-  "databank": [{
-    "host": "nearix67.de",
-    "port": 17172,
-    "user": "hildegardt",
-    "password": "hildegardt",
-    "database": "projektarbeit",
-    "clearExpired": true,
-    "checkExpirationInterval": 900000,
-    "expiration": 86400000,
-    "createDatabaseTable": true,
-    "connectionLimit": 1,
-    "endConnectionOnClose": true,
-    "charset": "utf8mb4_bin"
-  }],
-  "mailAuth": [{
-    "host": "smtp",
-    "port": 465,
-    "secure": true,
-    "auth": {
-      "user": "",
-      "pass": ""
-    }
-  }],
-  "https": true,
-  "ssl_keys": [{
-    "key": "/config/ssl/server.key",
-    "cert": "/config/ssl/server.crt"
-  }],
-  "filePath": "./uploads/"
+	"host": "0.0.0.0",
+	"port": 4000,
+	"databank": [
+		{
+			"host": "nearix67.de",
+			"port": 17172,
+			"user": "hildegardt",
+			"password": "hildegardt",
+			"database": "projektarbeit",
+			"clearExpired": true,
+			"checkExpirationInterval": 900000,
+			"expiration": 86400000,
+			"createDatabaseTable": true,
+			"connectionLimit": 1,
+			"endConnectionOnClose": true,
+			"charset": "utf8mb4_bin"
+		}
+	],
+	"mailAuth": [
+		{
+			"host": "smtp",
+			"port": 465,
+			"secure": true,
+			"auth": {
+				"user": "",
+				"pass": ""
+			}
+		}
+	],
+	"https": true,
+	"ssl_keys": [
+		{
+			"key": "/config/ssl/server.key",
+			"cert": "/config/ssl/server.crt"
+		}
+	],
+	"filePath": "./uploads/"
 }
-
 ```
-
 
 Then run this command to start your local server
+
 ```bash
 npm start
 ```
+
 or
+
 ```bash
 npm start
 ```
-----
+
+---
 
 # API
+
 Server will listen on port `3001`, and it expose the following APIs:
 
-
 - **POST** - `/auth/register` - Register a new user
-  - **name** - *string*
-  - **lastname** - *string*
-  - **username** - *string*
-  - **email** - *string*
-  - **password** - *string*
+
+  - **name** - _string_
+  - **lastname** - _string_
+  - **username** - _string_
+  - **email** - _string_
+  - **password** - _string_
 
 - **POST** - `/auth/login` - Login user
-  - **email** - *string* or **username** - *string*
-  - **password** - *string*
+  - **email** - _string_ or **username** - _string_
+  - **password** - _string_
 
 # Sessions
 
@@ -189,7 +212,7 @@ Server will listen on port `3001`, and it expose the following APIs:
 
 - `Cookie` header, just like `Authorization` or `Content-Type`
 - used in session management, personalization, tracking
-- consists of *name*, *value*, and (optional) *attributes* / *flags*
+- consists of _name_, _value_, and (optional) _attributes_ / _flags_
 - set with `Set-Cookie` by server, appended with `Cookie` by browser
 
 ```
@@ -201,18 +224,17 @@ Set-Cookie: SESS_ID=9vKnWqiZvuvVsIV1zmzJQeYUgINqXYeS; Domain=example.com; Path=/
 ### Security
 
 - signed (`HMAC`) with a secret to mitigate tampering
-- *rarely* encrypted (`AES`) to protected from being read
+- _rarely_ encrypted (`AES`) to protected from being read
   - no security concern if read by 3rd party
   - carries no meaningful data (random string)
   - even if encrypted, still a 1-1 match
 - encoded (`URL`) - not for security, but compat
 
-
 ### Attributes
 
 - `Domain` and `Path` (can only be used on a given site & route)
 - `Expiration` (can only be used until expiry)
-  - when omitted, becomes a *session cookie*
+  - when omitted, becomes a _session cookie_
   - gets deleted when browser is closed
 
 ### Flags
@@ -244,18 +266,19 @@ Set-Cookie: SESS_ID=9vKnWqiZvuvVsIV1zmzJQeYUgINqXYeS; Domain=example.com; Path=/
 - tokens are _not_ stored server-side, only on the client (**stateless**)
 - _signed_ with a secret against tampering
   - verified and can be trusted by the server
-- tokens can be *opaque* or *self-contained*
+- tokens can be _opaque_ or _self-contained_
   - carries all required user data in its payload
   - reduces database lookups, but exposes data to XSS
 - typically sent in `Authorization` header
 - when a token is about to expire, it can be _refreshed_
   - client is issued both access & refresh tokens
 - used in SPA web apps, web APIs, mobile apps
+
 ## JWT (JSON Web Tokens)
 
 - open standard for authorization & info exchange
-- *compact*, *self-contained*, *URL-safe* tokens
-- signed with *symmetric* (secret) or *asymmetric* (public/private) key
+- _compact_, _self-contained_, _URL-safe_ tokens
+- signed with _symmetric_ (secret) or _asymmetric_ (public/private) key
 
 ```
 HTTP/1.1 200 OK
@@ -266,11 +289,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YmQ2MWFhM
 - contains **header** (meta), **payload** (claims), and **signature** delimited by `.`
 
 ```js
-atob('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9')
+atob('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9');
 // "{"alg":"HS256","typ":"JWT"}"
 //     ↑ algorithm   ↑ type
 
-atob('eyJzdWIiOiI1YmQ2MWFhMWJiNDNmNzI0M2EyOTMxNmQiLCJuYW1lIjoiSm9obiBTbWl0aCIsImlhdCI6MTU0MTI3NjA2MH0')
+atob('eyJzdWIiOiI1YmQ2MWFhMWJiNDNmNzI0M2EyOTMxNmQiLCJuYW1lIjoiSm9obiBTbWl0aCIsImlhdCI6MTU0MTI3NjA2MH0');
 // "{"sub":"5bd61aa1bb43f7243a29316d","name":"John Smith","iat":1541276060}"
 //     ↑ subject (e.g. user ID)         ↑ claim(s)		    ↑ issued at (in seconds)
 ```
@@ -280,7 +303,7 @@ atob('eyJzdWIiOiI1YmQ2MWFhMWJiNDNmNzI0M2EyOTMxNmQiLCJuYW1lIjoiSm9obiBTbWl0aCIsIm
 - signed (`HMAC`) with a secret
   - guarantees that token was not tampered
   - any manipulation (e.g. exp. time) invalidates token
-- *rarely* encrypted (`JWE`)
+- _rarely_ encrypted (`JWE`)
   - (web) clients need to read token payload
   - can't store the secret in client storage securely
 - encoded (`Base64Url`) - not for security, but transport
@@ -366,7 +389,7 @@ Browser key-value store with a simple JS API
   - defeats the purpose of stateless tokens
   - a whitelist of active user sessions is more secure
 - when scaling, the secret must be shared between servers
-- data stored in token is "cached" and can go *stale* (out of sync)
+- data stored in token is "cached" and can go _stale_ (out of sync)
 - tokens stored in client storage are vulnerable to XSS
   - if JWT token is compromised, attacker can
     - steal user info, permissions, metadata, etc.
@@ -442,116 +465,129 @@ Regardless of auth mechanism
 - API throttling
 
 # Enpoints
+
 Server exposes the following Enpoints:
 
-
 - **POST** - `/auth/register` - Register a new user
-	- **name** - *Request Body encrypted string* -- First name
-	- **lastname** - *Request Body encrypted string* -- Last name
-	- **username** - *Request Body encrypted string* -- Username
-	- **email** - *Request Body encrypted string* -- Email
-	- **password** - *Request Body encrypted string* -- Password
+
+  - **name** - _Request Body encrypted string_ -- First name
+  - **lastname** - _Request Body encrypted string_ -- Last name
+  - **username** - _Request Body encrypted string_ -- Username
+  - **email** - _Request Body encrypted string_ -- Email
+  - **password** - _Request Body encrypted string_ -- Password
 
 - **POST** - `/auth/login` - Login user
-  - **email** - *Request Body encrypted string* -- Email or Username of User
-  - **password** - *Request Body encrypted string* -- Password
+
+  - **email** - _Request Body encrypted string_ -- Email or Username of User
+  - **password** - _Request Body encrypted string_ -- Password
 
 - **GET** - `/auth/logout` - Logout user
 
 - **GET** - `/files/stream` - Streams File if it is Streamable
-  - **FileID** - *Query Attribute integer* -- ID of the File
-  - **range** - *HTTP Header* -- Data Range automatically set by Player
+
+  - **FileID** - _Query Attribute integer_ -- ID of the File
+  - **range** - _HTTP Header_ -- Data Range automatically set by Player
 
 - **GET** - `/files/download` - Downloads File
-  - **FileID** - *Query Attribute integer* -- ID of the File
+
+  - **FileID** - _Query Attribute integer_ -- ID of the File
 
 - **POST** - `/files/upload` - Uploads File
-  - **FilmID** - *Request Body encrypted string* -- ID of the Film
-  - **File** - *Multipart/Form-Data File* -- see https://stackoverflow.com/questions/35722093/send-multipart-form-data-files-with-angular-using-http
+
+  - **FilmID** - _Request Body encrypted string_ -- ID of the Film
+  - **File** - _Multipart/Form-Data File_ -- see https://stackoverflow.com/questions/35722093/send-multipart-form-data-files-with-angular-using-http
 
 - **GET** - `/films/get` - Lists/Searches Film
-  - **filmQuery** - *Query Attribute string* -- Optional search string
+
+  - **filmQuery** - _Query Attribute string_ -- Optional search string
 
 - **GET** - `/films/listFiles` - Lists Files assosiated with Film
-  - **FilmID** - *Query Attribute integer* -- ID of the Film
+
+  - **FilmID** - _Query Attribute integer_ -- ID of the Film
 
 - **DELETE** - `/films/delete` - Deletes Film
-  - **FilmID** - *Request Body encrypted string* -- ID of the Film
+
+  - **FilmID** - _Request Body encrypted string_ -- ID of the Film
 
 - **POST** - `/films/create` - Creates Film
-  - **Filmtitel** - *Request Body encrypted string* -- Required
-  - **Status** - *Request Body encrypted string* -- Required
-  - **Lehrjahr** - *Request Body encrypted integer* -- Required
-  - **Stichworte** - *Request Body encrypted string* -- Required
-  - **Prüfstück** - *Request Body encrypted 1 or 0* -- Required
-  - **Programmtyp** - *Request Body encrypted string* -- Required
-  - **Erzählsatz** - *Request Body encrypted string* -- Required
-  - **Upload** - *Request Body encrypted date* -- Required
-  - **Erstellungsdatum** - *Request Body encrypted date* -- Required
-  - **Mitwirkende** - *Request Body encrypted string* -- Required
-  - **Erscheinungsdatum** - *Request Body encrypted date* -- Required
-  - **Tonformat** - *Request Body encrypted string* -- Optional
-  - **Bildformat** - *Request Body encrypted string* -- Optional
-  - **Bildfrequenz** - *Request Body encrypted string* -- Optional
-  - **Farbtiefe** - *Request Body encrypted string* -- Optional
-  - **Videocontainer** - *Request Body encrypted string* -- Optional
-  - **Tonspurbelegung** - *Request Body encrypted string* -- Optional
-  - **Timecode_Anfang** - *Request Body encrypted string* -- Optional
-  - **Timecode_Ende** - *Request Body encrypted string* -- Optional
-  - **Dauer** - *Request Body encrypted string* -- Optional
-  - **Videocodec** - *Request Body encrypted string* -- Optional
-  - **Auflösung** - *Request Body encrypted string* -- Optional
-  - **Dauer** - *Request Body encrypted string* -- Optional
-  - **Vorschaubild** - *Request Body encrypted string* -- Optional
-  - **Autor** - *Request Body encrypted string* -- Optional
-  - **Bemerkung** - *Request Body encrypted string* -- Optional
-  - **Bewertungen** - *Request Body encrypted string* -- Optional
-  - **Klasse** - *Request Body encrypted string* -- Optional
+
+  - **Filmtitel** - _Request Body encrypted string_ -- Required
+  - **Status** - _Request Body encrypted string_ -- Required
+  - **Lehrjahr** - _Request Body encrypted integer_ -- Required
+  - **Stichworte** - _Request Body encrypted string_ -- Required
+  - **Prüfstück** - _Request Body encrypted 1 or 0_ -- Required
+  - **Programmtyp** - _Request Body encrypted string_ -- Required
+  - **Erzählsatz** - _Request Body encrypted string_ -- Required
+  - **Upload** - _Request Body encrypted date_ -- Required
+  - **Erstellungsdatum** - _Request Body encrypted date_ -- Required
+  - **Mitwirkende** - _Request Body encrypted string_ -- Required
+  - **Erscheinungsdatum** - _Request Body encrypted date_ -- Required
+  - **Tonformat** - _Request Body encrypted string_ -- Optional
+  - **Bildformat** - _Request Body encrypted string_ -- Optional
+  - **Bildfrequenz** - _Request Body encrypted string_ -- Optional
+  - **Farbtiefe** - _Request Body encrypted string_ -- Optional
+  - **Videocontainer** - _Request Body encrypted string_ -- Optional
+  - **Tonspurbelegung** - _Request Body encrypted string_ -- Optional
+  - **Timecode_Anfang** - _Request Body encrypted string_ -- Optional
+  - **Timecode_Ende** - _Request Body encrypted string_ -- Optional
+  - **Dauer** - _Request Body encrypted string_ -- Optional
+  - **Videocodec** - _Request Body encrypted string_ -- Optional
+  - **Auflösung** - _Request Body encrypted string_ -- Optional
+  - **Dauer** - _Request Body encrypted string_ -- Optional
+  - **Vorschaubild** - _Request Body encrypted string_ -- Optional
+  - **Autor** - _Request Body encrypted string_ -- Optional
+  - **Bemerkung** - _Request Body encrypted string_ -- Optional
+  - **Bewertungen** - _Request Body encrypted string_ -- Optional
+  - **Klasse** - _Request Body encrypted string_ -- Optional
 
 - **PATCH** - `/films/update` - Updates Film, only send attributes are changed
-  - **FilmID** - *Request Body encrypted integer* -- Required
-  - **Prüfstück** - *Request Body encrypted 1 or 0* -- Required
-  - **Filmtitel** - *Request Body encrypted string* -- Optional
-  - **Status** - *Request Body encrypted string* -- Optional
-  - **Lehrjahr** - *Request Body encrypted integer* -- Optional
-  - **Stichworte** - *Request Body encrypted string* -- Optional
-  - **Programmtyp** - *Request Body encrypted string* -- Optional
-  - **Erzählsatz** - *Request Body encrypted string* -- Optional
-  - **Upload** - *Request Body encrypted date* -- Optional
-  - **Erstellungsdatum** - *Request Body encrypted date* -- Optional
-  - **Mitwirkende** - *Request Body encrypted string* -- Optional
-  - **Erscheinungsdatum** - *Request Body encrypted date* -- Optional
-  - **Tonformat** - *Request Body encrypted string* -- Optional
-  - **Bildformat** - *Request Body encrypted string* -- Optional
-  - **Bildfrequenz** - *Request Body encrypted string* -- Optional
-  - **Farbtiefe** - *Request Body encrypted string* -- Optional
-  - **Videocontainer** - *Request Body encrypted string* -- Optional
-  - **Tonspurbelegung** - *Request Body encrypted string* -- Optional
-  - **Timecode_Anfang** - *Request Body encrypted string* -- Optional
-  - **Timecode_Ende** - *Request Body encrypted string* -- Optional
-  - **Dauer** - *Request Body encrypted string* -- Optional
-  - **Videocodec** - *Request Body encrypted string* -- Optional
-  - **Auflösung** - *Request Body encrypted string* -- Optional
-  - **Dauer** - *Request Body encrypted string* -- Optional
-  - **Vorschaubild** - *Request Body encrypted string* -- Optional
-  - **Autor** - *Request Body encrypted string* -- Optional
-  - **Bemerkung** - *Request Body encrypted string* -- Optional
-  - **Bewertungen** - *Request Body encrypted string* -- Optional
-  - **Klasse** - *Request Body encrypted string* -- Optional
+
+  - **FilmID** - _Request Body encrypted integer_ -- Required
+  - **Prüfstück** - _Request Body encrypted 1 or 0_ -- Required
+  - **Filmtitel** - _Request Body encrypted string_ -- Optional
+  - **Status** - _Request Body encrypted string_ -- Optional
+  - **Lehrjahr** - _Request Body encrypted integer_ -- Optional
+  - **Stichworte** - _Request Body encrypted string_ -- Optional
+  - **Programmtyp** - _Request Body encrypted string_ -- Optional
+  - **Erzählsatz** - _Request Body encrypted string_ -- Optional
+  - **Upload** - _Request Body encrypted date_ -- Optional
+  - **Erstellungsdatum** - _Request Body encrypted date_ -- Optional
+  - **Mitwirkende** - _Request Body encrypted string_ -- Optional
+  - **Erscheinungsdatum** - _Request Body encrypted date_ -- Optional
+  - **Tonformat** - _Request Body encrypted string_ -- Optional
+  - **Bildformat** - _Request Body encrypted string_ -- Optional
+  - **Bildfrequenz** - _Request Body encrypted string_ -- Optional
+  - **Farbtiefe** - _Request Body encrypted string_ -- Optional
+  - **Videocontainer** - _Request Body encrypted string_ -- Optional
+  - **Tonspurbelegung** - _Request Body encrypted string_ -- Optional
+  - **Timecode_Anfang** - _Request Body encrypted string_ -- Optional
+  - **Timecode_Ende** - _Request Body encrypted string_ -- Optional
+  - **Dauer** - _Request Body encrypted string_ -- Optional
+  - **Videocodec** - _Request Body encrypted string_ -- Optional
+  - **Auflösung** - _Request Body encrypted string_ -- Optional
+  - **Dauer** - _Request Body encrypted string_ -- Optional
+  - **Vorschaubild** - _Request Body encrypted string_ -- Optional
+  - **Autor** - _Request Body encrypted string_ -- Optional
+  - **Bemerkung** - _Request Body encrypted string_ -- Optional
+  - **Bewertungen** - _Request Body encrypted string_ -- Optional
+  - **Klasse** - _Request Body encrypted string_ -- Optional
 
 - **GET** - `/users/get` - Gets all Data of User
-  - **UserID** - *Query Attribute integer* -- ID of the User
+
+  - **UserID** - _Query Attribute integer_ -- ID of the User
 
 - **PATCH** - `/users/updateRole` - Updates role of User
-  - **UserID** - *Request Body encrypted integer* -- ID of the User
-  - **role** - *Request Body encrypted string* -- new role of the User
+
+  - **UserID** - _Request Body encrypted integer_ -- ID of the User
+  - **role** - _Request Body encrypted string_ -- new role of the User
 
 - **GET** - `/users/list` - Lists username, name, lastname, email and role of all Users
 
 - **DELETE** - `/users/delete` - Deletes Film
-  - **UserID** - *Request Body encrypted string* -- ID of the User
+  - **UserID** - _Request Body encrypted string_ -- ID of the User
 
----------
+---
+
 # How to encrypt and decrypt in nodejs
 
 In my projects I essentially find useful two ways to encrypt strings: hash functions one-way and one-way and encryption-decryption two-way :
@@ -561,25 +597,31 @@ In my projects I essentially find useful two ways to encrypt strings: hash funct
 Hash functions are essentials for store encrypted password, and the best library for nodejs is Bcrypt. You can find more information in this article: why use Bcrypt?.
 
 Install:
+
 ```bash
 npm install bcrypt
 ```
+
 To hash a password:
+
 ```javascript
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const myPlaintextPassword = 'myPassword';
 
-bcrypt.hash(myPlaintextPassword, saltRounds).then(function(hash) {
+bcrypt.hash(myPlaintextPassword, saltRounds).then(function (hash) {
 	// Store hash in your password DB.
 });
 ```
+
 At user login to compare password with the one stored in the db you can use:
+
 ```javascript
-bcrypt.compare(plaintextPassToCheck, hashStoredInDB).then(function(res) {
-  // res == true/false
+bcrypt.compare(plaintextPassToCheck, hashStoredInDB).then(function (res) {
+	// res == true/false
 });
 ```
+
 More info: github.com/kelektiv/node.bcrypt.js
 
 # 2. Simple Encryption and Decryption (two-way)
@@ -591,85 +633,82 @@ Install:
 ```bash
 npm install crypto
 ```
+
 To encrypt and decrypt a string:
 
 ```javascript
 var crypto = require('crypto');
 
-var cypherKey = "mySecretKey";
+var cypherKey = 'mySecretKey';
 
-function encrypt(text){
-  var cipher = crypto.createCipher('aes-256-cbc', cypherKey)
-  var crypted = cipher.update(text,'utf8','hex')
-  crypted += cipher.final('hex');
-  return crypted; //94grt976c099df25794bf9ccb85bea72
+function encrypt(text) {
+	var cipher = crypto.createCipher('aes-256-cbc', cypherKey);
+	var crypted = cipher.update(text, 'utf8', 'hex');
+	crypted += cipher.final('hex');
+	return crypted; //94grt976c099df25794bf9ccb85bea72
 }
 
-function decrypt(text){
-  var decipher = crypto.createDecipher('aes-256-cbc',cypherKey)
-  var dec = decipher.update(text,'hex','utf8')
-  dec += decipher.final('utf8');
-  return dec; //myPlainText
+function decrypt(text) {
+	var decipher = crypto.createDecipher('aes-256-cbc', cypherKey);
+	var dec = decipher.update(text, 'hex', 'utf8');
+	dec += decipher.final('utf8');
+	return dec; //myPlainText
 }
 ```
 
-
-
 ---
-## 🦠  errorcodes and statuscode messages
+
+## 🦠 errorcodes and statuscode messages
 
 A table that shows the error and status codes and their respective messages.
-| code  | Msg  |
+| code | Msg |
 | :------------ |:---------------|
-| 101 | Request not valid|
-| 102 | Not logged in|
-| 103 | Missing privileges|
-| 104 | Username or Email already registered|
-| 105 | Email not valid|
-| 106 | Password must be at least 8 characters long|
-| 107 | Username has invalid characters|
-| 108 | Username/Email or password incorrect|
-| 109 | UserID not set|
-| 110 | User not found|
-| 111 | FilmID not set|
-| 112 | Film not found|
-| 113 | FileID not set|
-| 114 | File not found|
-| 115 | File not streamable|
-| 116 | Requires Range header|
-| 201 | Data sent|
-| 202 | User registered|
-| 203 | User logged in|
+| 101 | Anfrage nicht korrekt|
+| 102 | Nicht angemeldet|
+| 103 | Berechtigungen fehlen|
+| 104 | Benutzername oder E-Mail bereits registriert|
+| 105 | E-Mail existiert nicht|
+| 106 | Das Kennwort muss eine Mindestlänge von 8 Zeichen haben.|
+| 107 | Benutzername hat ungültige Zeichen|
+| 108 | Benutzername/E-Mail oder Passwort falsch|
+| 109 | "UserID" nicht gesetzt|
+| 110 | Benutzer nicht gefunden|
+| 111 | "FilmID" nicht gesetzt|
+| 112 | Film nicht gefunden|
+| 113 | "FileID" nicht gesetzt|
+| 114 | Datei nicht gefunden|
+| 115 | Datei nicht streambar|
+| 116 | Range-Header nicht gesetzt|
+| 201 | Daten gesendet|
+| 202 | Benutzer registriert|
+| 203 | Benutzer eingelogt|
 | 204 | User logged out|
-| 205 | User updated|
-| 206 | User deleted|
-| 207 | Film inserted|
-| 208 | Film updated|
-| 209 | Film deleted|
-| 210 | File uploaded|
+| 205 | Benutzer geändert|
+| 206 | Benutzer gelöscht|
+| 207 | Film hinzugefügt|
+| 208 | Film geändert|
+| 209 | Film gelöscht|
+| 210 | Datei hochgeladen|
+| 211 | E-Mail gesendet|
 | 401 | DB Error|
 | 402 | Bycrypt Error|
-| 403 | Error sendMail|
-| 405 | Es wurde eine E-Mail mit weiteren Anweisungen an ${ user.email } gesendet.|
-| 406 | Kennwort konnte nicht geändert werden|
-| 406 | Das Token zum Zurücksetzen des Passworts ist ungültig oder abgelaufen.|
+| 403 | Mail Error|
+| 404 | Kennwort Änderung fehlgeschlagen|
+| 405 | Token ungültig|
 | 407 | not found the ${ token }|
-
-
-
 
 # Libraries used
 
-* [pm2](https://www.npmjs.com/package/pm2) # for production
-* [nodemon](https://www.npmjs.com/package/nodemon) # for Dev
-* [express](https://www.npmjs.com/package/express)
-* [express-session](https://www.npmjs.com/package/express-session)
-* [express-fileupload](https://www.npmjs.com/package/express-fileupload)
-* [cors](https://www.npmjs.com/package/cors)
-* [cookie-parser](https://www.npmjs.com/package/cookie-parser)
-* [body-parser](https://www.npmjs.com/package/body-parser)
-* [mysql](https://www.npmjs.com/package/mysql)
-* [cors](https://www.npmjs.com/package/cors)
-* [Formik](https://www.npmjs.com/package/formik)
-* [bcrypt](https://www.npmjs.com/package/bcrypt)
-* [crypto](https://www.npmjs.com/package/crypto)
+- [pm2](https://www.npmjs.com/package/pm2) # for production
+- [nodemon](https://www.npmjs.com/package/nodemon) # for Dev
+- [express](https://www.npmjs.com/package/express)
+- [express-session](https://www.npmjs.com/package/express-session)
+- [express-fileupload](https://www.npmjs.com/package/express-fileupload)
+- [cors](https://www.npmjs.com/package/cors)
+- [cookie-parser](https://www.npmjs.com/package/cookie-parser)
+- [body-parser](https://www.npmjs.com/package/body-parser)
+- [mysql](https://www.npmjs.com/package/mysql)
+- [cors](https://www.npmjs.com/package/cors)
+- [Formik](https://www.npmjs.com/package/formik)
+- [bcrypt](https://www.npmjs.com/package/bcrypt)
+- [crypto](https://www.npmjs.com/package/crypto)

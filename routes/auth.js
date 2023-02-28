@@ -1,47 +1,29 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router(); // Creating a router object.
-const db = require("../database/index");
-const {
-	decrypt,
-	encrypt
-} = require("../modules/crpyto");
-const bcrypt = require("bcrypt");
-const {
-	isEmail,
-	checkUsername
-} = require("../modules/check_userOrEmail");
-const {
-	clearAllcookie,
-	getSessionIDCookie
-} = require("../modules/cookie");
+const db = require('../database/index');
+const { decrypt, encrypt } = require('../modules/crpyto');
+const bcrypt = require('bcrypt');
+const { isEmail, checkUsername } = require('../modules/check_userOrEmail');
+const { clearAllcookie, getSessionIDCookie } = require('../modules/cookie');
 const crypto = require('crypto');
 const config = require('../config/config');
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
 const checkEmailOnDB = require('../modules/database/checkEmailOnDB');
-const {
-	checkUserTokenOnDB,
-	setUserTokenOnDB
-} = require("../modules/database/userTokenOnDB");
-const changePassword = require("../modules/database/changePassword")
+const { checkUserTokenOnDB, setUserTokenOnDB } = require('../modules/database/userTokenOnDB');
+const changePassword = require('../modules/database/changePassword');
 
 const saltRounds = 10; // The number of rounds to use when generating a salt
 
-router.post("/register", function (req, res) {
+router.post('/register', function (req, res) {
 	let name = decrypt(req.body.name);
 	let lastname = decrypt(req.body.lastname);
 	let username = decrypt(req.body.username);
 	let email = decrypt(req.body.email);
 	let password = decrypt(req.body.password);
 
-	if (
-		name === false ||
-		lastname === false ||
-		username === false ||
-		email === false ||
-		password === false
-	) {
+	if (name === false || lastname === false || username === false || email === false || password === false) {
 		res.status(400).send({
-			msg: "Request not valid",
+			msg: 'Anfrage nicht korrekt',
 			code: 101,
 		});
 		return;
@@ -51,7 +33,7 @@ router.post("/register", function (req, res) {
 
 	if (!isEmail(email)) {
 		res.status(400).send({
-			msg: "Email not valid",
+			msg: 'E-Mail existiert nicht',
 			code: 105,
 		});
 		return;
@@ -59,7 +41,7 @@ router.post("/register", function (req, res) {
 
 	if (!checkUsername(username)) {
 		res.status(400).send({
-			msg: "Benutzername hat ungültige Zeichen",
+			msg: 'Benutzername hat ungültige Zeichen',
 			code: 107,
 		});
 		return;
@@ -67,181 +49,169 @@ router.post("/register", function (req, res) {
 
 	if (password.length < 8) {
 		res.status(400).send({
-			msg: "Das Kennwort muss eine Mindestlänge von 8 Zeichen haben.",
+			msg: 'Das Kennwort muss eine Mindestlänge von 8 Zeichen haben.',
 			code: 106,
 		});
 		return;
 	}
 
-	db.query(
-		"SELECT * FROM users WHERE username = ? OR email = ?",
-		[username, email],
-		function (err, result) {
-			if (err) {
-				console.error(err);
+	db.query('SELECT * FROM users WHERE username = ? OR email = ?', [username, email], function (err, result) {
+		if (err) {
+			console.error(err);
+			res.status(500).send({
+				msg: err,
+				code: 401,
+			});
+			return;
+		}
+
+		if (result.length != 0) {
+			res.status(500).send({
+				msg: 'Benutzername oder E-Mail bereits registriert',
+				code: 104,
+			});
+			return;
+		}
+
+		bcrypt.hash(password, saltRounds, function (err2, hash) {
+			if (err2) {
+				console.error(err2);
 				res.status(500).send({
-					msg: err,
-					code: 401,
+					msg: err2,
+					code: 402,
 				});
 				return;
 			}
 
-			if (result.length != 0) {
-				res.status(500).send({
-					msg: "Benutzername oder E-Mail bereits registriert",
-					code: 104,
-				});
-				return;
-			}
-
-			bcrypt.hash(password, saltRounds, function (err2, hash) {
-				if (err2) {
-					console.error(err2);
+			db.query('INSERT INTO users (name, lastname, username, email, password ) VALUE (?,?,?,?,?)', [name, lastname, username, email, hash], function (error, response) {
+				if (error) {
+					console.error(error);
 					res.status(500).send({
-						msg: err2,
-						code: 402,
+						msg: error,
+						code: 401,
 					});
 					return;
 				}
 
-				db.query(
-					"INSERT INTO users (name, lastname, username, email, password ) VALUE (?,?,?,?,?)",
-					[name, lastname, username, email, hash],
-					function (error, response) {
-						if (error) {
-							console.error(error);
-							res.status(500).send({
-								msg: error,
-								code: 401,
-							});
-							return;
-						}
-
-						res.status(200).send({
-							msg: "Registrierter Benutzer",
-							code: 202,
-						});
-					}
-				);
+				res.status(200).send({
+					msg: 'Benutzer registriert',
+					code: 202,
+				});
 			});
-		}
-	);
+		});
+	});
 });
 
-router.post("/login", function (req, res) {
+router.post('/login', function (req, res) {
 	let email = decrypt(req.body.email);
 	const password = decrypt(req.body.password);
-	let userOrEmail = "username";
+	let userOrEmail = 'username';
 
 	if (email === false || password === false) {
 		res.status(400).send({
-			msg: "Anfrage nicht gültig",
+			msg: 'Anfrage nicht gültig',
 			code: 101,
 		});
 		return;
 	}
 
 	if (isEmail(email)) {
-		userOrEmail = "email";
+		userOrEmail = 'email';
 	} else if (!checkUsername(email)) {
 		res.status(500).send({
-			msg: "Benutzername/E-Mail oder Passwort falsch",
+			msg: 'Benutzername/E-Mail oder Passwort falsch',
 			code: 108,
 		});
 		return;
 	}
 	email = email.toLowerCase();
 
-	db.query(
-		"SELECT * FROM users WHERE " + userOrEmail + " = ?",
-		[email],
-		function (err, result) {
-			if (err) {
+	db.query('SELECT * FROM users WHERE ' + userOrEmail + ' = ?', [email], function (err, result) {
+		if (err) {
+			console.error(err);
+			res.status(500).send({
+				msg: err,
+				code: 401,
+			});
+			return;
+		}
+
+		if (result.length == 0) {
+			res.status(500).send({
+				msg: 'Benutzername/E-Mail oder Passwort falsch',
+				code: 108,
+			});
+			return;
+		}
+
+		bcrypt.compare(password, result[0].password, function (error, response) {
+			if (error) {
 				console.error(err);
 				res.status(500).send({
-					msg: err,
-					code: 401,
+					msg: error,
+					code: 402,
 				});
 				return;
 			}
 
-			if (result.length == 0) {
-				res.status(500).send({
-					msg: "Benutzername/E-Mail oder Passwort falsch",
+			if (response == false) {
+				res.status(400).send({
+					msg: 'Benutzername/E-Mail oder Passwort falsch',
 					code: 108,
 				});
 				return;
 			}
 
-			bcrypt.compare(password, result[0].password, function (error, response) {
-				if (error) {
-					console.error(err);
-					res.status(500).send({
-						msg: error,
-						code: 402,
-					});
-					return;
-				}
-
-				if (response == false) {
-					res.status(400).send({
-						msg: "Benutzername/E-Mail oder Passwort falsch",
-						code: 108,
-					});
-					return;
-				}
-
-				if (req.session.user) {
-					res.status(200).send({
-						msg: "Eingeloggter Benutzer",
-						code: 203,
-						data: req.session.user,
-					});
-					return;
-				}
-
-				getSessionIDCookie(req, res);
-				req.session.user = {
-					name: result[0].name,
-					lastname: result[0].lastname,
-					userID: result[0].userID,
-					username: email,
-					role: result[0].role,
-				};
-
+			if (req.session.user) {
 				res.status(200).send({
-					msg: "Eingeloggter Benutzer",
+					msg: 'Benutzer eingelogt',
 					code: 203,
 					data: req.session.user,
 				});
+				return;
+			}
+
+			getSessionIDCookie(req, res);
+			req.session.user = {
+				name: result[0].name,
+				lastname: result[0].lastname,
+				userID: result[0].userID,
+				username: email,
+				role: result[0].role,
+			};
+
+			res.status(200).send({
+				msg: 'Benutzer eingelogt',
+				code: 203,
+				data: req.session.user,
 			});
-		}
-	);
+		});
+	});
 });
 
-router.post("/forgetpassword", async (req, res) => {
+router.post('/forgetpassword', async (req, res) => {
 	// const email = decrypt(req.body.email);
-	var email = req.body.email
+	var email = req.body.email;
 	console.log(email);
 	// Find the user with the specified email
 	const user = await checkEmailOnDB(email);
 	if (!user) {
 		res.status(400).send({
-			msg: "E-Mail existiert nicht",
+			msg: 'E-Mail existiert nicht',
 			code: 105,
 		});
 		return;
 	}
 	// Generate a token and send it to the user's email
-	const token = crypto.randomBytes(1000).toString("hex");
+	const token = crypto.randomBytes(1000).toString('hex');
 	const transporter = nodemailer.createTransport(config.mailAuth[0]);
 	const mailOptions = {
 		from: {
-			name: "OSZ-Teltow Filmarchiv Passwort vergessen",
+			name: 'OSZ-Teltow Filmarchiv Passwort vergessen',
 			address: config.mailAuth[0].auth.user,
 		},
 		to: email,
-		subject: "Filmarchiv Passwort vergessen",
+		subject: 'Filmarchiv Passwort vergessen',
 		html: `
 	<html>
 		<head>
@@ -321,16 +291,16 @@ router.post("/forgetpassword", async (req, res) => {
 				<p>&copy; OSZ-Teltow. All rights reserved.</p>
 			</div>
 		</body>
-	</html>`
+	</html>`,
 	};
 	transporter.sendMail(mailOptions, async (err, info) => {
 		if (err) {
 			console.log(err);
 			res.status(400).send({
 				msg: `Error sendMail`,
-				code: 403
+				code: 403,
 			});
-			return
+			return;
 		}
 		const isSetUserTokenOnDB = await setUserTokenOnDB(token, email);
 		if (isSetUserTokenOnDB) {
@@ -345,41 +315,40 @@ router.post("/forgetpassword", async (req, res) => {
 			});
 		}
 	});
-})
-
+});
 
 router.get('/forgetpassword/:token', async (req, res) => {
-	const token = req.params.token
+	const token = req.params.token;
 	const isTokenOnDB = await checkUserTokenOnDB(token);
 	if (isTokenOnDB) {
 		res.status(400).send({
 			data: isTokenOnDB,
 			code: 201,
 		});
-		return
+		return;
 	} else {
 		res.status(400).send({
-			msg: `not found the ${ token }`,
+			msg: `not found the ${token}`,
 			code: 407,
 		});
 	}
 });
 
 router.post('/forgetpassword/:token', async (req, res) => {
-	const token = req.params.token
+	const token = req.params.token;
 	const isTokenOnDB = await checkUserTokenOnDB(token);
 	const user = isTokenOnDB;
 	const password = decrypt(req.body.password);
 
 	if (password === false) {
 		res.status(400).send({
-			msg: "Request not valid",
+			msg: 'Anfrage nicht korrekt',
 			code: 101,
 		});
 		return;
 	} else if (password.length < 8) {
 		res.status(400).send({
-			msg: "Das Kennwort muss eine Mindestlänge von 8 Zeichen haben.",
+			msg: 'Das Kennwort muss eine Mindestlänge von 8 Zeichen haben.',
 			code: 106,
 		});
 		return;
@@ -402,11 +371,11 @@ router.post('/forgetpassword/:token', async (req, res) => {
 					const transporter = nodemailer.createTransport(config.mailAuth[0]);
 					const mailOptions = {
 						from: {
-							name: "OSZ-Teltow Filmarchiv Passwort vergessen",
+							name: 'OSZ-Teltow Filmarchiv Passwort vergessen',
 							address: config.mailAuth[0].auth.user,
 						},
 						to: user.email,
-						subject: "Filmarchiv Passwort vergessen",
+						subject: 'Filmarchiv Passwort vergessen',
 						html: `
 								<html>
 									<head>
@@ -479,7 +448,7 @@ router.post('/forgetpassword/:token', async (req, res) => {
 											<p>&copy; OSZ-Teltow. All rights reserved.</p>
 										</div>
 									</body>
-								</html>`
+								</html>`,
 					};
 					transporter.sendMail(mailOptions, async (err) => {
 						if (err) {
@@ -488,15 +457,15 @@ router.post('/forgetpassword/:token', async (req, res) => {
 								msg: `Error sendMail: ${err}`,
 								code: 403,
 							});
-							return
+							return;
 						}
 
 						res.status(400).send({
-							msg: `Es wurde eine E-Mail mit weiteren Anweisungen an ${ user.email } gesendet.`,
+							msg: `Es wurde eine E-Mail mit weiteren Anweisungen an ${user.email} gesendet.`,
 							data: encrypt(user),
 							code: 405,
 						});
-						return
+						return;
 					});
 				} else {
 					res.status(400).send({
@@ -504,14 +473,14 @@ router.post('/forgetpassword/:token', async (req, res) => {
 						data: isTokenOnDB,
 						code: 201,
 					});
-					return
+					return;
 				}
 			} else {
 				res.status(400).send({
-					msg: "Kennwort konnte nicht geändert werden",
+					msg: 'Kennwort konnte nicht geändert werden',
 					code: 406,
 				});
-				return
+				return;
 			}
 		});
 	} else {
@@ -519,16 +488,15 @@ router.post('/forgetpassword/:token', async (req, res) => {
 			msg: `Das Token zum Zurücksetzen des Passworts ist ungültig oder abgelaufen.`,
 			code: 407,
 		});
-		return
+		return;
 	}
 });
 
-
-router.get("/logout", function (req, res, next) {
+router.get('/logout', function (req, res, next) {
 	req.session.destroy();
 	clearAllcookie(req, res);
 	res.status(200).send({
-		msg: "User logged out",
+		msg: 'User logged out',
 		code: 204,
 	});
 	next();
