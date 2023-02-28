@@ -233,6 +233,13 @@ router.post('/changePassword', async (req, res) => {
 											.signature p {
 												margin: 0;
 											}
+											.footer {
+												text-align: center;
+												margin-top: 5px;
+												font-size: 12px;
+												color: #666;
+												text-decoration: none;
+											}
 										</style>
 									</head>
 									<body>
@@ -248,8 +255,10 @@ router.post('/changePassword', async (req, res) => {
 												<br>ihr OSZ-Teltow Filmarchiv Team</p>
 											</div>
 										</div>
-										<p>Diese E-Mail wurde automatisch generiert. Bitte antworten Sie nicht auf diese E-Mail.</p>
-										<p>&copy; OSZ-Teltow. All rights reserved. </p>
+										<div class="footer">
+											<p>Diese E-Mail wurde automatisch generiert. Bitte antworten Sie nicht auf diese E-Mail.</p>
+											<p>&copy; OSZ-Teltow. All rights reserved.</p>
+										</div>
 									</body>
 								</html>`
 				};
