@@ -34,8 +34,9 @@ router.get('/get', (req, res) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: err,
-				code: 402,
+				msg: 'DB Error',
+				code: 401,
+				err: err,
 			});
 			return;
 		}
@@ -59,7 +60,7 @@ router.patch('/updateRole', (req, res) => {
 	const role = decrypt(req.body.role);
 	if (userID === false || role === false) {
 		res.status(400).send({
-			msg: 'Anfrage nicht korrekt',
+			msg: 'Anfrage nicht gültig',
 			code: 101,
 		});
 		return;
@@ -69,8 +70,9 @@ router.patch('/updateRole', (req, res) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: err,
-				code: 402,
+				msg: 'DB Error',
+				code: 401,
+				err: err,
 			});
 			return;
 		}
@@ -100,8 +102,9 @@ router.patch('/updateRole', (req, res) => {
 			if (err2) {
 				console.error(err2);
 				res.status(500).send({
-					msg: err2,
-					code: 402,
+					msg: 'DB Error',
+					code: 401,
+					err: err,
 				});
 				return;
 			}
@@ -135,7 +138,7 @@ router.get('/list', (req, res) => {
 			console.error(err);
 			res.status(500).send({
 				msg: 'DB Error',
-				code: 402,
+				code: 401,
 				err: err,
 			});
 			return;
@@ -150,79 +153,98 @@ router.get('/list', (req, res) => {
 
 router.post('/changePassword', async (req, res) => {
 	const userID = decrypt(req.body.userID);
-	const user = await getUserOnDbByUserId(userID);
 	const password = decrypt(req.body.password);
-
-	if (password === false) {
+	if (password === false || userID == false) {
 		res.status(400).send({
-			msg: 'Anfrage nicht korrekt',
+			msg: 'Anfrage nicht gültig',
 			code: 101,
 		});
 		return;
-	} else if (password.length < 8) {
+	}
+	const user = await getUserOnDbByUserId(userID);
+	if (user.result === 0) {
 		res.status(400).send({
-			msg: 'Das Kennwort muss eine Mindestlänge von 8 Zeichen haben.',
+			msg: 'Benutzer nicht gefunden',
+			code: 110,
+		});
+		return;
+	}
+	if (user.result === 1) {
+		//DB Error
+		console.error(user.err);
+		res.status(500).send({
+			msg: 'DB Error',
+			code: 401,
+			err: user.err,
+		});
+		return;
+	}
+
+	if (password.length < 8) {
+		res.status(400).send({
+			msg: 'Kennwort Mindestlänge ist 8 Zeichen',
 			code: 106,
 		});
 		return;
 	}
-	if (user) {
-		bcrypt.hash(password, saltRounds, async (err2, hashPassword) => {
-			if (err2) {
-				console.error(err2);
-				res.status(500).send({
-					msg: 'Bycrypt Error',
-					code: 402,
-					err: err2,
-				});
-				return;
-			}
-			const isChangePassword = changePassword(user.email, hashPassword);
-			if (isChangePassword) {
-				const transporter = nodemailer.createTransport(config.mailAuth[0]);
-				const mailOptions = {
-					from: {
-						name: 'OSZ-Teltow Filmarchiv Passwort vergessen',
-						address: config.mailAuth[0].auth.user,
-					},
-					to: user.email,
-					subject: 'Filmarchiv Passwort vergessen',
-					html: `
-								`,
-				};
-				transporter.sendMail(mailOptions, async (err) => {
-					if (err) {
-						console.error(err);
-						res.status(400).send({
-							msg: 'Mail Error',
-							code: 403,
-							err: err,
-						});
-						return;
-					}
+	bcrypt.hash(password, saltRounds, async (err2, hashPassword) => {
+		if (err2) {
+			console.error(err2);
+			res.status(500).send({
+				msg: 'Bycrypt Error',
+				code: 402,
+				err: err2,
+			});
+			return;
+		}
+		const passwordChanged = await changePassword(user.data.email, hashPassword);
+		if (passwordChanged.result === 0) {
+			res.status(400).send({
+				msg: 'Benutzer nicht gefunden',
+				code: 110,
+			});
+			return;
+		}
+		if (passwordChanged.result === 1) {
+			//DB Error
+			console.error(passwordChanged.err);
+			res.status(500).send({
+				msg: 'DB Error',
+				code: 401,
+				err: passwordChanged.err,
+			});
+			return;
+		}
 
-					res.status(200).send({
-						msg: 'E-Mail gesendet',
-						data: user,
-						code: 211,
-					});
-					return;
-				});
-			} else {
+		const transporter = nodemailer.createTransport(config.mailAuth[0]);
+		const mailOptions = {
+			from: {
+				name: 'OSZ-Teltow Filmarchiv Passwort vergessen',
+				address: config.mailAuth[0].auth.user,
+			},
+			to: user.data.email,
+			subject: 'Filmarchiv Passwort vergessen',
+			html: `
+								`,
+		};
+		transporter.sendMail(mailOptions, async (err) => {
+			if (err) {
+				console.error(err);
 				res.status(400).send({
-					msg: 'Kennwort Änderung fehlgeschlagen',
-					code: 404,
+					msg: 'Mail Error',
+					code: 403,
+					err: err,
 				});
 				return;
 			}
+
+			res.status(200).send({
+				msg: 'E-Mail gesendet',
+				code: 211,
+			});
+			return;
 		});
-	} else {
-		res.status(400).send({
-			msg: 'Token ungültig',
-			code: 405,
-		});
-		return;
-	}
+	});
 });
 
 router.delete('/delete', (req, res) => {
@@ -255,8 +277,9 @@ router.delete('/delete', (req, res) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: err,
-				code: 402,
+				msg: 'DB Error',
+				code: 401,
+				err: err,
 			});
 			return;
 		}

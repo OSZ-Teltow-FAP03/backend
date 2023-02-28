@@ -47,8 +47,9 @@ router.get('/stream', function (req, res) {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: err,
-				code: 402,
+				msg: "DB Error",
+				code: 401,
+				err:err
 			});
 			return;
 		}
@@ -143,8 +144,9 @@ router.get('/download', function (req, res) {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: err,
-				code: 402,
+				msg: "DB Error",
+				code: 401,
+				err:err
 			});
 			return;
 		}
@@ -209,8 +211,9 @@ router.post('/upload', async (req, res) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: err,
-				code: 402,
+				msg: "DB Error",
+				code: 401,
+				err:err
 			});
 			return;
 		}
@@ -241,8 +244,9 @@ router.post('/upload', async (req, res) => {
 			if (err2) {
 				console.error(err2);
 				res.status(500).send({
-					msg: err2,
-					code: 402,
+					msg: "DB Error",
+					code: 401,
+					err:err
 				});
 				return;
 			}

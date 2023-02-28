@@ -39,8 +39,9 @@ router.get('/get', (req, res) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: err,
-				code: 402,
+				msg: 'DB Error',
+				code: 401,
+				err: err,
 			});
 			return;
 		}
@@ -75,8 +76,9 @@ router.get('/listFiles', (req, res) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: err,
-				code: 402,
+				msg: 'DB Error',
+				code: 401,
+				err: err,
 			});
 			return;
 		}
@@ -119,8 +121,9 @@ router.delete('/delete', (req, res) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: err,
-				code: 402,
+				msg: 'DB Error',
+				code: 401,
+				err: err,
 			});
 			return;
 		}
@@ -145,8 +148,9 @@ router.delete('/delete', (req, res) => {
 			if (err2) {
 				console.error(err2);
 				res.status(500).send({
-					msg: err2,
-					code: 402,
+					msg: 'DB Error',
+					code: 401,
+					err: err,
 				});
 				return;
 			}
@@ -197,8 +201,9 @@ router.put('/create', (req, res) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: err,
-				code: 402,
+				msg: 'DB Error',
+				code: 401,
+				err: err,
 			});
 			return;
 		}
@@ -230,8 +235,9 @@ router.patch('/update', (req, res) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: err,
-				code: 402,
+				msg: 'DB Error',
+				code: 401,
+				err: err,
 			});
 			return;
 		}
@@ -294,8 +300,9 @@ router.patch('/update', (req, res) => {
 			if (err) {
 				console.error(err);
 				res.status(500).send({
-					msg: err,
-					code: 402,
+					msg: 'DB Error',
+					code: 401,
+					err: err,
 				});
 				return;
 			}
