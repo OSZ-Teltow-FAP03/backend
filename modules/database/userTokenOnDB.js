@@ -15,7 +15,7 @@ const checkUserTokenOnDB = async (token) => {
 const setUserTokenOnDB = async (token, email) => {
   return new Promise((resolve, reject) => {
     db.query('UPDATE users SET token = ? WHERE email = ?', [token, email], (error, results, fields) => {
-      if (error) throw reject(error);
+      if (error) reject(error);
       if (results.length === 0) {
         resolve(false);
       } else {

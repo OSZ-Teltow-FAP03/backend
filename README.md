@@ -649,6 +649,14 @@ A table that shows the error and status codes and their respective messages.
 | 210 | File uploaded|
 | 401 | DB Error|
 | 402 | Bycrypt Error|
+| 403 | Error sendMail|
+| 405 | Es wurde eine E-Mail mit weiteren Anweisungen an ${ user.email } gesendet.|
+| 406 | Kennwort konnte nicht geändert werden|
+| 406 | Das Token zum Zurücksetzen des Passworts ist ungültig oder abgelaufen.|
+| 407 | not found the ${ token }|
+
+
+
 
 # Libraries used
 

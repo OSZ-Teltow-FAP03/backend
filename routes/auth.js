@@ -228,7 +228,7 @@ router.post("/forgetpassword", async (req, res) => {
 	if (!user) {
 		res.status(400).send({
 			msg: "E-Mail existiert nicht",
-			code: 109,
+			code: 105,
 		});
 		return;
 	}
@@ -319,8 +319,8 @@ router.post("/forgetpassword", async (req, res) => {
 		if (err) {
 			console.log(err);
 			res.status(400).send({
-				msg: `err: ${err}    info: ${info}`,
-				code: 109,
+				msg: `Error sendMail`,
+				code: 403
 			});
 			return
 		}
@@ -328,12 +328,12 @@ router.post("/forgetpassword", async (req, res) => {
 		if (isSetUserTokenOnDB) {
 			res.status(400).send({
 				msg: `Es wurde eine E-Mail mit weiteren Anweisungen an ${email} gesendet.`,
-				code: 109,
+				code: 405,
 			});
 		} else {
 			res.status(400).send({
-				msg: `err 273: ${isSetUserTokenOnDB}`,
-				code: 109,
+				msg: `${isSetUserTokenOnDB}`,
+				code: 401,
 			});
 		}
 	});
@@ -345,15 +345,14 @@ router.get('/forgetpassword/:token', async (req, res) => {
 	const isTokenOnDB = await checkUserTokenOnDB(token);
 	if (isTokenOnDB) {
 		res.status(400).send({
-			msg: "sus",
 			data: isTokenOnDB,
-			code: 109,
+			code: 201,
 		});
 		return
 	} else {
 		res.status(400).send({
 			msg: `not found the ${ token }`,
-			code: 109,
+			code: 407,
 		});
 	}
 });
@@ -379,25 +378,34 @@ router.post('/forgetpassword/:token', async (req, res) => {
 	}
 
 	if (isTokenOnDB) {
-		const isChangePassword = changePassword(user.email, password);
-		if (isChangePassword) {
-			const isSetUserTokenOnDB = await setUserTokenOnDB(null, user.email);
-			if (isSetUserTokenOnDB) {
-				const transporter = nodemailer.createTransport(config.mailAuth[0]);
-				const mailOptions = {
-					from: {
-						name: "OSZ-Teltow Filmarchiv Passwort vergessen",
-						address: config.mailAuth[0].auth.user,
-					},
-					to: user.email,
-					subject: "Filmarchiv Passwort vergessen",
-					html: `
+		bcrypt.hash(password, saltRounds, async (err2, hashPassword) => {
+			if (err2) {
+				console.error(err2);
+				res.status(500).send({
+					msg: err2,
+					code: 402,
+				});
+				return;
+			}
+			const isChangePassword = changePassword(user.email, hashPassword);
+			if (isChangePassword) {
+				const isSetUserTokenOnDB = await setUserTokenOnDB(null, user.email);
+				if (isSetUserTokenOnDB) {
+					const transporter = nodemailer.createTransport(config.mailAuth[0]);
+					const mailOptions = {
+						from: {
+							name: "OSZ-Teltow Filmarchiv Passwort vergessen",
+							address: config.mailAuth[0].auth.user,
+						},
+						to: user.email,
+						subject: "Filmarchiv Passwort vergessen",
+						html: `
 								<html>
 									<head>
-									  <meta charset="UTF-8">
-  									<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  									<meta http-equiv="X-UA-Compatible" content="ie=edge">
-  									<title>OSZ-Teltow Filmarchiv Passwort erfolgreich geändert</title>
+									  	<meta charset="UTF-8">
+  										<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  										<meta http-equiv="X-UA-Compatible" content="ie=edge">
+  										<title>OSZ-Teltow Filmarchiv Passwort erfolgreich geändert</title>
 										<style>
 											body {
 												font-family: Arial, sans-serif;
@@ -456,37 +464,44 @@ router.post('/forgetpassword/:token', async (req, res) => {
 										<p>&copy; OSZ-Teltow. All rights reserved. </p>
 									</body>
 								</html>`
-				};
-				transporter.sendMail(mailOptions, async (err, info) => {
-					if (err) {
-						console.log(err);
+					};
+					transporter.sendMail(mailOptions, async (err) => {
+						if (err) {
+							console.log(err);
+							res.status(400).send({
+								msg: `Error sendMail: ${err}`,
+								code: 403,
+							});
+							return
+						}
+
 						res.status(400).send({
-							msg: `err: ${err}    info: ${info}`,
-							code: 109,
+							msg: `Es wurde eine E-Mail mit weiteren Anweisungen an ${ user.email } gesendet.`,
+							data: encrypt(user),
+							code: 405,
 						});
 						return
-					}
-
+					});
+				} else {
 					res.status(400).send({
-						msg: `Es wurde eine E-Mail mit weiteren Anweisungen an ${ user.email } gesendet.`,
-						data: encrypt(user),
-						code: 109,
+						msg: `Token konnte nicht gesetzt werden. ${isSetUserTokenOnDB}`,
+						data: isTokenOnDB,
+						code: 201,
 					});
 					return
+				}
+			} else {
+				res.status(400).send({
+					msg: "Kennwort konnte nicht geändert werden",
+					code: 406,
 				});
 				return
 			}
-		} else {
-			res.status(400).send({
-				msg: "Kennwort konnte nicht geändert werden",
-				code: 109,
-			});
-			return
-		}
+		});
 	} else {
 		res.status(400).send({
 			msg: `Das Token zum Zurücksetzen des Passworts ist ungültig oder abgelaufen.`,
-			code: 109,
+			code: 407,
 		});
 		return
 	}
