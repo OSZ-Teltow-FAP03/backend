@@ -1,33 +1,41 @@
 {
-  "host": "0.0.0.0",
-  "port": 4000,
-  "databank": [{
-    "host": "nearix67.de",
-    "port": 17172,
-    "user": "hildegardt",
-    "password": "hildegardt",
-    "database": "projektarbeit",
-    "clearExpired": true,
-    "checkExpirationInterval": 900000,
-    "expiration": 86400000,
-    "createDatabaseTable": true,
-    "connectionLimit": 1,
-    "endConnectionOnClose": true,
-    "charset": "utf8mb4_bin"
-  }],
-  "mailAuth": [{
-    "host": "smtp",
-    "port": 465,
-    "secure": true,
-    "auth": {
-      "user": "",
-      "pass": ""
-    }
-  }],
-  "https": true,
-  "ssl_keys": [{
-    "key": "/config/ssl/server.key",
-    "cert": "/config/ssl/server.crt"
-  }],
-  "filePath": "./uploads/"
+	"host": "0.0.0.0",
+	"frontend_host": "192.168.44.55:4111",
+	"port": 4000,
+	"databank": [
+		{
+			"host": "nearix67.de",
+			"port": 17172,
+			"user": "hildegardt",
+			"password": "hildegardt",
+			"database": "projektarbeit",
+			"clearExpired": true,
+			"checkExpirationInterval": 900000,
+			"expiration": 86400000,
+			"createDatabaseTable": true,
+			"connectionLimit": 1,
+			"endConnectionOnClose": true,
+			"charset": "utf8mb4_bin"
+		}
+	],
+	"mailAuth": [
+		{
+			"host": "smtp",
+			"port": 465,
+			"secure": true,
+			"auth": {
+				"user": "",
+				"pass": ""
+			}
+		}
+	],
+	"https": true,
+	"ssl_keys": [
+		{
+			"key": "/config/ssl/server.key",
+			"cert": "/config/ssl/server.crt"
+		}
+	],
+	"cryptoKey": "secretKey",
+	"filePath": "./uploads/"
 }
