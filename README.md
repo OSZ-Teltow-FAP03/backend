@@ -165,22 +165,6 @@ npm start
 
 ---
 
-# API
-
-Server will listen on port `3001`, and it expose the following APIs:
-
-- **POST** - `/auth/register` - Register a new user
-
-  - **name** - _string_
-  - **lastname** - _string_
-  - **username** - _string_
-  - **email** - _string_
-  - **password** - _string_
-
-- **POST** - `/auth/login` - Login user
-  - **email** - _string_ or **username** - _string_
-  - **password** - _string_
-
 # Sessions
 
 ### Flow
