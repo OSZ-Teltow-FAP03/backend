@@ -36,5 +36,6 @@
 			"cert": "/config/ssl/server.crt"
 		}
 	],
+	"cryptoKey": "secretKey",
 	"filePath": "./uploads/"
 }

@@ -13,16 +13,12 @@ const session = require('express-session');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const {
-	clearAllcookie,
-	getSessionIDCookie
-} = require('./modules/cookie');
-const {
-	v4: uuidv4
-} = require('uuid');
+const { encode, decode } = require('./modules/crypto.js');
+const { clearAllcookie, getSessionIDCookie } = require('./modules/cookie');
+const { v4: uuidv4 } = require('uuid');
 const config = require('./config/config.json');
 const hostname = config.host;
-const port = config.port
+const port = config.port;
 //setting CSP
 const csp = {
 	defaultSrc: [`'none'`],
@@ -33,7 +29,7 @@ const csp = {
 	frameSrc: [`'self'`],
 	fontSrc: [`'self'`, 'data:'],
 	objectSrc: [`'self'`],
-	mediaSrc: [`'self'`]
+	mediaSrc: [`'self'`],
 };
 const SESSION_SECRET = uuidv4();
 
@@ -46,15 +42,15 @@ app.use(helmet.hidePoweredBy());
 //  app.use(helmet.noCache()); // noCache disabled by default
 app.use(
 	helmet.hsts({
-		maxAge: 5184000
-	})
+		maxAge: 5184000,
+	}),
 );
 
 app.use(
 	cors({
 		credentials: true,
-		origin: true
-	})
+		origin: true,
+	}),
 );
 
 app.set('trust proxy', true); // trust first proxy
@@ -75,21 +71,23 @@ app.use(
 			maxAge: 1 * 60 * 1000,
 			sameSite: 'none',
 			secure: true,
-			HostOnly: true
-		}
-	})
+			HostOnly: true,
+		},
+	}),
 );
 
 // app middleware
 app.use(
 	express.urlencoded({
-		extended: true
-	})
+		extended: true,
+	}),
 );
 
-app.use(fileUpload({
-	createParentPath: true
-}));
+app.use(
+	fileUpload({
+		createParentPath: true,
+	}),
+);
 
 app.use(express.json());
 /* This is a middleware that is used to parse the body of the request. */
@@ -98,7 +96,7 @@ const corsOptions = {
 	methods: ['GET', 'POST', 'PUT', 'DELETE'],
 	credentials: true, // enable set cookie
 	optionsSuccessStatus: 200,
-	credentials: true
+	credentials: true,
 };
 // enabling CORS for all requests
 app.use(cors(corsOptions));
@@ -114,8 +112,8 @@ app.use(bodyParser.json());
  */
 app.use(
 	bodyParser.urlencoded({
-		extended: true
-	})
+		extended: true,
+	}),
 );
 app.use(cookieParser(SESSION_SECRET)); // any string ex: 'keyboard cat'
 app.use(useragent.express());
@@ -146,15 +144,22 @@ if (app.get('env') === 'development') {
 //app.use(errorHandlers.productionErrors);
 
 /* This is telling the server to listen to port 4000. */
+app.post('/test', (req, res) => {
+	const ToDecode = req.body.toDecode;
+	const ToEncode = req.body.toEncode;
+	const decoded = decode(ToDecode);
+	const encoded = encode(ToEncode);
+	res.send({ decoded: decoded, encoded: encoded });
+});
 const server = https
 	.createServer(
 		// Provide the private and public key to the server by reading each
 		// file's content with the readFileSync() method.
 		{
 			key: fs.readFileSync(config.ssl_keys[0].key),
-			cert: fs.readFileSync(config.ssl_keys[0].cert)
+			cert: fs.readFileSync(config.ssl_keys[0].cert),
 		},
-		app
+		app,
 	)
 	.listen(port, '0.0.0.0', (err) => {
 		if (err) {

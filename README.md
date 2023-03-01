@@ -637,22 +637,35 @@ npm install crypto
 To encrypt and decrypt a string:
 
 ```javascript
-var crypto = require('crypto');
+const Crypto = require('node:crypto');
+const config = require('../config/config');
 
-var cypherKey = 'mySecretKey';
+function encode(text) {
+	const iv = Crypto.randomBytes(16).toString('hex');
+	const key = Crypto.createHash('sha256').update(config.cryptoKey).digest();
+	const cipher = Crypto.createCipheriv('aes-256-gcm', key, iv);
+	let encrypted = cipher.update(text, 'utf8', 'hex');
+	encrypted += cipher.final('hex');
+	const authTag = cipher.getAuthTag();
 
-function encrypt(text) {
-	var cipher = crypto.createCipher('aes-256-cbc', cypherKey);
-	var crypted = cipher.update(text, 'utf8', 'hex');
-	crypted += cipher.final('hex');
-	return crypted; //94grt976c099df25794bf9ccb85bea72
+	return { data: encrypted, iv: iv, auth: authTag.toString('hex') };
 }
 
-function decrypt(text) {
-	var decipher = crypto.createDecipher('aes-256-cbc', cypherKey);
-	var dec = decipher.update(text, 'hex', 'utf8');
-	dec += decipher.final('utf8');
-	return dec; //myPlainText
+function decode(encrypted) {
+	try {
+		encrypted = JSON.parse(encrypted);
+		const text = encrypted.data;
+		const iv = encrypted.iv;
+		const authTag = Buffer.from(encrypted.auth, 'hex');
+		const key = Crypto.createHash('sha256').update(config.cryptoKey).digest();
+		const decipher = Crypto.createDecipheriv('aes-256-gcm', key, iv);
+		decipher.setAuthTag(authTag);
+		var dec = decipher.update(text, 'hex', 'utf8');
+		dec += decipher.final('utf8');
+	} catch (error) {
+		return false;
+	}
+	return dec;
 }
 ```
 
