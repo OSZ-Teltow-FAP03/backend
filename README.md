@@ -464,7 +464,7 @@ Regardless of auth mechanism
 - two-factor auth
 - API throttling
 
-# Enpoints
+# Endpoints
 
 Server exposes the following Enpoints:
 
@@ -480,6 +480,19 @@ Server exposes the following Enpoints:
 
   - **email** - _Request Body encrypted string_ -- Email or Username of User
   - **password** - _Request Body encrypted string_ -- Password
+
+- **POST** - `/auth/forgetpassword` - forgetPassword
+
+  - **email** - _Request Body encrypted string_ -- Email of User
+
+- **GET** - `/auth/forgetpassword/:token` - forgetpassword
+
+  - **token** - _Query Attribute string_ -- Token to verify
+
+- **POST** - `/auth/forgetpassword/:token` - forgetpassword
+
+  - **password** - _Request Body encrypted string_ -- Password
+  - **token** - _Request Body encrypted string_ -- Token to verify
 
 - **GET** - `/auth/logout` - Logout user
 
@@ -585,6 +598,11 @@ Server exposes the following Enpoints:
 
 - **DELETE** - `/users/delete` - Deletes Film
   - **UserID** - _Request Body encrypted string_ -- ID of the User
+
+- **POST** - `/users/changePassword` - Change Password of the User
+-
+  - **UserID** - _Request Body encrypted integer_ -- ID of the User
+  - **password** - _Request Body encrypted string_ -- Password
 
 ---
 
