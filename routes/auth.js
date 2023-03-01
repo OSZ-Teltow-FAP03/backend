@@ -203,7 +203,6 @@ router.post('/forgetpassword', async (req, res) => {
 		res.status(200).send({
 			msg: `E-Mail gesendet`,
 			code: 211,
-			data: encrypt(email),
 		});
 		return;
 	}
@@ -261,7 +260,6 @@ router.post('/forgetpassword', async (req, res) => {
 		res.status(200).send({
 			msg: `E-Mail gesendet`,
 			code: 211,
-			data: encrypt(email),
 		});
 	});
 });
@@ -342,7 +340,7 @@ router.post('/forgetpassword/:token', async (req, res) => {
 			});
 			return;
 		}
-		const passwordChanged = await changePassword(user.email, hashPassword);
+		const passwordChanged = await changePassword(user.result.email, hashPassword);
 		if (passwordChanged.result === 0) {
 			res.status(400).send({
 				msg: 'Benutzer nicht gefunden',
@@ -360,7 +358,7 @@ router.post('/forgetpassword/:token', async (req, res) => {
 			});
 			return;
 		}
-		const isSetUserTokenOnDB = await setUserTokenOnDB(null, user.email);
+		const isSetUserTokenOnDB = await setUserTokenOnDB(null, user.result.email);
 		if (isSetUserTokenOnDB.result === 0) {
 			res.status(400).send({
 				msg: 'Benutzer nicht gefunden',
@@ -370,11 +368,11 @@ router.post('/forgetpassword/:token', async (req, res) => {
 		}
 		if (isSetUserTokenOnDB.result === 1) {
 			//DB Error
-			console.error(user.err);
+			console.error(isSetUserTokenOnDB.err);
 			res.status(500).send({
 				msg: 'DB Error',
 				code: 401,
-				err: user.err,
+				err: isSetUserTokenOnDB.err,
 			});
 			return;
 		}
@@ -385,9 +383,9 @@ router.post('/forgetpassword/:token', async (req, res) => {
 				name: 'OSZ-Teltow Filmarchiv Passwort vergessen',
 				address: config.mailAuth[0].auth.user,
 			},
-			to: user.email,
+			to: user.result.email,
 			subject: 'Filmarchiv Passwort Änderung erfolgreich',
-			html: html.replace('${__NAME__}', user.lastname),
+			html: html.replace('${__NAME__}', user.result.lastname),
 		};
 		transporter.sendMail(mailOptions, async (err) => {
 			if (err) {
@@ -402,7 +400,7 @@ router.post('/forgetpassword/:token', async (req, res) => {
 
 			res.status(200).send({
 				msg: `E-Mail gesendet`,
-				data: encrypt(user.email),
+				data: encrypt(user.result.email),
 				code: 211,
 			});
 		});
