@@ -143,8 +143,8 @@ info about config data
 	"https": true,
 	"ssl_keys": [
 		{
-			"key": "/config/ssl/server.key",
-			"cert": "/config/ssl/server.crt"
+			"key": "./config/ssl/server.key",
+			"cert": "./config/ssl/server.crt"
 		}
 	],
 	"filePath": "./uploads/"
