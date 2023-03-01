@@ -442,116 +442,148 @@ Regardless of auth mechanism
 - API throttling
 
 # Enpoints
+
 Server exposes the following Enpoints:
 
-
 - **POST** - `/auth/register` - Register a new user
-	- **name** - *Request Body encrypted string* -- First name
-	- **lastname** - *Request Body encrypted string* -- Last name
-	- **username** - *Request Body encrypted string* -- Username
-	- **email** - *Request Body encrypted string* -- Email
-	- **password** - *Request Body encrypted string* -- Password
+
+  - **name** - _Request Body encrypted string_ -- First name
+  - **lastname** - _Request Body encrypted string_ -- Last name
+  - **username** - _Request Body encrypted string_ -- Username
+  - **email** - _Request Body encrypted string_ -- Email
+  - **password** - _Request Body encrypted string_ -- Password
 
 - **POST** - `/auth/login` - Login user
-  - **email** - *Request Body encrypted string* -- Email or Username of User
-  - **password** - *Request Body encrypted string* -- Password
+
+  - **email** - _Request Body encrypted string_ -- Email or Username of User
+  - **password** - _Request Body encrypted string_ -- Password
+
+- **POST** - `/auth/forgetpassword` - forgetPassword
+
+  - **email** - _Request Body encrypted string_ -- Email of User
+
+- **GET** - `/auth/forgetpassword/:token` - forgetpassword
+
+  - **token** - _Query Attribute string_ -- Token to verify
+
+- **POST** - `/auth/forgetpassword/:token` - forgetpassword
+
+  - **password** - _Request Body encrypted string_ -- Password
+  - **token** - _Request Body encrypted string_ -- Token to verify
 
 - **GET** - `/auth/logout` - Logout user
 
 - **GET** - `/files/stream` - Streams File if it is Streamable
-  - **FileID** - *Query Attribute integer* -- ID of the File
-  - **range** - *HTTP Header* -- Data Range automatically set by Player
+
+  - **FileID** - _Query Attribute integer_ -- ID of the File
+  - **range** - _HTTP Header_ -- Data Range automatically set by Player
 
 - **GET** - `/files/download` - Downloads File
-  - **FileID** - *Query Attribute integer* -- ID of the File
+
+  - **FileID** - _Query Attribute integer_ -- ID of the File
 
 - **POST** - `/files/upload` - Uploads File
-  - **FilmID** - *Request Body encrypted string* -- ID of the Film
-  - **File** - *Multipart/Form-Data File* -- see https://stackoverflow.com/questions/35722093/send-multipart-form-data-files-with-angular-using-http
+
+  - **FilmID** - _Request Body encrypted string_ -- ID of the Film
+  - **File** - _Multipart/Form-Data File_ -- see https://stackoverflow.com/questions/35722093/send-multipart-form-data-files-with-angular-using-http
 
 - **GET** - `/films/get` - Lists/Searches Film
-  - **filmQuery** - *Query Attribute string* -- Optional search string
+
+  - **filmQuery** - _Query Attribute string_ -- Optional search string
 
 - **GET** - `/films/listFiles` - Lists Files assosiated with Film
-  - **FilmID** - *Query Attribute integer* -- ID of the Film
+
+  - **FilmID** - _Query Attribute integer_ -- ID of the Film
 
 - **DELETE** - `/films/delete` - Deletes Film
-  - **FilmID** - *Request Body encrypted string* -- ID of the Film
+
+  - **FilmID** - _Request Body encrypted string_ -- ID of the Film
 
 - **POST** - `/films/create` - Creates Film
-  - **Filmtitel** - *Request Body encrypted string* -- Required
-  - **Status** - *Request Body encrypted string* -- Required
-  - **Lehrjahr** - *Request Body encrypted integer* -- Required
-  - **Stichworte** - *Request Body encrypted string* -- Required
-  - **Prüfstück** - *Request Body encrypted 1 or 0* -- Required
-  - **Programmtyp** - *Request Body encrypted string* -- Required
-  - **Erzählsatz** - *Request Body encrypted string* -- Required
-  - **Upload** - *Request Body encrypted date* -- Required
-  - **Erstellungsdatum** - *Request Body encrypted date* -- Required
-  - **Mitwirkende** - *Request Body encrypted string* -- Required
-  - **Erscheinungsdatum** - *Request Body encrypted date* -- Required
-  - **Tonformat** - *Request Body encrypted string* -- Optional
-  - **Bildformat** - *Request Body encrypted string* -- Optional
-  - **Bildfrequenz** - *Request Body encrypted string* -- Optional
-  - **Farbtiefe** - *Request Body encrypted string* -- Optional
-  - **Videocontainer** - *Request Body encrypted string* -- Optional
-  - **Tonspurbelegung** - *Request Body encrypted string* -- Optional
-  - **Timecode_Anfang** - *Request Body encrypted string* -- Optional
-  - **Timecode_Ende** - *Request Body encrypted string* -- Optional
-  - **Dauer** - *Request Body encrypted string* -- Optional
-  - **Videocodec** - *Request Body encrypted string* -- Optional
-  - **Auflösung** - *Request Body encrypted string* -- Optional
-  - **Dauer** - *Request Body encrypted string* -- Optional
-  - **Vorschaubild** - *Request Body encrypted string* -- Optional
-  - **Autor** - *Request Body encrypted string* -- Optional
-  - **Bemerkung** - *Request Body encrypted string* -- Optional
-  - **Bewertungen** - *Request Body encrypted string* -- Optional
-  - **Klasse** - *Request Body encrypted string* -- Optional
+
+  - **Filmtitel** - _Request Body encrypted string_ -- Required
+  - **Status** - _Request Body encrypted string_ -- Required
+  - **Lehrjahr** - _Request Body encrypted integer_ -- Required
+  - **Stichworte** - _Request Body encrypted string_ -- Required
+  - **Prüfstück** - _Request Body encrypted 1 or 0_ -- Required
+  - **Programmtyp** - _Request Body encrypted string_ -- Required
+  - **Erzählsatz** - _Request Body encrypted string_ -- Required
+  - **Upload** - _Request Body encrypted date_ -- Required
+  - **Erstellungsdatum** - _Request Body encrypted date_ -- Required
+  - **Mitwirkende** - _Request Body encrypted string_ -- Required
+  - **Erscheinungsdatum** - _Request Body encrypted date_ -- Required
+  - **Tonformat** - _Request Body encrypted string_ -- Optional
+  - **Bildformat** - _Request Body encrypted string_ -- Optional
+  - **Bildfrequenz** - _Request Body encrypted string_ -- Optional
+  - **Farbtiefe** - _Request Body encrypted string_ -- Optional
+  - **Videocontainer** - _Request Body encrypted string_ -- Optional
+  - **Tonspurbelegung** - _Request Body encrypted string_ -- Optional
+  - **Timecode_Anfang** - _Request Body encrypted string_ -- Optional
+  - **Timecode_Ende** - _Request Body encrypted string_ -- Optional
+  - **Dauer** - _Request Body encrypted string_ -- Optional
+  - **Videocodec** - _Request Body encrypted string_ -- Optional
+  - **Auflösung** - _Request Body encrypted string_ -- Optional
+  - **Dauer** - _Request Body encrypted string_ -- Optional
+  - **Vorschaubild** - _Request Body encrypted string_ -- Optional
+  - **Autor** - _Request Body encrypted string_ -- Optional
+  - **Bemerkung** - _Request Body encrypted string_ -- Optional
+  - **Bewertungen** - _Request Body encrypted string_ -- Optional
+  - **Klasse** - _Request Body encrypted string_ -- Optional
 
 - **PATCH** - `/films/update` - Updates Film, only send attributes are changed
-  - **FilmID** - *Request Body encrypted integer* -- Required
-  - **Prüfstück** - *Request Body encrypted 1 or 0* -- Required
-  - **Filmtitel** - *Request Body encrypted string* -- Optional
-  - **Status** - *Request Body encrypted string* -- Optional
-  - **Lehrjahr** - *Request Body encrypted integer* -- Optional
-  - **Stichworte** - *Request Body encrypted string* -- Optional
-  - **Programmtyp** - *Request Body encrypted string* -- Optional
-  - **Erzählsatz** - *Request Body encrypted string* -- Optional
-  - **Upload** - *Request Body encrypted date* -- Optional
-  - **Erstellungsdatum** - *Request Body encrypted date* -- Optional
-  - **Mitwirkende** - *Request Body encrypted string* -- Optional
-  - **Erscheinungsdatum** - *Request Body encrypted date* -- Optional
-  - **Tonformat** - *Request Body encrypted string* -- Optional
-  - **Bildformat** - *Request Body encrypted string* -- Optional
-  - **Bildfrequenz** - *Request Body encrypted string* -- Optional
-  - **Farbtiefe** - *Request Body encrypted string* -- Optional
-  - **Videocontainer** - *Request Body encrypted string* -- Optional
-  - **Tonspurbelegung** - *Request Body encrypted string* -- Optional
-  - **Timecode_Anfang** - *Request Body encrypted string* -- Optional
-  - **Timecode_Ende** - *Request Body encrypted string* -- Optional
-  - **Dauer** - *Request Body encrypted string* -- Optional
-  - **Videocodec** - *Request Body encrypted string* -- Optional
-  - **Auflösung** - *Request Body encrypted string* -- Optional
-  - **Dauer** - *Request Body encrypted string* -- Optional
-  - **Vorschaubild** - *Request Body encrypted string* -- Optional
-  - **Autor** - *Request Body encrypted string* -- Optional
-  - **Bemerkung** - *Request Body encrypted string* -- Optional
-  - **Bewertungen** - *Request Body encrypted string* -- Optional
-  - **Klasse** - *Request Body encrypted string* -- Optional
+
+  - **FilmID** - _Request Body encrypted integer_ -- Required
+  - **Prüfstück** - _Request Body encrypted 1 or 0_ -- Required
+  - **Filmtitel** - _Request Body encrypted string_ -- Optional
+  - **Status** - _Request Body encrypted string_ -- Optional
+  - **Lehrjahr** - _Request Body encrypted integer_ -- Optional
+  - **Stichworte** - _Request Body encrypted string_ -- Optional
+  - **Programmtyp** - _Request Body encrypted string_ -- Optional
+  - **Erzählsatz** - _Request Body encrypted string_ -- Optional
+  - **Upload** - _Request Body encrypted date_ -- Optional
+  - **Erstellungsdatum** - _Request Body encrypted date_ -- Optional
+  - **Mitwirkende** - _Request Body encrypted string_ -- Optional
+  - **Erscheinungsdatum** - _Request Body encrypted date_ -- Optional
+  - **Tonformat** - _Request Body encrypted string_ -- Optional
+  - **Bildformat** - _Request Body encrypted string_ -- Optional
+  - **Bildfrequenz** - _Request Body encrypted string_ -- Optional
+  - **Farbtiefe** - _Request Body encrypted string_ -- Optional
+  - **Videocontainer** - _Request Body encrypted string_ -- Optional
+  - **Tonspurbelegung** - _Request Body encrypted string_ -- Optional
+  - **Timecode_Anfang** - _Request Body encrypted string_ -- Optional
+  - **Timecode_Ende** - _Request Body encrypted string_ -- Optional
+  - **Dauer** - _Request Body encrypted string_ -- Optional
+  - **Videocodec** - _Request Body encrypted string_ -- Optional
+  - **Auflösung** - _Request Body encrypted string_ -- Optional
+  - **Dauer** - _Request Body encrypted string_ -- Optional
+  - **Vorschaubild** - _Request Body encrypted string_ -- Optional
+  - **Autor** - _Request Body encrypted string_ -- Optional
+  - **Bemerkung** - _Request Body encrypted string_ -- Optional
+  - **Bewertungen** - _Request Body encrypted string_ -- Optional
+  - **Klasse** - _Request Body encrypted string_ -- Optional
 
 - **GET** - `/users/get` - Gets all Data of User
-  - **UserID** - *Query Attribute integer* -- ID of the User
+
+  - **UserID** - _Query Attribute integer_ -- ID of the User
 
 - **PATCH** - `/users/updateRole` - Updates role of User
-  - **UserID** - *Request Body encrypted integer* -- ID of the User
-  - **role** - *Request Body encrypted string* -- new role of the User
+
+  - **UserID** - _Request Body encrypted integer_ -- ID of the User
+  - **role** - _Request Body encrypted string_ -- new role of the User
 
 - **GET** - `/users/list` - Lists username, name, lastname, email and role of all Users
 
 - **DELETE** - `/users/delete` - Deletes Film
-  - **UserID** - *Request Body encrypted string* -- ID of the User
+  - **UserID** - _Request Body encrypted string_ -- ID of the User
 
----------
+- **POST** - `/users/changePassword` - Change Password of the User
+-
+  - **UserID** - _Request Body encrypted integer_ -- ID of the User
+  - **password** - _Request Body encrypted string_ -- Password
+
+---
+
+
 # How to encrypt and decrypt in nodejs
 
 In my projects I essentially find useful two ways to encrypt strings: hash functions one-way and one-way and encryption-decryption two-way :
