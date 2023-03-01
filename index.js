@@ -7,15 +7,12 @@ const helmet = require('helmet');
 const cors = require('cors'); //  A middleware that is used to parse the body of the request.
 const https = require('https');
 const fs = require('fs');
-const os = require('os');
 const errorHandlers = require('./handlers/errorHandlers');
 const session = require('express-session');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const { encode, decode } = require('./modules/crypto.js');
-const { clearAllcookie, getSessionIDCookie } = require('./modules/cookie');
-const { v4: uuidv4 } = require('uuid');
+const { createSessionSecret } = require('./modules/crypto.js');
 const config = require('./config/config.json');
 const hostname = config.host;
 const port = config.port;
@@ -31,7 +28,7 @@ const csp = {
 	objectSrc: [`'self'`],
 	mediaSrc: [`'self'`],
 };
-const SESSION_SECRET = uuidv4();
+const SESSION_SECRET = createSessionSecret();
 
 // || ======== *** SECURITY MIDDLEWARE *** ========= ||
 
@@ -130,31 +127,15 @@ app.use('/files', filesRouter);
 const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
 
-// pass variables to our templates + all requests
-
-// If that above routes didnt work, we 404 them and forward to error handler
-//app.use(errorHandlers.notFound);
-
 // Otherwise this was a really bad error we didn't expect! Shoot eh
 if (app.get('env') === 'development') {
 	/* Development Error Handler - Prints stack trace */
 	//	app.use(errorHandlers.developmentErrors);
 }
 // production error handler
-//app.use(errorHandlers.productionErrors);
-
-/* This is telling the server to listen to port 4000. */
-app.post('/test', (req, res) => {
-	const ToDecode = req.body.toDecode;
-	const ToEncode = req.body.toEncode;
-	const decoded = decode(ToDecode);
-	const encoded = encode(ToEncode);
-	res.send({ decoded: decoded, encoded: encoded });
-});
+app.use(errorHandlers.productionErrors);
 const server = https
 	.createServer(
-		// Provide the private and public key to the server by reading each
-		// file's content with the readFileSync() method.
 		{
 			key: fs.readFileSync(config.ssl_keys[0].key),
 			cert: fs.readFileSync(config.ssl_keys[0].cert),

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../database/index');
-const { decrypt } = require('../modules/crpyto');
+const { decrypt } = require('../modules/crypto');
 const { checkPrivileges } = require('../modules/check_privileges');
 const getUserOnDbByUserId = require('../modules/database/getUserOnDbByUserId');
 router.get('/get', (req, res) => {
@@ -43,7 +43,7 @@ router.get('/get', (req, res) => {
 		res.status(200).send({
 			msg: 'Daten gesendet',
 			code: 201,
-			data: result,
+			data: encrypt(result),
 		});
 	});
 });
@@ -146,7 +146,7 @@ router.get('/list', (req, res) => {
 		res.status(200).send({
 			msg: 'Daten gesendet',
 			code: 201,
-			data: result,
+			data: encrypt(result),
 		});
 	});
 });
@@ -217,15 +217,15 @@ router.post('/changePassword', async (req, res) => {
 		}
 
 		const transporter = nodemailer.createTransport(config.mailAuth[0]);
+		const html = fs.readFileSync('htmlMail/forgotPassword.html').toString();
 		const mailOptions = {
 			from: {
 				name: 'OSZ-Teltow Filmarchiv Passwort vergessen',
 				address: config.mailAuth[0].auth.user,
 			},
 			to: user.data.email,
-			subject: 'Filmarchiv Passwort vergessen',
-			html: `
-								`,
+			subject: 'Filmarchiv Passwort Änderung',
+			html: html.replace('${__NAME__}', user.data.lastname).replace('${__HOST__}', config.frontend_host).replace('${__TOKEN__}', token),
 		};
 		transporter.sendMail(mailOptions, async (err) => {
 			if (err) {
@@ -242,7 +242,6 @@ router.post('/changePassword', async (req, res) => {
 				msg: 'E-Mail gesendet',
 				code: 211,
 			});
-			return;
 		});
 	});
 });

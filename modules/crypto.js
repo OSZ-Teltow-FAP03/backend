@@ -1,7 +1,7 @@
 const Crypto = require('node:crypto');
 const config = require('../config/config');
 
-function encode(text) {
+function encrypt(text) {
 	const iv = Crypto.randomBytes(16).toString('hex');
 	const key = Crypto.createHash('sha256').update(config.cryptoKey).digest();
 	const cipher = Crypto.createCipheriv('aes-256-gcm', key, iv);
@@ -12,7 +12,11 @@ function encode(text) {
 	return { data: encrypted, iv: iv, auth: authTag.toString('hex') };
 }
 
-function decode(encrypted) {
+function createSessionSecret() {
+	return Crypto.randomBytes(16).toString('hex');
+}
+
+function decrypt(encrypted) {
 	try {
 		encrypted = JSON.parse(encrypted);
 		const text = encrypted.data;
@@ -30,6 +34,7 @@ function decode(encrypted) {
 }
 
 module.exports = {
-	encode,
-	decode,
+	encrypt,
+	decrypt,
+	createSessionSecret,
 };

@@ -597,10 +597,11 @@ Server exposes the following Enpoints:
 - **GET** - `/users/list` - Lists username, name, lastname, email and role of all Users
 
 - **DELETE** - `/users/delete` - Deletes Film
+
   - **UserID** - _Request Body encrypted string_ -- ID of the User
 
 - **POST** - `/users/changePassword` - Change Password of the User
--
+
   - **UserID** - _Request Body encrypted integer_ -- ID of the User
   - **password** - _Request Body encrypted string_ -- Password
 

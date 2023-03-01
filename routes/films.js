@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../database/index');
-const { decrypt } = require('../modules/crpyto');
+const { decrypt } = require('../modules/crypto');
 const { checkPrivileges } = require('../modules/check_privileges');
 const fs = require('fs');
 
 router.get('/get', (req, res) => {
-	console.log(req.session);
 	if (!req.session.user) {
 		res.status(400).send({
 			msg: 'Nicht angemeldet',
@@ -49,7 +48,7 @@ router.get('/get', (req, res) => {
 		res.status(200).send({
 			msg: 'Daten gesendet',
 			code: 201,
-			data: result,
+			data: encrypt(result),
 		});
 	});
 });
@@ -94,7 +93,7 @@ router.get('/listFiles', (req, res) => {
 		res.status(200).send({
 			msg: 'Daten gesendet',
 			code: 201,
-			data: result,
+			data: encrypt(result),
 		});
 	});
 });

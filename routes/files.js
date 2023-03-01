@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router(); // Creating a router object.
 const db = require('../database/index');
-const { decrypt } = require('../modules/crpyto');
+const { decrypt } = require('../modules/crypto');
 const { checkPrivileges } = require('../modules/check_privileges');
 const fs = require('fs');
 const path = require('path');
@@ -47,9 +47,9 @@ router.get('/stream', function (req, res) {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: "DB Error",
+				msg: 'DB Error',
 				code: 401,
-				err:err
+				err: err,
 			});
 			return;
 		}
@@ -144,9 +144,9 @@ router.get('/download', function (req, res) {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: "DB Error",
+				msg: 'DB Error',
 				code: 401,
-				err:err
+				err: err,
 			});
 			return;
 		}
@@ -211,9 +211,9 @@ router.post('/upload', async (req, res) => {
 		if (err) {
 			console.error(err);
 			res.status(500).send({
-				msg: "DB Error",
+				msg: 'DB Error',
 				code: 401,
-				err:err
+				err: err,
 			});
 			return;
 		}
@@ -244,20 +244,20 @@ router.post('/upload', async (req, res) => {
 			if (err2) {
 				console.error(err2);
 				res.status(500).send({
-					msg: "DB Error",
+					msg: 'DB Error',
 					code: 401,
-					err:err
+					err: err,
 				});
 				return;
 			}
 			res.status(200).send({
 				msg: 'Datei hochgeladen',
 				code: 210,
-				data: {
+				data: encrypt({
 					name: file.name,
 					mimetype: file.mimetype,
 					size: file.size,
-				},
+				}),
 			});
 		});
 	});

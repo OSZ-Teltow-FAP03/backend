@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router(); // Creating a router object.
 const db = require('../database/index');
-const { decrypt, encrypt } = require('../modules/crpyto');
+const { decrypt, encrypt } = require('../modules/crypto');
 const bcrypt = require('bcrypt');
 const { isEmail, checkUsername } = require('../modules/check_userOrEmail');
 const { clearAllcookie, getSessionIDCookie } = require('../modules/cookie');
@@ -172,7 +172,7 @@ router.post('/login', function (req, res) {
 				res.status(200).send({
 					msg: 'Benutzer eingelogt',
 					code: 203,
-					data: req.session.user,
+					data: encrypt(req.session.user),
 				});
 				return;
 			}
@@ -189,7 +189,7 @@ router.post('/login', function (req, res) {
 			res.status(200).send({
 				msg: 'Benutzer eingelogt',
 				code: 203,
-				data: req.session.user,
+				data: encrypt(req.session.user),
 			});
 		});
 	});
@@ -203,7 +203,7 @@ router.post('/forgetpassword', async (req, res) => {
 		res.status(200).send({
 			msg: `E-Mail gesendet`,
 			code: 211,
-			data: email,
+			data: encrypt(email),
 		});
 		return;
 	}
@@ -261,7 +261,7 @@ router.post('/forgetpassword', async (req, res) => {
 		res.status(200).send({
 			msg: `E-Mail gesendet`,
 			code: 211,
-			data: email,
+			data: encrypt(email),
 		});
 	});
 });
@@ -287,7 +287,7 @@ router.get('/forgetpassword/:token', async (req, res) => {
 		return;
 	}
 	res.status(200).send({
-		data: user.data,
+		data: encrypt(user.data),
 		msg: 'Daten gesendet',
 		code: 201,
 	});
@@ -402,7 +402,7 @@ router.post('/forgetpassword/:token', async (req, res) => {
 
 			res.status(200).send({
 				msg: `E-Mail gesendet`,
-				data: user.email,
+				data: encrypt(user.email),
 				code: 211,
 			});
 		});
