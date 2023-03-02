@@ -5,11 +5,11 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "NODE_ENV=dev nodemon index.js",
-		"prod": "NODE_ENV=prod pm2 start ./config/ecosystem.config.js",
 		"dev": "NODE_ENV=dev nodemon index.js",
+		"prod": "NODE_ENV=prod pm2 start ./config/ecosystem.config.js",
 		"stop": "NODE_ENV=prod pm2 stop ./config/ecosystem.config.js",
 		"status": "NODE_ENV=prod pm2 status ./config/ecosystem.config.js",
-		"show log": "NODE_ENV=prod pm2 logs ./config/ecosystem.config.js"
+		"log": "NODE_ENV=prod pm2 logs ./config/ecosystem.config.js --lines 100"
 	},
 	"keywords": [
 		"node.js",

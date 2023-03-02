@@ -196,7 +196,15 @@ router.post('/login', function (req, res) {
 });
 
 router.post('/forgetpassword', async (req, res) => {
-	var email = decrypt(req.body.email);
+	const email = decrypt(req.body.email);
+	if (email === false) {
+		res.status(400).send({
+			msg: 'Anfrage nicht gültig',
+			code: 101,
+		});
+		return;
+	}
+
 	const user = await checkEmailOnDB(email);
 	if (user.result === 0) {
 		// FAKE RESPONSE

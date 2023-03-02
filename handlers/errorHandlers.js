@@ -6,13 +6,13 @@
 */
 
 exports.catchErrors = (fn) => {
-  return function (req, res, next) {
-    const resp = fn(req, res, next);
-    if (resp instanceof Promise) {
-      return resp.catch(next);
-    }
-    return resp;
-  };
+	return function (req, res, next) {
+		const resp = fn(req, res, next);
+		if (resp instanceof Promise) {
+			return resp.catch(next);
+		}
+		return resp;
+	};
 };
 
 /*
@@ -20,10 +20,10 @@ exports.catchErrors = (fn) => {
   If we hit a route that is not found, we mark it as 404 and pass it along to the next error handler to display
 */
 exports.notFound = (req, res, next) => {
-  res.status(404).json({
-    success: false,
-    message: "Api url doesn't exist ",
-  });
+	res.status(404).json({
+		success: false,
+		message: "Api url doesn't exist ",
+	});
 	next(); // this will give you the above exception
 };
 
@@ -32,19 +32,18 @@ exports.notFound = (req, res, next) => {
   In development we show good error messages so if we hit a syntax error or any other previously un-handled error, we can show good info on what happened
 */
 exports.developmentErrors = (err, req, res, next) => {
-  console.log(err)
-  err.stack = err.stack || '';
-  const errorDetails = {
-    message: err.message,
-    status: err.status,
-    stackHighlighted: err.stack,
-  };
-
-  res.status(500).send({
-    msg: 'Unknown Error',
-    code: 404,
-    err: errorDetails,
-  });
+	console.error(err);
+	err.stack = err.stack || '';
+	const errorDetails = {
+		message: err.message,
+		status: err.status,
+		stackHighlighted: err.stack,
+	};
+	res.status(500).send({
+		msg: 'Unknown Error',
+		code: 404,
+		err: errorDetails,
+	});
 };
 
 /*
@@ -52,10 +51,10 @@ exports.developmentErrors = (err, req, res, next) => {
   No stacktraces are leaked to admin
 */
 exports.productionErrors = (err, req, res, next) => {
-  res.status(500).send({
-    msg: 'Unknown Error',
-    code: 404,
-    err: err.message,
-  });
+	console.error(err);
+	res.status(500).send({
+		msg: 'Unknown Error',
+		code: 404,
+		err: err.message,
+	});
 };
-

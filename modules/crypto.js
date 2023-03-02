@@ -28,10 +28,17 @@ function createSessionSecret() {
 
 function decrypt(encrypted) {
 	try {
-		encrypted = JSON.parse(encrypted);
-		const text = encrypted.data;
-		const iv = encrypted.iv;
-		const authTag = Buffer.from(encrypted.auth, 'hex');
+		let json
+		if (typeof encrypted == 'object') {
+			json = encrypted;
+		} else if (typeof encrypted == 'string') {
+			json = JSON.parse(encrypted);
+		} else {
+			return false;
+		}
+		const text = json.data;
+		const iv = json.iv;
+		const authTag = Buffer.from(json.auth, 'hex');
 		const key = Crypto.createHash('sha256').update(config.cryptoKey).digest();
 		const decipher = Crypto.createDecipheriv('aes-256-gcm', key, iv);
 		decipher.setAuthTag(authTag);
