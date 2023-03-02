@@ -627,7 +627,7 @@ bcrypt.compare(plaintextPassToCheck, hashStoredInDB).then(function (res) {
 
 More info: github.com/kelektiv/node.bcrypt.js
 
-# 2. Simple Encryption and Decryption (two-way)
+## 2. Simple Encryption and Decryption (two-way)
 
 In other scenarios I needed to crypt strings in order to hide texts to users but in a way that allows me to decrypt and retrieve the original content. In this case a fast tool is Crypto.
 
@@ -684,7 +684,7 @@ function decrypt(encrypted) {
 
 ---
 
-## 🦠 errorcodes and statuscode messages
+# 🦠 errorcodes and statuscode messages
 
 A table that shows the error and status codes and their respective messages.
 | code | Msg |
