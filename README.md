@@ -720,7 +720,7 @@ A table that shows the error and status codes and their respective messages.
 | 401 | DB Error|
 | 402 | Bycrypt Error|
 | 403 | Mail Error|
-|
+| 404 | Unknown Error|
 
 # Libraries used
 

@@ -43,13 +43,6 @@ app.use(
 	}),
 );
 
-app.use(
-	cors({
-		credentials: true,
-		origin: true,
-	}),
-);
-
 app.set('trust proxy', true); // trust first proxy
 app.disable('x-powered-by');
 
@@ -87,18 +80,14 @@ app.use(
 );
 
 app.use(express.json());
-/* This is a middleware that is used to parse the body of the request. */
 const corsOptions = {
-	origin: [process.env.ORIGIN_FRONTEND_SERVER], //frontend server localhost:8080
-	methods: ['GET', 'POST', 'PUT', 'DELETE'],
+	origin: [`https://${config.frontend_host}:${config.frontend_port}`], //frontend server localhost:8080
+	methods: ['GET', 'POST', 'DELETE'],
 	credentials: true, // enable set cookie
 	optionsSuccessStatus: 200,
-	credentials: true,
 };
-// enabling CORS for all requests
 app.use(cors(corsOptions));
 
-// using bodyParser to parse JSON bodies into JS objects
 app.use(bodyParser.json());
 /*
  Use cookieParser and session middlewares together.
@@ -107,11 +96,6 @@ app.use(bodyParser.json());
  W/o this, Socket.io won't work if you have more than 1 instance.
  If you are NOT running on Cloud Foundry, having cookie name 'jsessionid' doesn't hurt - it's just a cookie name.
  */
-app.use(
-	bodyParser.urlencoded({
-		extended: true,
-	}),
-);
 app.use(cookieParser(SESSION_SECRET)); // any string ex: 'keyboard cat'
 app.use(useragent.express());
 
@@ -120,20 +104,21 @@ const authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
 const filmsRouter = require('./routes/films');
 app.use('/films', filmsRouter);
-
 const filesRouter = require('./routes/files');
 app.use('/files', filesRouter);
-
 const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
 
-// Otherwise this was a really bad error we didn't expect! Shoot eh
-if (app.get('env') === 'development') {
-	/* Development Error Handler - Prints stack trace */
-	//	app.use(errorHandlers.developmentErrors);
+app.get('/test', (req, res) => {
+	throw new Error('Ich bin ein error');
+});
+
+if (app.get('env') === 'prod') {
+	app.use(errorHandlers.productionErrors);
+} else {
+	app.use(errorHandlers.developmentErrors);
 }
-// production error handler
-app.use(errorHandlers.productionErrors);
+
 const server = https
 	.createServer(
 		{
@@ -142,10 +127,10 @@ const server = https
 		},
 		app,
 	)
-	.listen(port, '0.0.0.0', (err) => {
+	.listen(port, hostname, (err) => {
 		if (err) {
 			throw err;
 		} else {
-			console.log(`🚀 Monitor Server running in the https://${hostname}:${port}`);
+			console.log(`🚀 Server running at https://${hostname}:${port}`);
 		}
 	});

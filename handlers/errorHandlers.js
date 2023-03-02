@@ -32,17 +32,18 @@ exports.notFound = (req, res, next) => {
   In development we show good error messages so if we hit a syntax error or any other previously un-handled error, we can show good info on what happened
 */
 exports.developmentErrors = (err, req, res, next) => {
+  console.log(err)
   err.stack = err.stack || '';
   const errorDetails = {
     message: err.message,
     status: err.status,
-    stackHighlighted: err.stack.replace(/[a-z_-\d]+.js:\d+:\d+/gi, '<mark>$&</mark>'),
+    stackHighlighted: err.stack,
   };
 
-  res.status(500).json({
-    success: false,
-    message: 'Oops ! Error in Server',
-    error: err,
+  res.status(500).send({
+    msg: 'Unknown Error',
+    code: 404,
+    err: errorDetails,
   });
 };
 
@@ -51,10 +52,10 @@ exports.developmentErrors = (err, req, res, next) => {
   No stacktraces are leaked to admin
 */
 exports.productionErrors = (err, req, res, next) => {
-  res.status(500).json({
-    success: false,
-    message: 'Oops ! Error in Server',
-    error: err,
+  res.status(500).send({
+    msg: 'Unknown Error',
+    code: 404,
+    err: err.message,
   });
 };
 
