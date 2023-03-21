@@ -12,14 +12,13 @@ function encrypt(text) {
 	} else {
 		return false;
 	}
-	const iv = Crypto.randomBytes(16).toString('hex');
+	const iv = Crypto.randomBytes(16);
 	const key = Crypto.createHash('sha256').update(config.cryptoKey).digest();
-	const cipher = Crypto.createCipheriv('aes-256-gcm', key, iv);
+	const cipher = Crypto.createCipheriv('aes-256-ctr', key, iv);
 	let encrypted = cipher.update(string, 'utf8', 'hex');
 	encrypted += cipher.final('hex');
-	const authTag = cipher.getAuthTag();
 
-	return { data: encrypted, iv: iv, auth: authTag.toString('hex') };
+	return { data: encrypted, iv: iv.toString('hex') };
 }
 
 function createSessionSecret() {
@@ -28,7 +27,7 @@ function createSessionSecret() {
 
 function decrypt(encrypted) {
 	try {
-		let json
+		let json;
 		if (typeof encrypted == 'object') {
 			json = encrypted;
 		} else if (typeof encrypted == 'string') {
@@ -37,11 +36,9 @@ function decrypt(encrypted) {
 			return false;
 		}
 		const text = json.data;
-		const iv = json.iv;
-		const authTag = Buffer.from(json.auth, 'hex');
+		const iv = Buffer.from(json.iv, "hex");
 		const key = Crypto.createHash('sha256').update(config.cryptoKey).digest();
-		const decipher = Crypto.createDecipheriv('aes-256-gcm', key, iv);
-		decipher.setAuthTag(authTag);
+		const decipher = Crypto.createDecipheriv('aes-256-ctr', key, iv);
 		var dec = decipher.update(text, 'hex', 'utf8');
 		dec += decipher.final('utf8');
 	} catch (error) {
