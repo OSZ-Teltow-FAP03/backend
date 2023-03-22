@@ -57,7 +57,11 @@ function decrypt(encrypted) {
 		iv: iv,
 		mode: CryptoJS.mode.CTR,
 	});
-	return decrypted.toString(CryptoJS.enc.Utf8);
+	try {
+		return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8))
+	} catch (error) {
+		return decrypted.toString(CryptoJS.enc.Utf8)
+	}
 }
 
 module.exports = {
