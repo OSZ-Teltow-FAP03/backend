@@ -1,5 +1,6 @@
-const Crypto = require('node:crypto');
+const CryptoJS = require('crypto-js');
 const config = require('../config/config');
+
 
 function encrypt(text) {
 	let string;
@@ -12,43 +13,55 @@ function encrypt(text) {
 	} else {
 		return false;
 	}
-	const iv = Crypto.randomBytes(16);
-	const key = Crypto.createHash('sha256').update(config.cryptoKey).digest();
-	const cipher = Crypto.createCipheriv('aes-256-ctr', key, iv);
-	let encrypted = cipher.update(string, 'utf8', 'hex');
-	encrypted += cipher.final('hex');
+	const iv = randomBytes(16);
+	let parsed_iv = CryptoJS.enc.Hex.parse(iv);
+	const parsedKey = CryptoJS.SHA256(config.cryptoKey);
+	const encrypted = CryptoJS.AES.encrypt(string, parsedKey, {
+		iv: parsed_iv,
+		mode: CryptoJS.mode.CTR,
+		format:CryptoJS.format.Hex
+	});
+	return {
+		data: encrypted.toString(),
+		iv: iv,
+	};
+}
 
-	return { data: encrypted, iv: iv.toString('hex') };
+function randomBytes(length) {
+	length = Math.floor(length);
+	let bytes = '';
+	for (let index = 0; index < length; index++) {
+		let result = parseInt((Math.random() * 256).toString(), 10).toString(16);
+		result = result.padStart(2, '0');
+		bytes += result;
+	}
+	return bytes;
 }
 
 function createSessionSecret() {
-	return Crypto.randomBytes(16).toString('hex');
+	return randomBytes(16);
 }
 
 function decrypt(encrypted) {
-	try {
-		let json;
-		if (typeof encrypted == 'object') {
-			json = encrypted;
-		} else if (typeof encrypted == 'string') {
-			json = JSON.parse(encrypted);
-		} else {
-			return false;
-		}
-		const text = json.data;
-		const iv = Buffer.from(json.iv, "hex");
-		const key = Crypto.createHash('sha256').update(config.cryptoKey).digest();
-		const decipher = Crypto.createDecipheriv('aes-256-ctr', key, iv);
-		var dec = decipher.update(text, 'hex', 'utf8');
-		dec += decipher.final('utf8');
-	} catch (error) {
+	let json;
+	if (typeof encrypted == 'object') {
+		json = encrypted;
+	} else if (typeof encrypted == 'string') {
+		json = JSON.parse(encrypted);
+	} else {
 		return false;
 	}
-	return dec;
+	const iv = CryptoJS.enc.Hex.parse(json.iv);
+	const parsedKey = CryptoJS.SHA256(config.cryptoKey);
+	const decrypted = CryptoJS.AES.decrypt(CryptoJS.format.Hex.parse(json.data), parsedKey, {
+		iv: iv,
+		mode: CryptoJS.mode.CTR,
+	});
+	return decrypted.toString(CryptoJS.enc.Utf8);
 }
 
 module.exports = {
 	encrypt,
 	decrypt,
-	createSessionSecret,
+	createSessionSecret
 };
