@@ -5,12 +5,10 @@ const cookieParser = require('cookie-parser');
 var useragent = require('express-useragent');
 const helmet = require('helmet');
 const cors = require('cors');
-const bodyParser = require('body-parser');
-const { createSessionSecret } = require('./modules/crypto.js');
 const config = require('./config/config.json');
 
 
-module.exports = function(app) {
+module.exports = function(app, SESSION_SECRET) {
   const csp = {
     defaultSrc: [`'none'`],
     styleSrc: [`'self'`, `'unsafe-inline'`],
@@ -34,7 +32,6 @@ module.exports = function(app) {
   app.set('trust proxy', true);
   app.disable('x-powered-by');
   
-  const SESSION_SECRET = createSessionSecret();
   app.use(
     session({
       name: 'session_id',

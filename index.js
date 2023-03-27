@@ -2,9 +2,11 @@ const express = require('express');
 const https = require('https');
 const fs = require('fs');
 const config = require('./config/config.json');
+const { createSessionSecret } = require('./modules/crypto');
 
 const app = express();
-require('./middleware.js')(app);
+const SESSION_SECRET = createSessionSecret();
+require('./middleware.js')(app, SESSION_SECRET);
 require('./routes.js')(app);
 require('./errorHandeling.js')(app);
 

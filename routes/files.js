@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router(); // Creating a router object.
 const db = require('../database/index');
-const { decrypt } = require('../modules/crypto');
+const { encrypt, decrypt } = require('../modules/crypto');
 const { checkPrivileges } = require('../modules/check_privileges');
 const fs = require('fs');
 const path = require('path');

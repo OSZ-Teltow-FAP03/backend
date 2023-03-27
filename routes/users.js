@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../database/index');
-const { decrypt } = require('../modules/crypto');
+const { encrypt, decrypt } = require('../modules/crypto');
 const { checkPrivileges } = require('../modules/check_privileges');
 const getUserOnDbByUserId = require('../modules/database/getUserOnDbByUserId');
 router.get('/get', (req, res) => {
