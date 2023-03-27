@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../database/index');
-const { decrypt } = require('../modules/crypto');
+const { encrypt, decrypt } = require('../modules/crypto');
 const { checkPrivileges } = require('../modules/check_privileges');
 const fs = require('fs');
 
@@ -14,13 +14,13 @@ router.get('/get', (req, res) => {
 		return;
 	}
 
-	if (!checkPrivileges(req.baseUrl + req.path, req.session.user.role)) {
-		res.status(400).send({
-			msg: 'Berechtigungen fehlen',
-			code: 103,
-		});
-		return;
-	}
+	// if (!checkPrivileges(req.baseUrl + req.path, req.session.user.role)) {
+	// 	res.status(400).send({
+	// 		msg: 'Berechtigungen fehlen',
+	// 		code: 103,
+	// 	});
+	// 	return;
+	// }
 
 	let prüfstück = false;
 	if (['admin', 'pruefer'].indexOf(req.session.user.role) !== -1) {
