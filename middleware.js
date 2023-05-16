@@ -7,8 +7,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const config = require('./config/config.json');
 
-
-module.exports = function(app, SESSION_SECRET) {
+module.exports = function (app, SESSION_SECRET) {
   const csp = {
     defaultSrc: [`'none'`],
     styleSrc: [`'self'`, `'unsafe-inline'`],
@@ -28,10 +27,10 @@ module.exports = function(app, SESSION_SECRET) {
       maxAge: 5184000,
     }),
   );
-  
+
   app.set('trust proxy', true);
   app.disable('x-powered-by');
-  
+
   app.use(
     session({
       name: 'session_id',
@@ -42,7 +41,7 @@ module.exports = function(app, SESSION_SECRET) {
       cookie: {
         path: '/',
         httpOnly: true,
-        maxAge: 1 * 60 * 1000,
+        maxAge: 10 * 60 * 1000,
         sameSite: 'none',
         secure: true,
         HostOnly: true,
@@ -55,13 +54,13 @@ module.exports = function(app, SESSION_SECRET) {
       extended: true,
     }),
   );
-  
+
   app.use(
     fileUpload({
       createParentPath: true,
     }),
   );
-  
+
   const corsOptions = {
     origin: [`https://${config.frontend_host}:${config.frontend_port}`], //frontend server localhost:8080
     methods: ['GET', 'POST', 'DELETE'],
@@ -70,4 +69,4 @@ module.exports = function(app, SESSION_SECRET) {
   };
   app.use(cors(corsOptions));
   app.use(useragent.express());
-}
+};

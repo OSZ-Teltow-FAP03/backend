@@ -1,48 +1,48 @@
 {
-	"name": "server",
-	"version": "1.0.0",
-	"description": "Backend",
-	"main": "index.js",
-	"scripts": {
-		"start": "NODE_ENV=dev nodemon index.js",
-		"dev": "NODE_ENV=dev nodemon index.js",
-		"prod": "NODE_ENV=prod pm2 start ./config/ecosystem.config.js",
-		"stop": "NODE_ENV=prod pm2 stop ./config/ecosystem.config.js",
-		"status": "NODE_ENV=prod pm2 status ./config/ecosystem.config.js",
-		"log": "NODE_ENV=prod pm2 logs ./config/ecosystem.config.js --lines 100"
-	},
-	"keywords": [
-		"node.js",
-		"express",
-		"login",
-		"registration",
-		"authentication",
-		"authorization"
-	],
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"bcrypt": "^5.1.0",
-		"body-parser": "^1.20.0",
-		"cookie-parser": "^1.4.6",
-		"cors": "^2.8.5",
-		"crypto-js": "^4.1.1",
-		"dotenv": "^16.0.2",
-		"easy-https": "^1.0.1",
-		"express": "^4.18.1",
-		"express-fileupload": "^1.4.0",
-		"express-session": "^1.17.3",
-		"express-useragent": "^1.0.15",
-		"forever": "^4.0.3",
-		"helmet": "^6.0.0",
-		"mysql": "github:felixge/node-mysql",
-		"node-schedule": "^2.1.0",
-		"nodemailer": "^6.9.1",
-		"nodemon": "^2.0.16",
-		"pm2": "^5.2.2"
-	},
-	"devDependencies": {
-		"@types/node": "^18.14.2",
-		"uuid": "^2.0.3"
-	}
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "dev": "NODE_ENV=dev nodemon index.js",
+    "prod": "NODE_ENV=prod pm2 start ./config/ecosystem.config.js",
+    "stop": "NODE_ENV=prod pm2 stop ./config/ecosystem.config.js",
+    "status": "NODE_ENV=prod pm2 status ./config/ecosystem.config.js",
+    "log": "NODE_ENV=prod pm2 logs ./config/ecosystem.config.js --lines 100"
+  },
+  "keywords": [
+    "node.js",
+    "express",
+    "login",
+    "registration",
+    "authentication",
+    "authorization"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.2",
+    "easy-https": "^1.0.1",
+    "express": "^4.18.1",
+    "express-fileupload": "^1.4.0",
+    "express-session": "^1.17.3",
+    "express-useragent": "^1.0.15",
+    "forever": "^4.0.3",
+    "helmet": "^6.0.0",
+    "mysql": "github:felixge/node-mysql",
+    "node-schedule": "^2.1.0",
+    "nodemailer": "^6.9.1",
+    "nodemon": "^2.0.16",
+    "pm2": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.14.2",
+    "uuid": "^2.0.3"
+  }
 }
