@@ -71,7 +71,7 @@ router.get('/listFiles', (req, res) => {
     return;
   }
 
-  db.query('SELECT ID, Prüfstück FROM FilmDateien, Film WHERE Film.ID = ? AND Film.ID = FilmDateien.FilmID', [FilmID], function (err, result) {
+  db.query('SELECT FilmDateien.ID, Prüfstück FROM FilmDateien, Film WHERE Film.ID = ? AND Film.ID = FilmDateien.FilmID', [FilmID], function (err, result) {
     if (err) {
       console.error(err);
       res.status(500).send({
