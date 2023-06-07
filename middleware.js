@@ -40,7 +40,7 @@ module.exports = function (app, SESSION_SECRET) {
       secret: SESSION_SECRET,
       cookie: {
         path: '/',
-        httpOnly: true,
+        httpOnly: false,
         maxAge: 10 * 60 * 1000,
         sameSite: 'none',
         secure: true,
@@ -48,6 +48,11 @@ module.exports = function (app, SESSION_SECRET) {
       },
     }),
   );
+
+  app.use(function (req, res, next) {
+    console.log(req.session);
+    next();
+  });
   app.use(cookieParser(SESSION_SECRET));
   app.use(
     express.urlencoded({

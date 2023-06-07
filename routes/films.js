@@ -14,13 +14,13 @@ router.get('/get', (req, res) => {
     return;
   }
 
-	if (!checkPrivileges(req.baseUrl + req.path, req.session.user.role)) {
-		res.status(400).send({
-			msg: 'Berechtigungen fehlen',
-			code: 103,
-		});
-		return;
-	}
+  if (!checkPrivileges(req.baseUrl + req.path, req.session.user.role)) {
+    res.status(400).send({
+      msg: 'Berechtigungen fehlen',
+      code: 103,
+    });
+    return;
+  }
 
   let prüfstück = false;
   if (['admin', 'pruefer'].indexOf(req.session.user.role) !== -1) {
@@ -185,18 +185,23 @@ router.put('/create', (req, res) => {
     return;
   }
 
-  let arrayOfAttributes = [];
   let arrayOfValues = [];
   let replace = '';
+  let attributes = '';
   Object.entries(req.body).forEach((entry) => {
     const [key, value] = entry;
-    arrayOfAttributes.push(key);
-    arrayOfValues.push(decrypt(value));
+    attributes += `${key}, `;
+    let decryptedValue = decrypt(value);
+    if (decryptedValue === '') {
+      decryptedValue = null;
+    }
+    arrayOfValues.push(decryptedValue);
     replace += '?, ';
   });
-  replace = attributes.slice(0, -1);
+  attributes = attributes.slice(0, -2);
+  replace = replace.slice(0, -2);
 
-  db.query('INSERT INTO Film (' + replace + ') VALUE (' + replace + ')', arrayOfAttributes.concat(arrayOfValues), (err, result) => {
+  db.query('INSERT INTO Film (' + attributes + ') VALUES (' + replace + ')', arrayOfValues, (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).send({
